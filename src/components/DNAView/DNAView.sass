@@ -1,0 +1,133 @@
+@import src/styles/common
+
+$step: 24px
+
+.root
+  display: flex
+  justify-content: center
+  padding: 8px
+  border-radius: 4px
+  background-color: #fff
+  overflow-x: auto
+
+.red,
+.green,
+.blue
+  font-size: 16px
+
+.red
+  border-radius: 2px
+  background-color: $deleteColor
+
+.green
+  border-radius: 16px
+  background-color: $successColor
+
+.blue
+  border-radius: 8px
+  background-color: $accentColor
+
+.main
+  display: flex
+  align-items: stretch
+  height: 300px
+
+.col
+  position: relative
+  min-width: 20px
+  text-align: center
+
+.zero
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+
+.u1,
+.u2,
+.u3,
+.u4,
+.u5,
+.u6,
+.d1,
+.d2,
+.d3,
+.d4,
+.d5,
+.d6,
+.zero
+  padding: 4px
+  cursor: pointer
+  transition: 0.3s
+
+.u1
+  position: absolute
+  top: calc(50% - #{$step})
+  left: 50%
+  transform: translate(-50%, -50%)
+
+.u2
+  position: absolute
+  top: calc(50% - #{$step} * 2)
+  left: 50%
+  transform: translate(-50%, -50%)
+
+.u3
+  position: absolute
+  top: calc(50% - #{$step} * 3)
+  left: 50%
+  transform: translate(-50%, -50%)
+
+.u4
+  position: absolute
+  top: calc(50% - #{$step} * 4)
+  left: 50%
+  transform: translate(-50%, -50%)
+
+.u5
+  position: absolute
+  top: calc(50% - #{$step} * 5)
+  left: 50%
+  transform: translate(-50%, -50%)
+
+.u6
+  position: absolute
+  top: calc(50% - #{$step} * 6)
+  left: 50%
+  transform: translate(-50%, -50%)
+
+.d1
+  position: absolute
+  top: calc(50% + #{$step})
+  left: 50%
+  transform: translate(-50%, -50%)
+
+.d2
+  position: absolute
+  top: calc(50% + #{$step} * 2)
+  left: 50%
+  transform: translate(-50%, -50%)
+
+.d3
+  position: absolute
+  top: calc(50% + #{$step} * 3)
+  left: 50%
+  transform: translate(-50%, -50%)
+
+.d4
+  position: absolute
+  top: calc(50% + #{$step} * 4)
+  left: 50%
+  transform: translate(-50%, -50%)
+
+.d5
+  position: absolute
+  top: calc(50% + #{$step} * 5)
+  left: 50%
+  transform: translate(-50%, -50%)
+
+.d6
+  position: absolute
+  top: calc(50% + #{$step} * 6)
+  left: 50%
+  transform: translate(-50%, -50%)

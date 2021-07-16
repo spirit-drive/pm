@@ -1,0 +1,76 @@
+// mixins
+@mixin root
+  min-width: 100%
+  display: inline-block
+  padding: 16px
+  border-radius: 4px
+  background-color: #fff
+  box-shadow: $boxShadow1
+
+@mixin little-text
+  font-size: $littleFontSize
+  color: $mainColor
+
+@mixin littlest-text
+  font-size: $littlestFontSize
+  color: $mainColor
+
+// colors
+$accentColor: #1be0e0
+$accentColorLight: #1bffff
+$accentColorBG: #e7f9ff
+$backgroundColor: #F2F7FA
+$backgroundColorLight: #f8fafc
+$backgroundErrorColor: #fffbf6
+$mainColor: #8B97A5
+$borderColor: #F0F1F2
+$borderDarkColor: #d9d9d9
+$brightTextColor: #333
+$antDTextColor: #595959
+$tableHeaderBright: #f2f2f2
+$tableHeaderLight: #fafafa
+$tableBorder: #e8e8e8
+$moveColor: #999
+$colorDisable: #bfbfbf
+$colorDisableBackground: #f5f5f5
+$deleteColor: #ff7c4d
+$successColor: #99f26d
+$successColorDark: #52c41a
+$successColorDarker: #4ab017
+$warningColorLight: #ffaa33
+$warningColorDark: #ff9500
+$errorColorDark: #f23030
+$redBorder: #ffa39e
+
+// fonts
+$mainFontSize: 14px
+$littleFontSize: 12px
+$littlestFontSize: 10px
+
+// box-shadows
+$boxShadow1: 0 2px 12px rgba(#000, 0.05)
+$boxShadow2: 0 2px 12px rgba(#000, 0.15)
+$boxShadow3: 0 2px 12px rgba(#000, 0.10)
+$boxShadowFocus: 0 0 3px rgba($accentColor, 1)
+$boxShadowChosen: 0 0 3px rgba($errorColorDark, 1)
+$boxShadowPossible: 0 0 3px rgba($accentColor, 1)
+$boxShadowInputError: 0 0 0 2px rgba($errorColorDark, 0.2)
+
+// borders
+$border1: thin dashed #f3f3f3
+$border2: thin solid #eaeaea
+$border3: thin solid $antDTextColor
+
+// menu
+$smallMenuWidth: 48px
+$menuWidth: 200px
+
+// hexagrams
+$hexagramHeight: 8px
+$hexagramWidth: 84px
+
+// yan yin
+$transit: #6de01b
+$yin: #1be0e0
+$yan: #ffe91f
+

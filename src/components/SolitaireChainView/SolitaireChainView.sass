@@ -1,0 +1,66 @@
+@import "src/styles/common"
+
+.root
+  padding: 20px
+
+.wrapper
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-wrap: wrap
+
+.radio
+  padding-bottom: 12px
+
+.item
+  position: relative
+  border-radius: 4px
+  margin-right: 8px
+  border: $border2
+  margin-bottom: 8px
+  overflow: hidden
+  box-shadow: $boxShadow3
+  transition: 0.2s
+
+.info
+  padding: 4px
+  position: absolute
+  width: 100%
+  bottom: 0
+  display: flex
+  align-items: center
+  justify-content: center
+
+.infoItem
+  padding: 0 2px
+  border-radius: 8px
+  min-width: 8px
+  height: 8px
+  border: $border3
+  box-shadow: $boxShadow2
+  background-color: $transit
+  font-size: 10px
+  user-select: none
+
+  &.transit
+    min-width: 16px
+    height: 16px
+
+  & + &
+    margin-left: 4px
+
+  &.yin
+    background-color: $yin
+
+  &.yan
+    background-color: $yan
+
+.active
+  box-shadow: $boxShadowPossible
+
+.possible
+  box-shadow: $boxShadowChosen
+
+.tip
+  margin-bottom: 4px
+  +littlest-text()

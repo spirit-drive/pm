@@ -1,0 +1,15 @@
+{
+  "name": "Root GraphQL Schema",
+  "schemaPath": "graphql.main.schema.json",
+  "extensions": {
+    "endpoints": {
+      "Default GraphQL Endpoint": {
+        "url": "https://backend.leadvertex.xyz/companies/1/CRM",
+        "headers": {
+          "authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzUxMiJ9.eyJpc3MiOiJodHRwczpcL1wvYmFja2VuZC5sZWFkdmVydGV4Lnh5elwvIiwiYXVkIjoiQ1JNIiwianRpIjoiMjY5MmY3YmVkOTMwYjhiNmYwYjAyMzNmNjAwZjk1Y2EiLCJpYXQiOjE2MDM5Njc1MzMsInR5cGUiOiJyZWd1bGFyIiwiY2lkIjoiMSIsInJlZiI6eyJhbGlhcyI6InVzZXIiLCJpZCI6IjIifX0.CRSgyvufEQ6IB3pRYM8yfttruVTDI_68Mmp1l2arsEf8zH18r7J8K0BXDV3pqYi0h7acalrtHcIpPuGWgJIG3dtP39pwQ6DkVf8Kka-B5uOZAuVwIHsCLlapJgUiIG3UJXgtF2jLUfzPm3QSXIRACkcXQGhTjRV_WmkusQuZTJ8aaKKksVB3vVG8a_FRopr9CsZCZG2yxCkH5KD5z5X-TU1NLltc41iawZdlAnNg-JTVqANoniysy_AUfHCNcYGSAHQDqh7BEM0aY1oMr5TkmurDjhZgToRzF9ciaFy76H-o5NnUIMjw0_duPxzkZFxGIIRTJwxClbsgJYEzU1Q8VQ"
+        },
+        "introspect": false
+      }
+    }
+  }
+}

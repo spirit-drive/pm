@@ -1,0 +1,27 @@
+@import src/styles/common
+
+.root
+  position: relative
+
+.holder
+  display: none
+  opacity: 0
+  padding: 6px 0 2px
+
+  &.visible
+    display: block
+
+.error
+  opacity: 0
+  position: absolute
+  top: 0
+  left: 0
+  padding: 6px 0 2px
+  color: $errorColorDark
+  transition: all 0.2s
+  transform: translateY(-50%)
+
+  &.visible
+    opacity: 1
+    transform: translateY(0)
+
