@@ -48,7 +48,6 @@ module.exports = (env, options) => {
       port,
       hot: true,
       historyApiFallback: true,
-      overlay: true,
     },
     resolve: {
       alias: {
@@ -56,6 +55,11 @@ module.exports = (env, options) => {
       },
       modules: [src, 'node_modules'],
       extensions: ['.tsx', '.ts', '.js'],
+      fallback: {
+        crypto: require.resolve('crypto-browserify'),
+        stream: require.resolve('stream-browserify'),
+        buffer: require.resolve('buffer'),
+      },
     },
     ...(isDevMode
       ? {}
@@ -141,11 +145,12 @@ module.exports = (env, options) => {
             {
               loader: 'less-loader',
               options: {
-                sourceMap: isDevMode,
-                javascriptEnabled: true,
-                modifyVars: {
-                  'primary-color': '#1be0e0',
-                  'border-radius-base': '3px',
+                lessOptions: {
+                  javascriptEnabled: true,
+                  modifyVars: {
+                    'primary-color': '#1be0e0',
+                    'border-radius-base': '3px',
+                  },
                 },
               },
             },
