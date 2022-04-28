@@ -173,30 +173,8 @@ module.exports = (env, options) => {
           include: src,
         },
         {
-          test: /\.(png|gif|jpe?g)$/i,
-          use: [
-            {
-              loader: 'url-loader',
-              options: {
-                limit: 8192,
-              },
-            },
-          ],
-        },
-        {
-          test: /\.svg$/,
-          loader: 'url-loader',
-        },
-        {
-          test: /\.(woff2?|oet|([to]tf))$/,
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                name: '[path][name].[ext]',
-              },
-            },
-          ],
+          test: /\.(svg|woff2?|oet|([to]tf)|mp3|png|gif|jpe?g)$/i,
+          type: 'asset/resource',
         },
       ],
     },
