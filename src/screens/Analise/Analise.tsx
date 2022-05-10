@@ -9,6 +9,7 @@ import { random } from '../../utils/random';
 import { HexagramBalanceView } from '../../components/HexagramBalanceView';
 import { useSaveToUrl } from './useSaveToUrl';
 import { SolitaireChainView } from '../../components/SolitaireChainView';
+import { useHistory } from '../../hooks/useHistory';
 import s from './Analise.sass';
 
 export type Props = {
@@ -23,6 +24,7 @@ export const Analise = memo<Props>(({ className }) => {
   const input = useRef<Input>();
 
   useSaveToUrl(value, setValue);
+  useHistory(value, setValue);
 
   const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
     setValue(e.target.value);
@@ -83,11 +85,6 @@ export const Analise = memo<Props>(({ className }) => {
   useEffect(() => {
     manage(value);
   }, [manage, value]);
-
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log({ solitaire });
-  }, [solitaire]);
 
   const selfBalancing = useMemo(
     () => solitaire?.selfBalancing?.map((item) => ({ id: random.uuid4(), value: item })),
