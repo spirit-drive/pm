@@ -1,0 +1,23 @@
+@import src/styles/common
+
+.history
+  padding-top: 8px
+  max-height: 140px
+  overflow: auto
+
+.button
+  & + &
+    margin-left: 8px
+
+.item
+  cursor: pointer
+  transition: 0.3s
+  padding: 4px
+  font-size: 12px
+  color: $mainColor
+
+  &:hover
+    background-color: $backgroundColor
+
+  &.active
+    background-color: $accentColorBG

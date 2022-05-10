@@ -11,6 +11,7 @@ import { useSaveToUrl } from './useSaveToUrl';
 import { SolitaireChainView } from '../../components/SolitaireChainView';
 import { useHistory } from '../../hooks/useHistory';
 import s from './Analise.sass';
+import { HistoryControl } from '../../components/HistoryControl/HistoryControl';
 
 export type Props = {
   className?: string;
@@ -24,7 +25,7 @@ export const Analise = memo<Props>(({ className }) => {
   const input = useRef<Input>();
 
   useSaveToUrl(value, setValue);
-  useHistory(value, setValue);
+  const [history, { back, next }] = useHistory(value, setValue);
 
   const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
     setValue(e.target.value);
@@ -93,7 +94,7 @@ export const Analise = memo<Props>(({ className }) => {
 
   const showSelfBalancing = useMemo(() => solitaire?.balance?.some((v) => v !== 0), [solitaire?.balance]);
 
-  const selfBalancingElement = useMemo(() => {
+  const selfBalancingElement = ((): React.ReactElement[] | React.ReactElement => {
     if (!solitaire || message) return <MinusOutlined />;
     if (!showSelfBalancing) return <div>Расклад полностью сбалансирован</div>;
     if (!selfBalancing) {
@@ -108,9 +109,9 @@ export const Analise = memo<Props>(({ className }) => {
         <HexagramsView value={item.value} />
       </div>
     ));
-  }, [message, selfBalancing, showSelfBalancing, solitaire]);
+  })();
 
-  const validateStatus = useMemo(() => (message ? 'error' : ''), [message]);
+  const validateStatus = message ? 'error' : '';
 
   const solitaireCopy = useRef(solitaire);
   useEffect(() => {
@@ -121,17 +122,17 @@ export const Analise = memo<Props>(({ className }) => {
     setValue(solitaireCopy.current.exchange(that, to).join(' '));
   }, []);
 
-  const solitaireChainElement = useMemo(() => {
+  const solitaireChainElement = ((): React.ReactElement => {
     if (message) return <MinusOutlined />;
     if (solitaire?.chain) {
       return <SolitaireChainView setValue={setValue} onChange={onChangeSolitaire} solitaire={solitaire} />;
     }
     return <MinusOutlined />;
-  }, [message, onChangeSolitaire, solitaire]);
+  })();
 
-  const headerElement = useMemo(() => <Typography.Text className={s.title}>Расклад</Typography.Text>, []);
+  const headerElement = <Typography.Text className={s.title}>Расклад</Typography.Text>;
 
-  const hexagramsMoldElement = useMemo(() => {
+  const hexagramsMoldElement = ((): React.ReactElement => {
     if (message) return <MinusOutlined />;
     if (solitaire?.hexagramsMold) {
       return (
@@ -144,7 +145,7 @@ export const Analise = memo<Props>(({ className }) => {
       );
     }
     return <MinusOutlined />;
-  }, [message, solitaire?.balance, solitaire?.hexagrams, solitaire?.hexagramsMold]);
+  })();
 
   const { search } = useLocation();
 
@@ -169,6 +170,17 @@ export const Analise = memo<Props>(({ className }) => {
         <Collapse defaultActiveKey="1" ghost>
           <Collapse.Panel className={s.panel} key="1" header={headerElement}>
             {solitaireChainElement}
+          </Collapse.Panel>
+        </Collapse>
+      </div>
+      <div className={s.section}>
+        <Collapse defaultActiveKey="1" ghost>
+          <Collapse.Panel
+            className={s.panel}
+            key="1"
+            header={<Typography.Text className={s.title}>История</Typography.Text>}
+          >
+            <HistoryControl value={value} history={history} back={back} next={next} setValue={setValue} />
           </Collapse.Panel>
         </Collapse>
       </div>

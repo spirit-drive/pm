@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { random } from '../utils/random';
 
 export const removeSpaces = (value: string): string => value?.replace(/\s/g, '');
+
+export type HistoryTypeItem = { id: string; value: string };
+export type HistoryType = HistoryTypeItem[];
 
 export const useHistory = (
   value: string,
   setValue: (value: string) => void
-): [string[], { back: () => void; next: () => void }] => {
-  const [history, setHistory] = useState<string[]>([]);
+): [HistoryType, { back: () => void; next: () => void }] => {
+  const [history, setHistory] = useState<HistoryType>([]);
   const wasChanged = useRef(false);
   const index = useRef<number>(-1);
 
@@ -19,12 +23,12 @@ export const useHistory = (
     setHistory((v) => {
       if (!value) return v;
       if (!/\s/.test(value)) return v;
-      if (removeSpaces(v[v.length - 1]) === removeSpaces(value)) return v;
+      if (removeSpaces(v[v.length - 1]?.value) === removeSpaces(value)) return v;
       if (wasChanged.current) {
         wasChanged.current = false;
         return v;
       }
-      const newValue = [...v, value];
+      const newValue = [...v, { id: random.uuid4(), value }];
       index.current = newValue.length - 1;
       return newValue;
     });
@@ -35,13 +39,13 @@ export const useHistory = (
       back: (): void => {
         wasChanged.current = true;
         const i = index.current === 0 ? 0 : --index.current;
-        setValue(historyCopy.current[i]);
+        setValue(historyCopy.current[i]?.value);
       },
       next: (): void => {
         wasChanged.current = true;
         const maxIndex = historyCopy.current.length - 1;
         const i = index.current === maxIndex ? maxIndex : ++index.current;
-        setValue(historyCopy.current[i]);
+        setValue(historyCopy.current[i]?.value);
       },
     }),
     [setValue]
