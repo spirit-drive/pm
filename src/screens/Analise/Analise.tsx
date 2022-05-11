@@ -168,19 +168,19 @@ export const Analise = memo<Props>(({ className }) => {
       </Form.Item>
       <div className={s.section}>
         <Collapse defaultActiveKey="1" ghost>
-          <Collapse.Panel className={s.panel} key="1" header={headerElement}>
-            {solitaireChainElement}
-          </Collapse.Panel>
-        </Collapse>
-      </div>
-      <div className={s.section}>
-        <Collapse defaultActiveKey="1" ghost>
           <Collapse.Panel
             className={s.panel}
             key="1"
             header={<Typography.Text className={s.title}>История</Typography.Text>}
           >
             <HistoryControl value={value} history={history} back={back} next={next} setValue={setValue} />
+          </Collapse.Panel>
+        </Collapse>
+      </div>
+      <div className={s.section}>
+        <Collapse defaultActiveKey="1" ghost>
+          <Collapse.Panel className={s.panel} key="1" header={headerElement}>
+            {solitaireChainElement}
           </Collapse.Panel>
         </Collapse>
       </div>
