@@ -25,7 +25,7 @@ export const Analise = memo<Props>(({ className }) => {
   const input = useRef<Input>();
 
   useSaveToUrl(value, setValue);
-  const [history, { back, next }] = useHistory(value, setValue);
+  const [, { back, next }] = useHistory(value, setValue);
 
   const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
     setValue(e.target.value);
@@ -130,7 +130,12 @@ export const Analise = memo<Props>(({ className }) => {
     return <MinusOutlined />;
   })();
 
-  const headerElement = <Typography.Text className={s.title}>Расклад</Typography.Text>;
+  const headerElement = (
+    <Typography.Text className={s.title}>
+      Расклад
+      <HistoryControl className={s.history} back={back} next={next} />
+    </Typography.Text>
+  );
 
   const hexagramsMoldElement = ((): React.ReactElement => {
     if (message) return <MinusOutlined />;
@@ -166,17 +171,6 @@ export const Analise = memo<Props>(({ className }) => {
           </Button>
         </div>
       </Form.Item>
-      <div className={s.section}>
-        <Collapse defaultActiveKey="1" ghost>
-          <Collapse.Panel
-            className={s.panel}
-            key="1"
-            header={<Typography.Text className={s.title}>История</Typography.Text>}
-          >
-            <HistoryControl value={value} history={history} back={back} next={next} setValue={setValue} />
-          </Collapse.Panel>
-        </Collapse>
-      </div>
       <div className={s.section}>
         <Collapse defaultActiveKey="1" ghost>
           <Collapse.Panel className={s.panel} key="1" header={headerElement}>
