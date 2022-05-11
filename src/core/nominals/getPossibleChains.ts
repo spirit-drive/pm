@@ -46,13 +46,15 @@ const cards = [
 
 export const getPossibleChains = (): Record<string, string> => {
   const result: Record<string, string> = {};
-  let i = 100000;
+  let i = 500000;
   while (i--) {
     try {
       const raw = random.shuffle(cards);
       const solitaire = new Solitaire(raw.join(' '));
       const { hexagrams, chain, balance, selfBalancing, transits } = solitaire;
-      if (!selfBalancing) continue; // eslint-disable-line no-continue
+      const balanceString = balance.join(',');
+      // if (balanceString !== '0,0,0,0,0,0') continue; // eslint-disable-line no-continue
+      if (!selfBalancing && balanceString !== '0,0,0,0,0,0') continue; // eslint-disable-line no-continue
       const key = chain
         .map((item) => {
           const found = transits.find((t) => t.value === item);
@@ -63,8 +65,8 @@ export const getPossibleChains = (): Record<string, string> => {
 
       Object.assign(result, {
         [key]: {
-          balance: balance.join(','),
-          selfBalancing: selfBalancing.map((item) => ({
+          balance: balanceString,
+          selfBalancing: selfBalancing?.map((item) => ({
             [Suits.hearts]: hexagramsMap[item.hearts.join('') as keyof typeof hexagramsMap],
             [Suits.spades]: hexagramsMap[item.spades.join('') as keyof typeof hexagramsMap],
             [Suits.clubs]: hexagramsMap[item.clubs.join('') as keyof typeof hexagramsMap],
