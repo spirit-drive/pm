@@ -15,10 +15,14 @@ export class SolitaireBasis {
 
   static parseString(string: string): string {
     return string
-      .replace(/T/gi, 'Т')
-      .replace(/K/gi, 'К')
-      .replace(/B/gi, 'В')
-      .replace(/Х/g, 'X')
+      .replace(/T/gi, 'Т') // Русская
+      .replace(/t/gi, 'Т') // Английская
+      .replace(/K/gi, 'К') // Русская
+      .replace(/k/gi, 'К') // Английская
+      .replace(/B/gi, 'В') // Русская
+      .replace(/b/gi, 'В') // Английская
+      .replace(/Х/gi, 'X') // Английская
+      .replace(/Х/gi, 'X') // Русская
       .replace(/10/g, 'X')
       .replace(/“/g, 'Т')
       .replace(/ƒ/gi, 'Д')
