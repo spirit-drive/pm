@@ -1,6 +1,6 @@
 import { Random } from 'random-js';
 import { Solitaire } from '../Solitaire';
-import { hexagramsMap } from '../../utils/hexagrams';
+import { HexagramsMap } from '../../utils/hexagrams';
 import { Suits } from '../types';
 
 const random = new Random();
@@ -66,16 +66,16 @@ export const getPossibleChains = (): Record<string, string> => {
         [key]: {
           balance: balanceString,
           selfBalancing: selfBalancing?.map((item) => ({
-            [Suits.hearts]: hexagramsMap[item.hearts.join('') as keyof typeof hexagramsMap],
-            [Suits.spades]: hexagramsMap[item.spades.join('') as keyof typeof hexagramsMap],
-            [Suits.clubs]: hexagramsMap[item.clubs.join('') as keyof typeof hexagramsMap],
-            [Suits.diamonds]: hexagramsMap[item.diamonds.join('') as keyof typeof hexagramsMap],
+            [Suits.hearts]: HexagramsMap[item.hearts.join('')],
+            [Suits.spades]: HexagramsMap[item.spades.join('')],
+            [Suits.clubs]: HexagramsMap[item.clubs.join('')],
+            [Suits.diamonds]: HexagramsMap[item.diamonds.join('')],
           })),
           hexagrams: {
-            [Suits.hearts]: hexagramsMap[hexagrams.hearts.join('') as keyof typeof hexagramsMap],
-            [Suits.spades]: hexagramsMap[hexagrams.spades.join('') as keyof typeof hexagramsMap],
-            [Suits.clubs]: hexagramsMap[hexagrams.clubs.join('') as keyof typeof hexagramsMap],
-            [Suits.diamonds]: hexagramsMap[hexagrams.diamonds.join('') as keyof typeof hexagramsMap],
+            [Suits.hearts]: HexagramsMap[hexagrams.hearts.join('')],
+            [Suits.spades]: HexagramsMap[hexagrams.spades.join('')],
+            [Suits.clubs]: HexagramsMap[hexagrams.clubs.join('')],
+            [Suits.diamonds]: HexagramsMap[hexagrams.diamonds.join('')],
           },
         },
       });
