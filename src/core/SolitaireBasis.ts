@@ -15,20 +15,22 @@ export class SolitaireBasis {
 
   static parseString(string: string): string {
     return string
-      .replace(/!\d*/gi, '') // Убрать все efl
-      .replace(/T/gi, 'Т') // Русская
-      .replace(/t/gi, 'Т') // Английская
-      .replace(/K/gi, 'К') // Русская
-      .replace(/k/gi, 'К') // Английская
-      .replace(/B/gi, 'В') // Русская
-      .replace(/b/gi, 'В') // Английская
-      .replace(/Х/gi, 'X') // Английская
-      .replace(/Х/gi, 'X') // Русская
-      .replace(/10/g, 'X')
-      .replace(/“/g, 'Т')
-      .replace(/ƒ/gi, 'Д')
-      .replace(/ /gi, 'К') // eslint-disable-line no-irregular-whitespace
-      .replace(/¬/gi, 'В');
+      ? string
+          .replace(/!\d*/gi, '') // Убрать все efl
+          .replace(/T/gi, 'Т') // Русская
+          .replace(/t/gi, 'Т') // Английская
+          .replace(/K/gi, 'К') // Русская
+          .replace(/k/gi, 'К') // Английская
+          .replace(/B/gi, 'В') // Русская
+          .replace(/b/gi, 'В') // Английская
+          .replace(/Х/gi, 'X') // Английская
+          .replace(/Х/gi, 'X') // Русская
+          .replace(/10/g, 'X')
+          .replace(/“/g, 'Т')
+          .replace(/ƒ/gi, 'Д')
+          .replace(/ /gi, 'К') // eslint-disable-line no-irregular-whitespace
+          .replace(/¬/gi, 'В')
+      : '';
   }
 
   static clear(input: string): string {

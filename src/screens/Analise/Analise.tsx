@@ -25,7 +25,7 @@ export const Analise = memo<Props>(({ className }) => {
   const input = useRef<Input>();
 
   useSaveToUrl(value, setValue);
-  const [, { back, next }] = useHistory(value, setValue);
+  const [{ first, last, index, history }, { back, next }] = useHistory(value, setValue);
 
   const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
     setValue(e.target.value);
@@ -133,7 +133,15 @@ export const Analise = memo<Props>(({ className }) => {
   const headerElement = (
     <Typography.Text className={s.title}>
       Расклад
-      <HistoryControl className={s.history} back={back} next={next} />
+      <HistoryControl
+        currentIndex={index}
+        history={history}
+        className={s.history}
+        back={back}
+        first={first}
+        last={last}
+        next={next}
+      />
     </Typography.Text>
   );
 
