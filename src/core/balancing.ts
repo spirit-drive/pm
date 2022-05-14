@@ -74,9 +74,12 @@ export const moldToLineData = (
 export const getLinesData = (balance: Balance, hexagramsMold: HexagramsMold): LineData[] =>
   balance.map((item, i) => moldToLineData(item, i, hexagramsMold));
 
-export const canLineBeBalanced = (lineBalance: BalanceValue, lineData: LineData): boolean => {
+export const canLineBeBalanced = (lineBalance: BalanceValue, lineIndex: number, lineData: LineData): boolean => {
+  if (lineBalance === 0) return true;
+  if (lineIndex !== 1 && lineIndex !== 0 && lineIndex !== 3) return false;
+  const suits = Object.keys(lineData) as Suits[];
+
   if (Math.abs(lineBalance) === 2) {
-    const suits = Object.keys(lineData) as Suits[];
     const sum = suits.reduce((acc, suit) => {
       if (lineData[suit].balance === 0) {
         return acc + 1;
@@ -86,8 +89,10 @@ export const canLineBeBalanced = (lineBalance: BalanceValue, lineData: LineData)
     return sum >= 2;
   }
   if (Math.abs(lineBalance) === 1) {
-    const suits = Object.keys(lineData) as Suits[];
-    return suits.some((suit) => lineData[suit].balance === 0);
+    return suits.some((suit) => {
+      const item = lineData[suit];
+      return item.balance === 0 && (lineBalance > 0 ? item.value === 1 : item.value === 0);
+    });
   }
   return true;
 };
@@ -95,7 +100,7 @@ export const canLineBeBalanced = (lineBalance: BalanceValue, lineData: LineData)
 export const canBeBalanced = (balance: Balance, hexagramsMold: HexagramsMold): boolean => {
   if (balance[2] !== 0 || balance[4] !== 0 || balance[5] !== 0) return false;
   const lineData = getLinesData(balance, hexagramsMold);
-  return balance.every((line, i) => canLineBeBalanced(line, lineData[i]));
+  return balance.every((line, i) => canLineBeBalanced(line, i, lineData[i]));
   // [{ hearts: { balance: 0, value: 1, mold: { 6: 1, 7: 0 } } }]
 };
 

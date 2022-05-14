@@ -434,6 +434,332 @@ describe('Solitaire', () => {
         ]);
       });
     });
+
+    describe('hexagrams 4', () => {
+      const solitaire = new Solitaire(
+        'Кб 8б Вч 9б 9к Тб 6к Кп 8к 8ч 8п 10к 6б 7б 6п 10б 9п 9ч 7п 10ч Тч Вб 6ч Дб Дк Кч 7ч Дч Тк Кк Тп Вк Вп 10п 7к Дп'
+      );
+
+      it('hexagrams', () => {
+        expect(solitaire.hexagramsMold).toEqual({
+          clubs: {
+            6: 0,
+            7: 1,
+            8: 0,
+            9: 1,
+            X: 1,
+            ace: 0,
+            jack: 1,
+            king: 1,
+            queen: 0,
+          },
+          diamonds: {
+            6: 0,
+            7: 1,
+            8: 0,
+            9: 0,
+            X: 1,
+            ace: 1,
+            jack: 1,
+            king: 0,
+            queen: 1,
+          },
+          hearts: {
+            6: 1,
+            7: 1,
+            8: 1,
+            9: 1,
+            X: 0,
+            ace: 0,
+            jack: 1,
+            king: 0,
+            queen: 1,
+          },
+          spades: {
+            6: 1,
+            7: 1,
+            8: 0,
+            9: 0,
+            X: 0,
+            ace: 1,
+            jack: 1,
+            king: 1,
+            queen: 1,
+          },
+        });
+        expect(solitaire.hexagrams).toEqual({
+          clubs: [1, 0, 1, 0, 1, 0],
+          diamonds: [0, 0, 1, 1, 0, 1],
+          hearts: [1, 1, 0, 1, 0, 0],
+          spades: [0, 1, 0, 1, 1, 1],
+        });
+      });
+
+      it('balance', () => {
+        expect(solitaire.balance).toEqual([0, 0, 0, 1, 0, 0]);
+      });
+
+      it('self balance', () => {
+        expect(solitaire.selfBalancing).toBeNull();
+      });
+    });
+
+    describe('hexagrams 5', () => {
+      const solitaire = new Solitaire(
+        'Кб 7ч 9ч 6ч 9п Дч 7к Вч 8к Кп Тп 10п Вк Вп Вб 8б Тб 10б 6п 10ч 8п 8ч 10к 6б Кч 6к 7б 9б Тч Дк Тк 7п 9к Дп Кк Дб'
+      );
+
+      it('hexagrams', () => {
+        expect(solitaire.hexagramsMold).toEqual({
+          clubs: {
+            6: 0,
+            7: 1,
+            8: 0,
+            9: 1,
+            X: 1,
+            ace: 0,
+            jack: 1,
+            king: 1,
+            queen: 1,
+          },
+          diamonds: {
+            6: 0,
+            7: 0,
+            8: 1,
+            9: 1,
+            X: 0,
+            ace: 1,
+            jack: 0,
+            king: 0,
+            queen: 1,
+          },
+          hearts: {
+            6: 1,
+            7: 0,
+            8: 0,
+            9: 1,
+            X: 1,
+            ace: 0,
+            jack: 1,
+            king: 1,
+            queen: 0,
+          },
+          spades: {
+            6: 1,
+            7: 1,
+            8: 1,
+            9: 1,
+            X: 0,
+            ace: 1,
+            jack: 1,
+            king: 0,
+            queen: 1,
+          },
+        });
+        expect(solitaire.hexagrams).toEqual({
+          clubs: [1, 0, 1, 1, 1, 0],
+          diamonds: [1, 0, 0, 1, 0, 1],
+          hearts: [1, 1, 1, 0, 1, 0],
+          spades: [1, 1, 0, 1, 0, 1],
+        });
+      });
+
+      it('balance', () => {
+        expect(solitaire.balance).toEqual([2, 0, 0, 1, 0, 0]);
+      });
+
+      it('self balance', () => {
+        expect(solitaire.selfBalancing).toEqual([
+          {
+            clubs: [1, 0, 1, 1, 1, 0],
+            diamonds: [0, 0, 0, 0, 0, 1],
+            hearts: [1, 1, 1, 0, 1, 0],
+            spades: [1, 1, 0, 1, 0, 1],
+          },
+          {
+            clubs: [1, 0, 1, 1, 1, 0],
+            diamonds: [1, 0, 0, 0, 0, 1],
+            hearts: [0, 1, 1, 0, 1, 0],
+            spades: [1, 1, 0, 1, 0, 1],
+          },
+        ]);
+      });
+    });
+
+    describe('hexagrams 6', () => {
+      const solitaire = new Solitaire(
+        '10ч 7к 7ч 9ч 9б 8к Кк 10б Кп Тк Вч Дп Дб 7б 8б 10к Тб 8п Тп 6п 6к 10п Кч 7п 9к 8ч 9п Дк Вп Тч 6б Вк Дч Кб 6ч Вб'
+      );
+
+      it('hexagrams', () => {
+        expect(solitaire.hexagramsMold).toEqual({
+          clubs: {
+            6: 1,
+            7: 1,
+            8: 1,
+            9: 0,
+            X: 1,
+            ace: 0,
+            jack: 1,
+            king: 0,
+            queen: 1,
+          },
+          diamonds: {
+            6: 0,
+            7: 1,
+            8: 0,
+            9: 0,
+            X: 1,
+            ace: 0,
+            jack: 1,
+            king: 1,
+            queen: 0,
+          },
+          hearts: {
+            6: 1,
+            7: 0,
+            8: 1,
+            9: 0,
+            X: 0,
+            ace: 1,
+            jack: 1,
+            king: 1,
+            queen: 0,
+          },
+          spades: {
+            6: 0,
+            7: 1,
+            8: 1,
+            9: 0,
+            X: 0,
+            ace: 1,
+            jack: 0,
+            king: 0,
+            queen: 0,
+          },
+        });
+        expect(solitaire.hexagrams).toEqual({
+          clubs: [0, 1, 1, 1, 0, 0],
+          diamonds: [0, 0, 1, 0, 1, 0],
+          hearts: [0, 1, 0, 0, 1, 1],
+          spades: [0, 0, 0, 0, 0, 1],
+        });
+      });
+
+      it('balance', () => {
+        expect(solitaire.balance).toEqual([-2, 0, 0, -1, 0, 0]);
+      });
+
+      it('self balance', () => {
+        expect(solitaire.selfBalancing).toEqual([
+          {
+            clubs: [1, 1, 1, 1, 0, 0],
+            diamonds: [0, 0, 1, 1, 1, 0],
+            hearts: [0, 1, 0, 0, 1, 1],
+            spades: [0, 0, 0, 0, 0, 1],
+          },
+          {
+            clubs: [1, 1, 1, 1, 0, 0],
+            diamonds: [0, 0, 1, 0, 1, 0],
+            hearts: [0, 1, 0, 1, 1, 1],
+            spades: [0, 0, 0, 0, 0, 1],
+          },
+          {
+            clubs: [0, 1, 1, 1, 0, 0],
+            diamonds: [0, 0, 1, 1, 1, 0],
+            hearts: [0, 1, 0, 0, 1, 1],
+            spades: [1, 0, 0, 0, 0, 1],
+          },
+          {
+            clubs: [0, 1, 1, 1, 0, 0],
+            diamonds: [0, 0, 1, 0, 1, 0],
+            hearts: [0, 1, 0, 1, 1, 1],
+            spades: [1, 0, 0, 0, 0, 1],
+          },
+          {
+            clubs: [0, 1, 1, 1, 0, 0],
+            diamonds: [1, 0, 1, 1, 1, 0],
+            hearts: [0, 1, 0, 0, 1, 1],
+            spades: [0, 0, 0, 0, 0, 1],
+          },
+          {
+            clubs: [0, 1, 1, 1, 0, 0],
+            diamonds: [1, 0, 1, 0, 1, 0],
+            hearts: [0, 1, 0, 1, 1, 1],
+            spades: [0, 0, 0, 0, 0, 1],
+          },
+        ]);
+      });
+    });
+
+    describe('hexagrams 7', () => {
+      const solitaire = new Solitaire(
+        'Тч 9к 10б 10ч 8ч Кп 10к 9ч 7б 8б Кб Кк Тб Дб Вк Тк Дч 7к 9п 6б 9б 6ч 7ч Вб Кч 8к 8п Вч 6п Вп 6к 7п 10п Дп Тп Дк'
+      );
+
+      it('hexagrams', () => {
+        expect(solitaire.hexagramsMold).toEqual({
+          clubs: {
+            6: 1,
+            7: 1,
+            8: 1,
+            9: 0,
+            X: 0,
+            ace: 0,
+            jack: 1,
+            king: 1,
+            queen: 1,
+          },
+          diamonds: {
+            6: 1,
+            7: 0,
+            8: 1,
+            9: 1,
+            X: 1,
+            ace: 1,
+            jack: 1,
+            king: 0,
+            queen: 0,
+          },
+          hearts: {
+            6: 1,
+            7: 0,
+            8: 0,
+            9: 1,
+            X: 0,
+            ace: 0,
+            jack: 1,
+            king: 0,
+            queen: 1,
+          },
+          spades: {
+            6: 1,
+            7: 0,
+            8: 0,
+            9: 0,
+            X: 1,
+            ace: 1,
+            jack: 1,
+            king: 1,
+            queen: 1,
+          },
+        });
+        expect(solitaire.hexagrams).toEqual({
+          clubs: [0, 1, 0, 1, 1, 0],
+          diamonds: [1, 1, 1, 0, 0, 1],
+          hearts: [1, 1, 0, 1, 0, 0],
+          spades: [0, 1, 1, 1, 1, 1],
+        });
+      });
+
+      it('balance', () => {
+        expect(solitaire.balance).toEqual([0, 2, 0, 1, 0, 0]);
+      });
+
+      it('self balance', () => {
+        expect(solitaire.selfBalancing).toBeNull();
+      });
+    });
   });
 
   describe('init', () => {

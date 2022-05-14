@@ -15,6 +15,7 @@ export class SolitaireBasis {
 
   static parseString(string: string): string {
     return string
+      .replace(/!\d*/gi, '') // Убрать все efl
       .replace(/T/gi, 'Т') // Русская
       .replace(/t/gi, 'Т') // Английская
       .replace(/K/gi, 'К') // Русская
