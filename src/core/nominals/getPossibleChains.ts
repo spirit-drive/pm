@@ -53,7 +53,6 @@ export const getPossibleChains = (): Record<string, string> => {
       const solitaire = new Solitaire(raw.join(' '));
       const { hexagrams, chain, balance, selfBalancing, transits } = solitaire;
       const balanceString = balance.join(',');
-      // if (balanceString !== '0,0,0,0,0,0') continue; // eslint-disable-line no-continue
       if (!selfBalancing && balanceString !== '0,0,0,0,0,0') continue; // eslint-disable-line no-continue
       const key = chain
         .map((item) => {
