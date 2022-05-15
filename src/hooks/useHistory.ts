@@ -27,12 +27,11 @@ export const useHistory = (
       if (wasChanged.current) {
         wasChanged.current = false;
       } else if (isValueEqualLastItem(value, copy.current.history[copy.current.history.length - 1])) {
-        const newValue = ((): HistoryType => {
-          if (copy.current.history.length - 1 !== copy.current.index) {
-            return [...copy.current.history.slice(0, copy.current.index + 1), prepare(value)];
-          }
-          return [...copy.current.history, prepare(value)];
-        })();
+        const newValue = ((): HistoryType =>
+          // if (copy.current.history.length - 1 !== copy.current.index) {
+          //   return [...copy.current.history.slice(0, copy.current.index + 1), prepare(value)];
+          // }
+          [...copy.current.history, prepare(value)])();
         setIndex(newValue.length - 1);
         setHistory(newValue);
       }
