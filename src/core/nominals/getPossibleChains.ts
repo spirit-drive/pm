@@ -72,8 +72,9 @@ const necessary = [
   '55', // !! Изобилие
 ];
 
-const ovd =
-  'Кб 7б 6б 9к 6к 9б 6ч 9п 10ч 7к Вп Вк Кч 10б Дч Кк 10к 7ч Тб Кп 10п Вб 8п Вч 6п Дп 8к 9ч Тп 8ч 8б Тч Дб Тк 7п Дк';
+const ovd = Solitaire.parseString(
+  '10б Тк 7к Кб Вб Дч 6п Тч! 6ч! 7ч! 9п 9ч!2 10к Дб 9к!8 Дк! Тб Тп Вч 6к Кп 9б 6б 8б!3 Кч Кк 8ч!4 7б 10ч 7п!2 8п 8к Вп!3 10п Вк!3 Дп!'
+);
 
 const nom = [...new Set(ovd.split(' ').map((i) => i.slice(0, -1)))];
 
@@ -139,7 +140,11 @@ export const getPossibleChains = (): Record<string, string> => {
       // const codes = selfBalancingStrings[0].split(';');
       // if (!codes.every((u) => necessary.includes(u))) continue; // eslint-disable-line no-continue
       if (unnecessary.some((u) => selfBalancingHex.includes(u))) continue; // eslint-disable-line no-continue
-      if (!necessary.some((u) => selfBalancingHex.includes(u))) continue; // eslint-disable-line no-continue
+      const count = selfBalancingHex.reduce((acc, item) => {
+        if (necessary.includes(item)) return acc + 1;
+        return acc;
+      }, 0);
+      if (count < 4) continue; // eslint-disable-line no-continue
       Object.assign(result, {
         [key]: {
           balance: balanceString,
