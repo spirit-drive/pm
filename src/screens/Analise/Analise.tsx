@@ -10,9 +10,8 @@ import { HexagramBalanceView } from '../../components/HexagramBalanceView';
 import { useSaveToUrl } from './useSaveToUrl';
 import { SolitaireChainView } from '../../components/SolitaireChainView';
 import { useHistory } from '../../hooks/useHistory';
-import s from './Analise.sass';
 import { HistoryControl } from '../../components/HistoryControl/HistoryControl';
-import { Search } from '../../components/Search';
+import s from './Analise.sass';
 
 export type Props = {
   className?: string;
@@ -165,7 +164,6 @@ export const Analise = memo<Props>(({ className }) => {
 
   return (
     <div className={cn(s.root, className)}>
-      <Search setValue={setValue} />
       <Typography.Title className={s.mainTitle}>Гексаграммный анализ</Typography.Title>
       <div className={s.link}>
         <Link to={`/dna${search}`}>ДНК Тоналя →</Link>
