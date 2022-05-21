@@ -22,8 +22,8 @@ const getPublicPath = (options) => {
   const isDevMode = getIsDevMode(options);
   const host = getHost(options);
   if (isDevMode) return `http://${host}:${port}/`;
-  if (options.forHeroku) return 'https://pc-calc1.herokuapp.com/';
-  return 'https://pc-calc1.herokuapp.com/';
+  if (options.forHeroku) return 'https://medici-solitaire.herokuapp.com/';
+  return 'https://medici-solitaire.herokuapp.com//';
 };
 
 module.exports = (env, options) => {
