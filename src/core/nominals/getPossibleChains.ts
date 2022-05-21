@@ -45,10 +45,35 @@ import * as nominals from './nominal-data.json';
 //   'Тб',
 // ];
 
-const unnecessary = ['3', '47', '39', '29'];
+const unnecessary = ['3', '47', '39', '29', '21', '6', '20', '23'];
+const necessary = [
+  '1',
+  '2',
+  '7',
+  '11',
+  '13',
+  '14',
+  '16',
+  '18',
+  '19',
+  '26',
+  '31',
+  '32',
+  '33',
+  '34',
+  '35',
+  '37',
+  '40',
+  '42',
+  '45',
+  '46', // !!
+  '49',
+  '53', // ??
+  '55', // !! Изобилие
+];
 
 const ovd =
-  'Вб Тп 8ч Вп 7к Дп 9к 10б 7п Кб 6б 10п Кк 8к 6к 6п Дч Вч 10ч 7ч Кп Тб Дб Кч 8б 7б 6ч 9б Дк Тч 9ч 10к Вк 8п Тк 9п';
+  'Кб 7б 6б 9к 6к 9б 6ч 9п 10ч 7к Вп Вк Кч 10б Дч Кк 10к 7ч Тб Кп 10п Вб 8п Вч 6п Дп 8к 9ч Тп 8ч 8б Тч Дб Тк 7п Дк';
 
 const nom = [...new Set(ovd.split(' ').map((i) => i.slice(0, -1)))];
 
@@ -99,8 +124,6 @@ export const getPossibleChains = (): Record<string, string> => {
         HexagramsMap[hexagrams.clubs.join('')],
         HexagramsMap[hexagrams.diamonds.join('')],
       ].join(';');
-      if (set.has(hx)) continue; // eslint-disable-line no-continue
-      set.add(hx);
       const selfBalancingStrings = selfBalancing?.map((item) =>
         [
           HexagramsMap[item.hearts.join('')],
@@ -109,7 +132,14 @@ export const getPossibleChains = (): Record<string, string> => {
           HexagramsMap[item.diamonds.join('')],
         ].join(';')
       );
-      if (unnecessary.some((u) => selfBalancingStrings.some((s) => s.includes(u)))) continue; // eslint-disable-line no-continue
+      const selfBalancingString = selfBalancingStrings.join(' ');
+      if (set.has(selfBalancingString)) continue; // eslint-disable-line no-continue
+      set.add(selfBalancingString);
+      const selfBalancingHex = selfBalancingStrings[0].split(';');
+      // const codes = selfBalancingStrings[0].split(';');
+      // if (!codes.every((u) => necessary.includes(u))) continue; // eslint-disable-line no-continue
+      if (unnecessary.some((u) => selfBalancingHex.includes(u))) continue; // eslint-disable-line no-continue
+      if (!necessary.some((u) => selfBalancingHex.includes(u))) continue; // eslint-disable-line no-continue
       Object.assign(result, {
         [key]: {
           balance: balanceString,
