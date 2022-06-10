@@ -73,7 +73,7 @@ const necessary = [
 ];
 
 const ovd = Solitaire.parseString(
-  '10б Тк 7к Кб Вб Дч 6п Тч! 6ч! 7ч! 9п 9ч!2 10к Дб 9к!8 Дк! Тб Тп Вч 6к Кп 9б 6б 8б!3 Кч Кк 8ч!4 7б 10ч 7п!2 8п 8к Вп!3 10п Вк!3 Дп!'
+  'Вп 6ч Тп Вк Дк Дч Кп Вб Дп 9б 10б 6п 9к 8к Кк 8ч 6к Тч 10п Кб 6б 9п 8б 9ч Дб 7б 7к Кч 10ч Вч Тб 10к 7ч 8п Тк 7п'
 );
 
 const nom = [...new Set(ovd.split(' ').map((i) => i.slice(0, -1)))];
@@ -100,25 +100,18 @@ export const getPossibleChains = (): Record<string, string> => {
   while (i--) {
     try {
       const raw = getCurrentSolitaire(i).split(' ');
-      if (raw[1][0] !== 'Т') continue; // eslint-disable-line no-continue
-      // const solitaire = new Solitaire(raw);
-      // const raw = random.shuffle(cards);
-      // console.log(raw.join(' '));
+      if (raw[0][0] !== 'В') continue; // eslint-disable-line no-continue
+      if (raw[2][0] !== 'Т') continue; // eslint-disable-line no-continue
+      if (raw[raw.length - 1][0] !== '7') continue; // eslint-disable-line no-continue
+
       const solitaire = new Solitaire(raw.join(' '));
       const { hexagrams, chain, balance, selfBalancing, transits } = solitaire;
       const balanceString = balance.join(',');
+
       if (!selfBalancing && balanceString !== '0,0,0,0,0,0') continue; // eslint-disable-line no-continue
-      const key = chain
-        .map((item) => {
-          const found = transits.find((t) => t.value === item);
-          if (!found) return item;
-          return `${found.value}!${found.efl === 1 ? '' : found.efl}`;
-        })
-        .join(' ');
 
       if (selfBalancing?.length > 1) continue; // eslint-disable-line no-continue
-      // const hexs = [...new Set(Object.values(selfBalancing[0]).map((item) => HexagramsMap[item.join('')]))];
-      // if (hexs.some((e) => e !== '1' && e !== '2')) continue; // eslint-disable-line no-continue
+
       const hx = [
         HexagramsMap[hexagrams.hearts.join('')],
         HexagramsMap[hexagrams.spades.join('')],
@@ -133,18 +126,29 @@ export const getPossibleChains = (): Record<string, string> => {
           HexagramsMap[item.diamonds.join('')],
         ].join(';')
       );
+
       const selfBalancingString = selfBalancingStrings.join(' ');
       if (set.has(selfBalancingString)) continue; // eslint-disable-line no-continue
       set.add(selfBalancingString);
       const selfBalancingHex = selfBalancingStrings[0].split(';');
-      // const codes = selfBalancingStrings[0].split(';');
-      // if (!codes.every((u) => necessary.includes(u))) continue; // eslint-disable-line no-continue
+
       if (unnecessary.some((u) => selfBalancingHex.includes(u))) continue; // eslint-disable-line no-continue
+
       const count = selfBalancingHex.reduce((acc, item) => {
         if (necessary.includes(item)) return acc + 1;
         return acc;
       }, 0);
-      if (count < 4) continue; // eslint-disable-line no-continue
+
+      if (count < 2) continue; // eslint-disable-line no-continue
+
+      const key = chain
+        .map((item) => {
+          const found = transits.find((t) => t.value === item);
+          if (!found) return item;
+          return `${found.value}!${found.efl === 1 ? '' : found.efl}`;
+        })
+        .join(' ');
+
       Object.assign(result, {
         [key]: {
           balance: balanceString,
@@ -179,3 +183,5 @@ export const getPossibleChains = (): Record<string, string> => {
   }
   return result;
 };
+
+// Вп 6ч Тп Вк Кп Дч Дк Вб Дп 9б 10б 6п 9к 10к 8к 8ч 6к Тч 10п Кб 6б 9п 8б 9ч Дб 7б 7к Кч 10ч Вч Тб Кк 7ч 8п Тк 7п
