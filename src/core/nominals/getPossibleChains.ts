@@ -49,31 +49,32 @@ const unnecessary = ['3', '47', '39', '29', '21', '6', '20', '23'];
 const necessary = [
   '1',
   '2',
-  '7',
+  '7', // войско
   '11',
-  '13',
-  '14',
-  '16',
-  '18',
-  '19',
+  '13', // родня
+  '14', // Владение многим
+  '16', // Вольность
+  '18', // исправление
+  '19', // Посещение
   '26',
   '31',
   '32',
   '33',
   '34',
   '35',
-  '37',
+  '37', // домашние
   '40',
-  '42',
-  '45',
-  '46', // !!
+  '42', // Приумножение
+  '45', // Воссоединение
+  '46', // !! Подъем
   '49',
   '53', // ??
   '55', // !! Изобилие
+  '58', // радость
 ];
 
 const ovd = Solitaire.parseString(
-  'Вп 6ч Тп Вк Дк Дч Кп Вб Дп 9б 10б 6п 9к 8к Кк 8ч 6к Тч 10п Кб 6б 9п 8б 9ч Дб 7б 7к Кч 10ч Вч Тб 10к 7ч 8п Тк 7п'
+  '8ч Тп 10б Тч 9б Вк Кб 7ч Кч 9п 7п Вч 10ч Дб 9к Дч Тб 8б 7б 8п 6п 7к 9ч Дк 6ч 6к 6б Тк Вб Кк Дп 10п 10к Вп 8к Кп'
 );
 
 const nom = [...new Set(ovd.split(' ').map((i) => i.slice(0, -1)))];
@@ -100,9 +101,9 @@ export const getPossibleChains = (): Record<string, string> => {
   while (i--) {
     try {
       const raw = getCurrentSolitaire(i).split(' ');
-      if (raw[0][0] !== 'В') continue; // eslint-disable-line no-continue
-      if (raw[2][0] !== 'Т') continue; // eslint-disable-line no-continue
-      if (raw[raw.length - 1][0] !== '7') continue; // eslint-disable-line no-continue
+      if (raw[0] !== '8ч') continue; // eslint-disable-line no-continue
+      if (raw[1] !== 'Тп') continue; // eslint-disable-line no-continue
+      // if (raw[raw.length - 1][0] !== '7') continue; // eslint-disable-line no-continue
 
       const solitaire = new Solitaire(raw.join(' '));
       const { hexagrams, chain, balance, selfBalancing, transits } = solitaire;
@@ -139,7 +140,7 @@ export const getPossibleChains = (): Record<string, string> => {
         return acc;
       }, 0);
 
-      if (count < 2) continue; // eslint-disable-line no-continue
+      if (count < 4) continue; // eslint-disable-line no-continue
 
       const key = chain
         .map((item) => {
