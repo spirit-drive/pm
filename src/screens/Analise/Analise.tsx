@@ -12,6 +12,7 @@ import { SolitaireChainView } from '../../components/SolitaireChainView';
 import { useHistory } from '../../hooks/useHistory';
 import { HistoryControl } from '../../components/HistoryControl/HistoryControl';
 import s from './Analise.sass';
+import { BaseChains } from '../../components/BaseChains';
 
 export type Props = {
   className?: string;
@@ -142,6 +143,7 @@ export const Analise = memo<Props>(({ className }) => {
         last={last}
         next={next}
       />
+      <BaseChains className={s.choose} onChoose={setValue} />
     </Typography.Text>
   );
 

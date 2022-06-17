@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const heards: React.FC<React.SVGAttributes<SVGElement>> = (props) => (
+export const hearts: React.FC<React.SVGAttributes<SVGElement>> = (props) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.025 512.025" width="12px" height="12px">
     <path
       d="M476.033,70.043c-34.287-36.71-71.791-55.322-111.479-55.322c-45.047,0-85.666,27.46-109.457,72.832
