@@ -15,7 +15,13 @@ export const BaseChainsMenuItem = memo<BaseChainsMenuItemProps>(
   ({ className, onChoose, chain, tag, selfBalancing }) => (
     <button onClick={(): void => onChoose(chain)} type="button" className={cn(s.root, className)}>
       <div className={s.line}>
-        <div className={s.tag}>{tag}</div>
+        <div className={s.tags}>
+          {tag.split(' ').map((t) => (
+            <div className={s.tag} key={t}>
+              {t}
+            </div>
+          ))}
+        </div>
         <div>
           {selfBalancing.split(' ').map((set) => {
             const [hearts, spades, clubs, diamonds] = set.split(';');
@@ -37,7 +43,7 @@ export const BaseChainsMenuItem = memo<BaseChainsMenuItemProps>(
                 hexagram: diamonds,
               },
             ];
-            return <ShortHexagrams data={data} />;
+            return <ShortHexagrams key={set} data={data} />;
           })}
         </div>
       </div>
