@@ -100,7 +100,7 @@ export class SolitaireBasis {
   handleCurrent(card: string): void;
   handleCurrent(): void {}
 
-  protected isSympathy(card1: string, card2: string): boolean {
+  static isSympathy(card1: string, card2: string): boolean {
     return card1[0] === card2[0] || card1[1] === card2[1];
   }
 
@@ -114,7 +114,7 @@ export class SolitaireBasis {
       }
       if (i === chain.length - 1) this.handleActive(chain[i]);
 
-      if (this.isSympathy(chain[i - 2], chain[i])) {
+      if (SolitaireBasis.isSympathy(chain[i - 2], chain[i])) {
         this.handleActive(chain[i - 1]);
         this.handleTransit(chain[i]);
         this.handlePassive(chain.splice(i - 2, 1)[0]);
@@ -123,6 +123,17 @@ export class SolitaireBasis {
         break;
       }
     }
+  }
+
+  static canBeConverged(chain: string[]): boolean {
+    const _chain = chain.map(SolitaireBasis.tenToX);
+    for (let i = 2; i < _chain.length; i++) {
+      if (this.isSympathy(_chain[i - 2], _chain[i])) {
+        _chain.splice(i - 2, 1);
+        i = 1;
+      }
+    }
+    return _chain.length === 2;
   }
 
   converge(chain: string[] = this._chain): string[] {

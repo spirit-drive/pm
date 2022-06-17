@@ -1,4 +1,4 @@
-import React, { Dispatch, memo, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Dispatch, memo, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import cn from 'clsx';
 import { Radio } from 'antd';
 import { Card } from './Card';
@@ -14,10 +14,7 @@ export type Props = {
 };
 
 export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, solitaire }) => {
-  const chain = useMemo(() => solitaire?.chain, [solitaire?.chain]);
-  const yin = useMemo(() => solitaire?.yin, [solitaire?.yin]);
-  const yan = useMemo(() => solitaire?.yan, [solitaire?.yan]);
-  const transits = useMemo(() => solitaire?.transits, [solitaire?.transits]);
+  const { chain, yin, yan, transits } = solitaire || {};
   const [chosen, setChosen] = useState<string>();
   const [possible, setPossible] = useState<{ data: string[]; current: string }>();
   const [mode, setMode] = useState<'global' | 'unit'>('global');
@@ -38,7 +35,7 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
         if (v?.current === current) return null;
         if (v?.current) {
           if (v.data.includes(current)) {
-            setValue(solitaire.replace(v?.current, current).join(' '));
+            setValue(Solitaire.replace(v?.current, current, solitaire.chain).join(' '));
             return null;
           }
           return v;

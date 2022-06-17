@@ -11,8 +11,8 @@ import { useSaveToUrl } from './useSaveToUrl';
 import { SolitaireChainView } from '../../components/SolitaireChainView';
 import { useHistory } from '../../hooks/useHistory';
 import { HistoryControl } from '../../components/HistoryControl/HistoryControl';
-import s from './Analise.sass';
 import { BaseChains } from '../../components/BaseChains';
+import s from './Analise.sass';
 
 export type Props = {
   className?: string;

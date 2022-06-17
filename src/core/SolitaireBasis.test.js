@@ -96,7 +96,15 @@ describe('Solitaire', () => {
     );
 
     it('Обмен семерок', () => {
-      expect(solitaire.replace('7б', '7ч')).toEqual([
+      expect(
+        Solitaire.replace(
+          '7б',
+          '7ч',
+          'Вб 7ч 7п 7б Вч Вп 10к 10п Вк 8ч 7к Кп 8б Тч Кк Дп Тб Кч Дк 9п Кб 6ч 9к Тп 6б Дч Тк 8п Дб 9ч 8к 6п 9б 10ч 6к 10б'.split(
+            ' '
+          )
+        )
+      ).toEqual([
         'Вб',
         '7б',
         '7п',

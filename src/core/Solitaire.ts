@@ -103,7 +103,7 @@ export class Solitaire extends SolitaireBasis {
     const chain = [...this.chain];
     for (let i = 0; i < chain.length; i++) {
       const c1 = chain[i];
-      if (card !== c1 && this.replace(card, c1)) {
+      if (card !== c1 && Solitaire.replace(card, c1, this.chain)) {
         cards.push(c1);
       }
     }
@@ -111,27 +111,53 @@ export class Solitaire extends SolitaireBasis {
     return cards;
   }
 
-  replace(that: string, to: string): string[] {
+  static getPossibleReplacingStrict(input: string): Record<string, string[]> {
     try {
-      const chain = this.chain
-        .map((c) => {
-          if (c === that) return EXCHANGE_HELPED_SYMBOL;
-          return c;
-        })
-        .map((c) => {
-          if (c === to) return that;
-          return c;
-        })
-        .map((c) => {
-          if (c === EXCHANGE_HELPED_SYMBOL) return to;
-          return c;
-        });
-      this.transits = [];
-      this.converge(chain);
-      return chain;
+      const solitaire = new Solitaire(input);
+      const { selfBalancing } = solitaire;
+      const chain = [...solitaire.chain];
+      const selfBalancingString = JSON.stringify(selfBalancing);
+      const result: Record<string, string[]> = {};
+      for (let i = 0; i < chain.length; i++) {
+        for (let j = 0; j < chain.length; j++) {
+          // eslint-disable-next-line no-continue
+          if (i === j) continue;
+          const newChain = Solitaire.replace(chain[i], chain[j], chain);
+          // eslint-disable-next-line no-continue
+          if (!newChain) continue;
+          const _solitaire = new Solitaire(newChain.join(' '));
+          if (selfBalancingString === JSON.stringify(_solitaire.selfBalancing)) {
+            Object.assign(result, { [chain[i]]: [...(result[chain[i]] || []), chain[j]] });
+          }
+        }
+      }
+      return result;
     } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
       return null;
     }
+  }
+
+  static replaceOrigin(that: string, to: string, chain: string[]): string[] {
+    return chain
+      .map((c) => {
+        if (c === that) return EXCHANGE_HELPED_SYMBOL;
+        return c;
+      })
+      .map((c) => {
+        if (c === to) return that;
+        return c;
+      })
+      .map((c) => {
+        if (c === EXCHANGE_HELPED_SYMBOL) return to;
+        return c;
+      });
+  }
+
+  static replace(that: string, to: string, chain: string[]): string[] {
+    const result = Solitaire.replaceOrigin(that, to, chain);
+    return SolitaireBasis.canBeConverged(result) ? result : null;
   }
 
   handlePassive(string: string): void {
