@@ -13,6 +13,9 @@ export type Props = {
   onChange: (that: string, to: string) => void;
 };
 
+export const stringify = (replacing: Record<string, string[]>): string[] =>
+  Object.keys(replacing).reduce((acc, item) => [...acc, `${item}: ${replacing[item].join(',')}`], []);
+
 export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, solitaire }) => {
   const { chain, yin, yan, transits } = solitaire || {};
   const [chosen, setChosen] = useState<string>();
@@ -73,6 +76,8 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
     [exchange, replace]
   );
 
+  const possibleReplacingStrict = Solitaire.getPossibleReplacingStrict(chain.join(' '));
+
   if (!chain?.length) return null;
   return (
     <div className={cn(s.root, className)}>
@@ -82,6 +87,7 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
             ? 'Выбрав 2 карты они поменяются местами. Будьте осторожны, будут изменены все масти и номиналы выбранных карт, по-другому не сложится цепочка. Транзиты сохранят местоположение, а efl сохранит свой размер'
             : 'Выбрав карту будут подсвечены все карты, с которыми она может быть заменена. Могут измениться транзиты, efl и прочее.'}
         </div>
+        {mode !== 'global' && <div>{possibleReplacingStrict?.[possible?.current]?.join(',')}</div>}
         <Radio.Group value={mode}>
           <Radio.Button value="global" onClick={(): void => setMode('global')}>
             Обмен мастей и номиналов
