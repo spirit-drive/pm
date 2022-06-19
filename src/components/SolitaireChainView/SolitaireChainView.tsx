@@ -87,7 +87,12 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
             ? 'Выбрав 2 карты они поменяются местами. Будьте осторожны, будут изменены все масти и номиналы выбранных карт, по-другому не сложится цепочка. Транзиты сохранят местоположение, а efl сохранит свой размер'
             : 'Выбрав карту будут подсвечены все карты, с которыми она может быть заменена. Могут измениться транзиты, efl и прочее.'}
         </div>
-        {mode !== 'global' && <div>{possibleReplacingStrict?.[possible?.current]?.join(',')}</div>}
+        {mode !== 'global' && (
+          <div className={s.tip}>
+            <div>Обмен с сохранением самобалансировки</div>
+            {possible?.current ? possibleReplacingStrict?.[possible?.current]?.join(',') : '-'}
+          </div>
+        )}
         <Radio.Group value={mode}>
           <Radio.Button value="global" onClick={(): void => setMode('global')}>
             Обмен мастей и номиналов
