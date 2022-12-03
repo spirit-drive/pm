@@ -74,7 +74,7 @@ const necessary = [
 ];
 
 const ovd = Solitaire.parseString(
-  '8ч Тп 10б Тч 9б Вк Кб 7ч Кч 9п 7п Вч 10ч Дб 9к Дч Тб 8б 7б 8п 6п 7к 9ч Дк 6ч 6к 6б Тк Вб Кк Дп 10п 10к Вп 8к Кп'
+  'Дч 8к 9б 10п 7п Вк 10б 7к Дб Кп 10к Тп 6к 7б Кк 6б Кб 9к Тб 8п Вб Тк Кч Дк 8б 10ч Дп Тч 6п 7ч 9ч 9п 6ч Вп 8ч Вч'
 );
 
 const nom = [...new Set(ovd.split(' ').map((i) => i.slice(0, -1)))];
@@ -101,8 +101,8 @@ export const getPossibleChains = (): Record<string, string> => {
   while (i--) {
     try {
       const raw = getCurrentSolitaire(i).split(' ');
-      if (raw[0] !== '8ч') continue; // eslint-disable-line no-continue
-      if (raw[1] !== 'Тп') continue; // eslint-disable-line no-continue
+      // if (raw[0] !== 'Дч') continue; // eslint-disable-line no-continue
+      // if (raw[1] !== '8к') continue; // eslint-disable-line no-continue
       // if (raw[raw.length - 1][0] !== '7') continue; // eslint-disable-line no-continue
 
       const solitaire = new Solitaire(raw.join(' '));
