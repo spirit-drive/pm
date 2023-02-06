@@ -17,7 +17,8 @@
     "docs": "node_modules/.bin/jsdoc -c jsdoc.json",
     "push-heroku": "git push heroku master",
     "nominals": "ts-node -P ./src/core/nominals/tsconfig.json ./src/core/nominals/writeAllNominals.ts",
-    "possible-chains": "ts-node -P ./src/core/nominals/tsconfig.json ./src/core/nominals/writeAllPossibleChains.ts"
+    "possible-chains": "ts-node -P ./src/core/nominals/tsconfig.json ./src/core/nominals/writeAllPossibleChains.ts",
+    "explore": "ts-node -P ./src/core/explore/tsconfig.json ./src/core/explore/explore.ts"
   },
   "husky": {
     "hooks": {

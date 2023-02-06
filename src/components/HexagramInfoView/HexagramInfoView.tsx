@@ -10,18 +10,18 @@ export type Props = {
   value: HexagramValue;
 };
 
-export const HexagramInfoView = memo<Props>(({ className, value }) => {
-  const code = useMemo(() => {
-    if (!value) return null;
-    return getHexagramCode(value);
-  }, [value]);
+export type HexagramInfoByCodeViewProps = {
+  className?: string;
+  code: string;
+};
 
+export const HexagramInfoByCodeView = memo<HexagramInfoByCodeViewProps>(({ className, code }) => {
   const info = useMemo(() => {
-    if (!value) return null;
-    return getHexagramInfo(value);
-  }, [value]);
+    if (!code) return null;
+    return getHexagramInfo(code);
+  }, [code]);
 
-  if (!value) return null;
+  if (!code) return null;
   return (
     <div className={cn(s.root, className)}>
       <div className={s.title}>{info.title}</div>
@@ -40,4 +40,14 @@ export const HexagramInfoView = memo<Props>(({ className, value }) => {
       </div>
     </div>
   );
+});
+
+export const HexagramInfoView = memo<Props>(({ className, value }) => {
+  const code = useMemo(() => {
+    if (!value) return null;
+    return getHexagramCode(value);
+  }, [value]);
+
+  if (!value) return null;
+  return <HexagramInfoByCodeView code={code} className={className} />;
 });

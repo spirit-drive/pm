@@ -46,35 +46,40 @@ import * as nominals from './nominal-data.json';
 // ];
 
 const unnecessary = ['3', '47', '39', '29', '21', '6', '20', '23'];
-const necessary = [
-  '1',
-  '2',
-  '7', // войско
-  '11',
-  '13', // родня
-  '14', // Владение многим
-  '16', // Вольность
-  '18', // исправление
-  '19', // Посещение
-  '26',
-  '31',
-  '32',
-  '33',
-  '34',
-  '35',
-  '37', // домашние
-  '40',
-  '42', // Приумножение
-  '45', // Воссоединение
-  '46', // !! Подъем
-  '49',
-  '53', // ??
-  '55', // !! Изобилие
-  '58', // радость
-];
+// const necessary = [
+//   '1',
+//   '2',
+//   '7', // войско
+//   '11',
+//   '13', // родня
+//   '14', // Владение многим
+//   '16', // Вольность
+//   '18', // исправление
+//   '19', // Посещение
+//   '26',
+//   '31',
+//   '32',
+//   '33',
+//   '34',
+//   '35',
+//   '37', // домашние
+//   '40',
+//   '42', // Приумножение
+//   '45', // Воссоединение
+//   '46', // !! Подъем
+//   '49',
+//   '53', // ??
+//   '55', // !! Изобилие
+//   '58', // радость
+// ];
+
+// 'Вч 9п Тч 7к 9б Дп 7б 7п 6к Кп 6ч 8к 8б 10п Тп 6п Тк 8ч Кч 9к Дч 8п Кб Вп 9ч Тб 10б Вк 10к Вб 10ч Кк 6б Дк 7ч Дб'
+// 'Вч 8п Тч 6к 8б Кп 6б 6п Дк 9п Дч 7к 7б 10п Тп Дп Тк 7ч 9ч 8к Кч 7п 9б Вп 8ч Тб 10б Вк 10к Вб 10ч 9к Дб Кк 6ч Кб'
+// 'Вч Тп Тч 10б 9б 8к Кб 7ч Кч Кк 7п 8ч 6б Дб 9к Дч Тб 6к 7б Вп 6п 7к 9ч Тк 6ч Вб 10ч Дк 8б 9п Дп 10п 10к 8п Вк Кп'
+// 'Вч Тп Тч Дб 8б 10к Кб 6п Кп Кк 6ч 10п 7б 9б 8к 9п Тб 7к 6б Вп 7ч 6к 8п Тк 7п Вб Дп 9к 10б 8ч 9ч Дч Дк 10ч Вк Кч'
 
 const ovd = Solitaire.parseString(
-  'Дч 8к 9б 10п 7п Вк 10б 7к Дб Кп 10к Тп 6к 7б Кк 6б Кб 9к Тб 8п Вб Тк Кч Дк 8б 10ч Дп Тч 6п 7ч 9ч 9п 6ч Вп 8ч Вч'
+  '9б 10к 10б Кк Тб Кп Дп 10п 7ч Тп 6б 6к 8б 7б Кч 8п 6п Кб 10ч Тч 7п Дч 7к Вк 9п 8ч Тк Дб Вп 9ч Вб 9к 8к 6ч Дк Вч'
 );
 
 const nom = [...new Set(ovd.split(' ').map((i) => i.slice(0, -1)))];
@@ -101,8 +106,20 @@ export const getPossibleChains = (): Record<string, string> => {
   while (i--) {
     try {
       const raw = getCurrentSolitaire(i).split(' ');
-      // if (raw[0] !== 'Дч') continue; // eslint-disable-line no-continue
-      // if (raw[1] !== '8к') continue; // eslint-disable-line no-continue
+      if (raw[0] !== 'Вч') continue; // eslint-disable-line no-continue
+      // if (raw[1] !== '9п') continue; // eslint-disable-line no-continue
+      if (raw[2] !== 'Тч') continue; // eslint-disable-line no-continue
+      // if (raw[31] !== '10ч' && raw[31] !== 'Дч') continue; // eslint-disable-line no-continue
+      // if (
+      //   raw[30] !== '10ч' &&
+      //   raw[31] !== '10ч' &&
+      //   raw[32] !== '10ч' &&
+      //   raw[33] !== '10ч' &&
+      //   raw[34] !== '10ч' &&
+      //   raw[35] !== '10ч' &&
+      //   raw[29] !== '10ч'
+      // )
+      //   continue; // eslint-disable-line no-continue
       // if (raw[raw.length - 1][0] !== '7') continue; // eslint-disable-line no-continue
 
       const solitaire = new Solitaire(raw.join(' '));
@@ -133,14 +150,14 @@ export const getPossibleChains = (): Record<string, string> => {
       set.add(selfBalancingString);
       const selfBalancingHex = selfBalancingStrings[0].split(';');
 
-      if (unnecessary.some((u) => selfBalancingHex.includes(u))) continue; // eslint-disable-line no-continue
+      // if (unnecessary.some((u) => selfBalancingHex.includes(u))) continue; // eslint-disable-line no-continue
 
       const count = selfBalancingHex.reduce((acc, item) => {
-        if (necessary.includes(item)) return acc + 1;
+        if (unnecessary.includes(item)) return acc + 1;
         return acc;
       }, 0);
 
-      if (count < 4) continue; // eslint-disable-line no-continue
+      if (count < 1) continue; // eslint-disable-line no-continue
 
       const key = chain
         .map((item) => {

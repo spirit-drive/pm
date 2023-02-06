@@ -482,4 +482,4 @@ export const getHexagramColor = (value: HexagramValue): string => {
   return colorsMap[code - 1];
 };
 
-export const getHexagramInfo = (value: HexagramValue): HexagramInfo => hexagramsInfoMap[getHexagramCode(value)];
+export const getHexagramInfo = (code: string): HexagramInfo => hexagramsInfoMap[code];

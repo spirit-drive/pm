@@ -1,5 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import cn from 'clsx';
+import { HexagramByCodeView } from '../HexagramByCodeView';
 import s from './MasyanyaLineView.sass';
 
 export type Props = {
@@ -30,15 +31,13 @@ export const MasyanyaLineView = memo<Props>(({ className, onClick = (): void => 
 
   return (
     <div className={cn(s.root, className)}>
-      {hexagramms.map((number) => (
-        <div
-          key={number}
-          className={cn(s.item, getClassName(number))}
-          role="presentation"
-          onClick={handleClick(number)}
-        >
-          {number}
-        </div>
+      {hexagramms.map((code) => (
+        <HexagramByCodeView
+          className={cn(s.item, getClassName(code))}
+          code={code}
+          key={code}
+          onClick={handleClick(code)}
+        />
       ))}
     </div>
   );
