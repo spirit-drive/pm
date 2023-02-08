@@ -1,8 +1,7 @@
-import React, { ChangeEventHandler, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import cn from 'clsx';
-import { Button, Input, Typography, message as messageAnt, Form, Tooltip, Collapse } from 'antd';
-import { CopyOutlined, DeleteOutlined, MinusOutlined } from '@ant-design/icons';
-import { Link, useLocation } from 'react-router-dom';
+import { Typography, Tooltip, Collapse } from 'antd';
+import { MinusOutlined } from '@ant-design/icons';
 import { Solitaire } from '../../core/Solitaire';
 import { HexagramsView } from '../../components/HexagramsView';
 import { random } from '../../utils/random';
@@ -13,6 +12,7 @@ import { useHistory } from '../../hooks/useHistory';
 import { HistoryControl } from '../../components/HistoryControl/HistoryControl';
 import { BaseChains } from '../../components/BaseChains';
 import s from './Analise.sass';
+import { SolitaireInput } from '../../components/SolitaireInput/SolitaireInput';
 
 export type Props = {
   className?: string;
@@ -23,20 +23,17 @@ export const Analise = memo<Props>(({ className }) => {
   const [value, setValue] = useState<string>();
   const [message, setMessage] = useState<string>();
   const [solitaire, setSolitaire] = useState<Solitaire>();
-  const input = useRef<Input>();
 
   useSaveToUrl(value, setValue);
   const [{ first, last, index, history }, { back, next }] = useHistory(value, setValue);
 
-  const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
-    setValue(e.target.value);
+  const onChange = useCallback((v: string) => {
+    setValue(v);
     setMessage('');
   }, []);
 
   const valueCopy = useRef(value);
-  useEffect(() => {
-    valueCopy.current = value;
-  }, [value]);
+  valueCopy.current = value;
 
   const manage = useCallback(($value: string) => {
     if ($value) {
@@ -57,31 +54,6 @@ export const Analise = memo<Props>(({ className }) => {
       setSolitaire(null);
       setMessage('');
     }
-  }, []);
-
-  const onClick = useCallback(() => {
-    if (valueCopy.current) {
-      manage(valueCopy.current);
-    }
-  }, [manage]);
-
-  const onCopy = useCallback(() => {
-    if (valueCopy.current) {
-      navigator.clipboard
-        .writeText(valueCopy.current)
-        .then(() => {
-          messageAnt.success('Скопировано в буфер обмена');
-        })
-        .catch((e) => {
-          messageAnt.error('Что-то пошло не так, не удалось скопировать в буфер');
-          console.error(e); // eslint-disable-line no-console
-        });
-    }
-  }, []);
-
-  const onReset = useCallback(() => {
-    setValue('');
-    input.current.input.focus();
   }, []);
 
   useEffect(() => {
@@ -112,12 +84,8 @@ export const Analise = memo<Props>(({ className }) => {
     ));
   })();
 
-  const validateStatus = message ? 'error' : '';
-
   const solitaireCopy = useRef(solitaire);
-  useEffect(() => {
-    solitaireCopy.current = solitaire;
-  }, [solitaire]);
+  solitaireCopy.current = solitaire;
 
   const onChangeSolitaire = useCallback((that: string, to: string) => {
     setValue(solitaireCopy.current.exchange(that, to).join(' '));
@@ -162,25 +130,10 @@ export const Analise = memo<Props>(({ className }) => {
     return <MinusOutlined />;
   })();
 
-  const { search } = useLocation();
-
   return (
     <div className={cn(s.root, className)}>
       <Typography.Title className={s.mainTitle}>Гексаграммный анализ</Typography.Title>
-      <div className={s.link}>
-        <Link to={`/dna${search}`}>ДНК Тоналя →</Link>
-      </div>
-      <Form.Item help={message} validateStatus={validateStatus} className={s.error}>
-        <div className={s.top}>
-          <Button className={s.btn} onClick={onReset} type="primary" danger>
-            <DeleteOutlined />
-          </Button>
-          <Input autoFocus ref={input} onPressEnter={onClick} value={value} onChange={onChange} className={s.input} />
-          <Button color="#ccc" className={s.btn} onClick={onCopy} type="primary">
-            <CopyOutlined />
-          </Button>
-        </div>
-      </Form.Item>
+      <SolitaireInput message={message} manage={manage} value={value} onChange={onChange} />
       <div className={s.section}>
         <Collapse defaultActiveKey="1" ghost>
           <Collapse.Panel className={s.panel} key="1" header={headerElement}>

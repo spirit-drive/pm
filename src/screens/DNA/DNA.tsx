@@ -1,7 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 import cn from 'clsx';
 import { InputNumber, Typography } from 'antd';
-import { Link, useLocation } from 'react-router-dom';
 import { DNAView } from '../../components/DNAView';
 import { masyanyaTable } from './masyanyaTable';
 import { MasyanyaLineView } from '../../components/MasyanyaLineView';
@@ -13,7 +12,6 @@ export type Props = {
 };
 
 export const DNA = memo<Props>(({ className }) => {
-  const { search } = useLocation();
   const [value, setValue] = useState<number>();
 
   const onChange = useCallback((number: number) => setValue(number), []);
@@ -24,9 +22,6 @@ export const DNA = memo<Props>(({ className }) => {
   return (
     <div className={cn(s.root, className)}>
       <Typography.Title className={s.mainTitle}>ДНК Тоналя</Typography.Title>
-      <div className={s.link}>
-        <Link to={`/${search}`}>Гексаграммный анализ →</Link>
-      </div>
       <InputNumber
         placeholder="Введите номер гексаграммы"
         onChange={onChange}
