@@ -1,21 +1,16 @@
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import qs from 'query-string';
-import { Dispatch, SetStateAction, useEffect, useMemo, useRef } from 'react';
-import { useNavigate } from '../../hooks/useNavigate';
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 
 export const useSaveToUrl = (value: string, setValue: Dispatch<SetStateAction<string>>): void => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const search = useMemo(() => location.search, [location.search]);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const searchCopy = useRef(search);
-  useEffect(() => {
-    searchCopy.current = search;
-  }, [search]);
+  const searchParamsCopy = useRef(searchParams);
+  searchParamsCopy.current = searchParams;
 
   useEffect(() => {
     try {
-      const $value = qs.parse(searchCopy.current);
+      const $value = qs.parse(searchParamsCopy.current.toString());
       setValue($value.value as string);
     } catch (e) {
       console.error(e); // eslint-disable-line no-console
@@ -24,9 +19,9 @@ export const useSaveToUrl = (value: string, setValue: Dispatch<SetStateAction<st
 
   useEffect(() => {
     if (value) {
-      navigate({ addToSearch: { value: value.replace(/\s/g, '') } });
+      setSearchParams(new URLSearchParams({ value: value.replace(/\s/g, '') }));
     } else {
-      navigate({ removeKeysFromSearch: ['value'] });
+      setSearchParams(new URLSearchParams({}));
     }
-  }, [navigate, value]);
+  }, [value, setSearchParams]);
 };

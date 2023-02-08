@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
 import cn from 'clsx';
-import { Button, Dropdown } from 'antd';
-import { MoreOutlined } from '@ant-design/icons';
+import { Button, Dropdown, Tooltip } from 'antd';
 import { DropDownProps } from 'antd/lib/dropdown/dropdown';
-import s from './BaseChains.module.sass';
+import { Icon } from '../Icon';
 import { BaseChainsMenu, BaseChainsMenuProps } from './BaseChainsMenu';
+import s from './BaseChains.module.sass';
 
 export type BaseChainsProps = BaseChainsMenuProps & {
   className?: string;
@@ -13,13 +13,15 @@ export type BaseChainsProps = BaseChainsMenuProps & {
 const trigger: DropDownProps['trigger'] = ['click'];
 
 export const BaseChains = memo<BaseChainsProps>(({ className, onChoose }) => (
-  <div role="presentation" onClick={(e): void => e.stopPropagation()}>
-    <Dropdown trigger={trigger} overlay={<BaseChainsMenu onChoose={onChoose} />}>
-      <Button size="small" className={cn(s.root, className)}>
-        <MoreOutlined />
-      </Button>
-    </Dropdown>
-  </div>
+  <Tooltip title="Рецепты">
+    <div className={cn(s.root, className)} role="presentation" onClick={(e): void => e.stopPropagation()}>
+      <Dropdown trigger={trigger} overlay={<BaseChainsMenu onChoose={onChoose} />}>
+        <Button size="small">
+          <Icon type="openedBook" />
+        </Button>
+      </Dropdown>
+    </div>
+  </Tooltip>
 ));
 
 BaseChains.displayName = 'BaseChains';

@@ -1,15 +1,14 @@
-import React, { memo } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import React, { FC } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { Analise } from '../screens/Analise';
 import { DNA } from '../screens/DNA';
+import { Layout } from '../components/Layout';
 
-export const Navigation = memo(() => (
-  <Switch>
-    <Route path="/dna">
-      <DNA />
-    </Route>
-    <Route path="*">
-      <Analise />
-    </Route>
-  </Switch>
-));
+export const Navigation: FC = () => (
+  <Layout>
+    <Routes>
+      <Route path="/dna" element={<DNA />} />
+      <Route path="*" element={<Analise />} />
+    </Routes>
+  </Layout>
+);

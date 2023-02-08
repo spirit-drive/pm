@@ -12,11 +12,10 @@
     "moduleResolution": "node",
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "lib": [
       "dom",
-      "es5",
-      "scripthost",
-      "es2015.promise"
+      "esnext",
     ]
   }
 }

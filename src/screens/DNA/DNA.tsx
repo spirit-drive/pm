@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import cn from 'clsx';
 import { InputNumber, Typography } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
@@ -17,8 +17,8 @@ export const DNA = memo<Props>(({ className }) => {
   const [value, setValue] = useState<number>();
 
   const onChange = useCallback((number: number) => setValue(number), []);
-  const red = useMemo(() => [value], [value]);
-  const green = useMemo(() => masyanyaTable[value], [value]);
+  const red = [value];
+  const green = masyanyaTable[value];
   const onClick = useCallback((number: number) => setValue(number), []);
 
   return (
