@@ -5,7 +5,6 @@ import { MinusOutlined } from '@ant-design/icons';
 import { Solitaire } from '../../core/Solitaire';
 import { HexagramsView } from '../../components/HexagramsView';
 import { random } from '../../utils/random';
-import { HexagramBalanceView } from '../../components/HexagramBalanceView';
 import { useSaveToUrl } from './useSaveToUrl';
 import { SolitaireChainView } from '../../components/SolitaireChainView';
 import { useHistory } from '../../hooks/useHistory';
@@ -14,6 +13,7 @@ import { BaseChains } from '../../components/BaseChains';
 import s from './Analise.sass';
 import { SolitaireInput } from '../../components/SolitaireInput/SolitaireInput';
 import { ScreenBottom } from '../../components/ScreenBottom';
+import { HexagramsMoldElement } from '../../components/HexagramsMoldElement';
 
 export type Props = {
   className?: string;
@@ -116,21 +116,6 @@ export const Analise = memo<Props>(({ className }) => {
     </Typography.Text>
   );
 
-  const hexagramsMoldElement = ((): React.ReactElement => {
-    if (message) return <MinusOutlined />;
-    if (solitaire?.hexagramsMold) {
-      return (
-        <div className={s.hexagramsView}>
-          <div className={s.mainHexagram}>
-            <HexagramsView hexagramsMold={solitaire?.hexagramsMold} value={solitaire?.hexagrams} />
-            <HexagramBalanceView className={s.balance} value={solitaire?.balance} />
-          </div>
-        </div>
-      );
-    }
-    return <MinusOutlined />;
-  })();
-
   return (
     <div className={cn(s.root, className)}>
       <Typography.Title className={s.mainTitle}>Гексаграммный анализ</Typography.Title>
@@ -146,7 +131,12 @@ export const Analise = memo<Props>(({ className }) => {
         <div>
           <Typography.Text className={s.title}>Гексаграммы</Typography.Text>
         </div>
-        {hexagramsMoldElement}
+        <HexagramsMoldElement
+          message={message}
+          hexagramsMold={solitaire?.hexagramsMold}
+          hexagrams={solitaire?.hexagrams}
+          balance={solitaire?.balance}
+        />
       </div>
       <div className={s.section}>
         <div>
