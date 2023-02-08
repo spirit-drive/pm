@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import cn from 'clsx';
-import { NavLink, NavLinkProps } from 'react-router-dom';
+import { NavLink, NavLinkProps, useSearchParams } from 'react-router-dom';
 import { Logo } from '../Logo';
 import { Frame } from '../Frame';
 import { ResponseNavigation, ResponseNavigationProps } from '../ResponseNavigation';
@@ -14,17 +14,19 @@ const horClassName: NavLinkProps['className'] = ({ isActive }) => cn(s.horizonta
 const verClassName: NavLinkProps['className'] = ({ isActive }) => cn(s.verticalLink, isActive && s.active);
 
 export const Header = memo<HeaderProps>(({ className }) => {
+  const [search] = useSearchParams();
+  const searchString = search.toString();
   const links: Pick<ResponseNavigationProps, 'left' | 'right'> = {
     left: [
       {
         key: '/dna',
         horizontalElem: (
-          <NavLink className={horClassName} to="/dna">
+          <NavLink className={horClassName} to={[`/dna`, searchString].filter(Boolean).join('?')}>
             ДНК Тоналя
           </NavLink>
         ),
         verticalElem: (
-          <NavLink className={verClassName} to="/dna">
+          <NavLink className={verClassName} to={[`/dna`, searchString].filter(Boolean).join('?')}>
             ДНК Тоналя
           </NavLink>
         ),
@@ -32,12 +34,12 @@ export const Header = memo<HeaderProps>(({ className }) => {
       {
         key: '/',
         horizontalElem: (
-          <NavLink className={horClassName} to="/">
+          <NavLink className={horClassName} to={[`/`, searchString].filter(Boolean).join('?')}>
             Гексаграммный анализ
           </NavLink>
         ),
         verticalElem: (
-          <NavLink className={verClassName} to="/">
+          <NavLink className={verClassName} to={[`/`, searchString].filter(Boolean).join('?')}>
             Гексаграммный анализ
           </NavLink>
         ),
