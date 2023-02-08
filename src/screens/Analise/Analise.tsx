@@ -13,6 +13,7 @@ import { HistoryControl } from '../../components/HistoryControl/HistoryControl';
 import { BaseChains } from '../../components/BaseChains';
 import s from './Analise.sass';
 import { SolitaireInput } from '../../components/SolitaireInput/SolitaireInput';
+import { ScreenBottom } from '../../components/ScreenBottom';
 
 export type Props = {
   className?: string;
@@ -153,16 +154,7 @@ export const Analise = memo<Props>(({ className }) => {
         </div>
         {selfBalancingElement}
       </div>
-      <div className={s.bottom}>
-        Icons made by{' '}
-        <a href="https://smashicons.com/" title="Smashicons">
-          Smashicons
-        </a>{' '}
-        from{' '}
-        <a href="https://www.flaticon.com/" title="Flaticon">
-          www.flaticon.com
-        </a>
-      </div>
+      <ScreenBottom className={s.bottom} />
     </div>
   );
 });

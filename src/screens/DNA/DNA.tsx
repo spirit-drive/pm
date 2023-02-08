@@ -4,6 +4,7 @@ import { InputNumber, Typography } from 'antd';
 import { DNAView } from '../../components/DNAView';
 import { masyanyaTable } from './masyanyaTable';
 import { MasyanyaLineView } from '../../components/MasyanyaLineView';
+import { ScreenBottom } from '../../components/ScreenBottom';
 import s from './DNA.sass';
 
 export type Props = {
@@ -37,16 +38,7 @@ export const DNA = memo<Props>(({ className }) => {
       </div>
       <DNAView onClick={onClick} red={red} green={green} />
       <MasyanyaLineView className={s.line} onClick={onClick} red={red} green={green} />
-      <div className={s.bottom}>
-        Icons made by{' '}
-        <a href="https://smashicons.com/" title="Smashicons">
-          Smashicons
-        </a>{' '}
-        from{' '}
-        <a href="https://www.flaticon.com/" title="Flaticon">
-          www.flaticon.com
-        </a>
-      </div>
+      <ScreenBottom className={s.bottom} />
     </div>
   );
 });
