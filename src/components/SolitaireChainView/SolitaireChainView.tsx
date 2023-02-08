@@ -1,4 +1,4 @@
-import React, { Dispatch, memo, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import React, { Dispatch, memo, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import cn from 'clsx';
 import { Radio } from 'antd';
 import { Card } from './Card';
@@ -28,9 +28,7 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
   }, [mode]);
 
   const chosenCopy = useRef(chosen);
-  useEffect(() => {
-    chosenCopy.current = chosen;
-  }, [chosen]);
+  chosenCopy.current = chosen;
 
   const replace = useCallback(
     (current: string): void => {
@@ -62,9 +60,7 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
   );
 
   const modeCopy = useRef(mode);
-  useEffect(() => {
-    modeCopy.current = mode;
-  }, [mode]);
+  modeCopy.current = mode;
   const onClick = useCallback(
     (value: string) => (): void => {
       if (modeCopy.current === 'global') {
@@ -76,7 +72,7 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
     [exchange, replace]
   );
 
-  const possibleReplacingStrict = Solitaire.getPossibleReplacingStrict(chain.join(' '));
+  const possibleReplacingStrict = useMemo(() => Solitaire.getPossibleReplacingStrict(chain.join(' ')), [chain]);
 
   if (!chain?.length) return null;
   return (
@@ -93,7 +89,7 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
             {possible?.current ? possibleReplacingStrict?.[possible?.current]?.join(',') : '-'}
           </div>
         )}
-        <Radio.Group value={mode}>
+        <Radio.Group value={mode} size="small">
           <Radio.Button value="global" onClick={(): void => setMode('global')}>
             Обмен мастей и номиналов
           </Radio.Button>

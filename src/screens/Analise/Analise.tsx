@@ -68,37 +68,12 @@ export const Analise = memo<Props>(({ className }) => {
 
   const showSelfBalancing = useMemo(() => solitaire?.balance?.some((v) => v !== 0), [solitaire?.balance]);
 
-  const selfBalancingElement = ((): React.ReactElement[] | React.ReactElement => {
-    if (!solitaire || message) return <MinusOutlined />;
-    if (!showSelfBalancing) return <div>Расклад полностью сбалансирован</div>;
-    if (!selfBalancing) {
-      return (
-        <Tooltip title="Предполагается что балансировать можно только на линиях, где есть 2 карты (линии под номерами 1, 2 и 4)">
-          <div>Непредсказуемая самобалансировка</div>
-        </Tooltip>
-      );
-    }
-    return selfBalancing?.map((item) => (
-      <div key={item.id} className={s.hexagramsView}>
-        <HexagramsView value={item.value} />
-      </div>
-    ));
-  })();
-
   const solitaireCopy = useRef(solitaire);
   solitaireCopy.current = solitaire;
 
   const onChangeSolitaire = useCallback((that: string, to: string) => {
     setValue(solitaireCopy.current.exchange(that, to).join(' '));
   }, []);
-
-  const solitaireChainElement = ((): React.ReactElement => {
-    if (message) return <MinusOutlined />;
-    if (solitaire?.chain) {
-      return <SolitaireChainView setValue={setValue} onChange={onChangeSolitaire} solitaire={solitaire} />;
-    }
-    return <MinusOutlined />;
-  })();
 
   const headerElement = (
     <Typography.Text className={s.title}>
@@ -123,7 +98,10 @@ export const Analise = memo<Props>(({ className }) => {
       <div className={s.section}>
         <Collapse defaultActiveKey="1" ghost>
           <Collapse.Panel className={s.panel} key="1" header={headerElement}>
-            {solitaireChainElement}
+            {((): React.ReactElement => {
+              if (message || !solitaire?.chain) return <MinusOutlined />;
+              return <SolitaireChainView setValue={setValue} onChange={onChangeSolitaire} solitaire={solitaire} />;
+            })()}
           </Collapse.Panel>
         </Collapse>
       </div>
@@ -142,7 +120,22 @@ export const Analise = memo<Props>(({ className }) => {
         <div>
           <Typography.Text className={s.title}>Возможные варианты самобалансировки</Typography.Text>
         </div>
-        {selfBalancingElement}
+        {((): React.ReactElement[] | React.ReactElement => {
+          if (!solitaire || message) return <MinusOutlined />;
+          if (!showSelfBalancing) return <div>Расклад полностью сбалансирован</div>;
+          if (!selfBalancing) {
+            return (
+              <Tooltip title="Предполагается что балансировать можно только на линиях, где есть 2 карты (линии под номерами 1, 2 и 4)">
+                <div>Непредсказуемая самобалансировка</div>
+              </Tooltip>
+            );
+          }
+          return selfBalancing?.map((item) => (
+            <div key={item.id} className={s.hexagramsView}>
+              <HexagramsView value={item.value} />
+            </div>
+          ));
+        })()}
       </div>
       <ScreenBottom className={s.bottom} />
     </div>
