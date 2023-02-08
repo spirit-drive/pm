@@ -41,72 +41,39 @@ export const isSolitaire = (solitaire: string[]): boolean => {
   while (hasSympathy(_solitaire)) {
     _solitaire = makeSolitaire(_solitaire);
   }
+  console.log(_solitaire.join(' '));
   return _solitaire.length === 2;
 };
 
-const LENGTH = 34;
-
-export const work = (number = 36): Record<string, unknown> => {
-  const result = [];
-  let pattern = '';
-  const volumePattern: string[] = [];
-  const max = 2 ** (number * 2);
-  for (let i = 0; i < max; i++) {
-    const string = i.toString(2);
-    const solitaireString = `${'0'.repeat(number * 2 - string.length)}${string}`;
-    const solitaire = splitBy2(solitaireString);
-    // const isTarget = isSolitaire(solitaire);
-    const isTarget = isSolitaire(solitaire) && isMaxEfl(solitaire);
-    const res = isTarget ? '✅' : '❌';
-    if (volumePattern[volumePattern.length - 1] && volumePattern[volumePattern.length - 1].length < LENGTH) {
-      volumePattern[volumePattern.length - 1] += res;
-    } else {
-      volumePattern.push(res);
-    }
-    pattern += res;
-    if (isTarget) result.push(`${res} ${solitaire.join(' ')}`);
+export const getSolitaire = (length: number): string[] => {
+  const res = [];
+  for (let i = 0; i < length; i++) {
+    // res.push(`${Math.ceil(i / 2) % 2}${Math.ceil(i / 2 + 0.5) % 2}`); // 01 11
+    // res.push(`${Math.ceil(i / 2 + 0.5) % 2}${Math.ceil(i / 2) % 2}`); // 10 11
+    // res.push(`${Math.ceil(i / 2) % 2}${Math.ceil(i / 2 + 1) % 2}`); // 01 10
+    // res.push(`${Math.ceil(i / 2 + 1) % 2}${Math.ceil(i / 2) % 2}`); // 01 10
+    // res.push(`${Math.ceil(i / 2) % 2}${Math.ceil(i / 2 + 1.5) % 2}`); // 00 10
+    // res.push(`${Math.ceil(i / 2 + 1.5) % 2}${Math.ceil(i / 2) % 2}`); // 00 01
+    // res.push(`${(Math.ceil(i / 2) + 1) % 2}${Math.ceil(i / 2) % 2}`); // 10 01
+    // res.push(`${Math.ceil(i / 2) % 2}${(Math.ceil(i / 2) + 1) % 2}`); // 01 10
+    // res.push(`${(Math.ceil(i / 2 + 0.5) + 1) % 2}${Math.ceil(i / 2) % 2}`); // 00 01
+    // res.push(`${(Math.ceil(i / 2 + 0.5) + 1) % 2}${Math.ceil(i / 2 + 0.5) % 2}`); // 01 01
+    // res.push(`${Math.ceil(i / 2) % 2}${(Math.ceil(i / 2 + 0.5) + 1) % 2}`); // 00 10
+    // res.push(`${Math.ceil(i / 2 + 0.5) % 2}${(Math.ceil(i / 2 + 0.5) + 1) % 2}`); // 10 10
+    // res.push(`${Math.ceil(i / 2 + 3) % 2}${(Math.ceil(i / 2 + 4) + 1) % 2}`); // 11 00
+    // res.push(`${Math.ceil(i / 2) % 2}${Math.ceil(i / 2 + 0.5) % 2}`); // 01 11
+    // res.push(`${Math.ceil(i / 2 + 0.5) % 2}${Math.ceil(i / 2) % 2}`); // 10 11
+    // res.push(`${Math.ceil(i / 2 + 1) % 2}${Math.ceil(i / 2 + 1.5) % 2}`); // 10 00
   }
-  return { result, pattern, volumePattern };
+  // console.log('res', res.join(' '));
+  res.push('00');
+  return res;
 };
 
-// 00 00 11 11 00 00 11 11 10   00 01 11 10 00 01 00
-// 00 00 11 11 00 00 11 10   00 01 11 10 00 01 00
-// 00 00 11 11 00 11 10   00 01 11 10 00 01 00
-// 00 00 11 00 11 10   00 01 11 10 00 01 00
-// 00 11 00 11 10   00 01 11 10 00 01 00
-// 11 00 11 10   00 01 11 10 00 01 00
-// 00 11 10   00 01 11 10 00 01 00
-// 11 10   00 01 11 10 00 01 00
+export const work = (): unknown => {
+  const solitaire = getSolitaire(8);
+  console.log(solitaire.join(' '), isSolitaire(solitaire));
+  return isSolitaire(solitaire) && isMaxEfl(solitaire);
+};
 
-// 11 10 00 01 11 10 01 00
-// 11 10 00 01 10 01 00
-// 11 10 00 10 01 00
-// 11 00 10 01 00
-// 11 10 01 00
-// 10 01 00
-// 01 00
-
-// Кб 7б Дч Вч 8б 6б 9ч 7ч 9б   00 01 11 10 00 01 00
-// 7ч 9б   00 01 11 10 00 01 00
-// 11 10 00 01 11 10 00 01 00
-// 11 10 00 01 11 10 01 00
-// 11 10 00 01 10 01 00
-// 11 10 00 10 01 00
-// 11 00 10 01 00
-// 11 10 01 00
-// 10 01 00
-// 01 00
-
-// 7ч 9б 00 01 11 10 00 01 00
-// 7ч 9б 8к 8п Кч Вб Вп 8ч Вч
-// 7ч 9б 8к 8п Кч Вб 8ч Вч
-// 7ч 9б 8к 8п Вб 8ч Вч
-// 7ч 9б 8к Вб 8ч Вч
-// 7ч 8к Вб 8ч Вч
-// 7ч Вб 8ч Вч
-// Вб 8ч Вч
-// 8ч Вч
-
-// 8ч Вч
-
-// Кб 7б Дч Вч 8б 6б 9ч 7ч 9б 8к 8п Кч Вб Вп 8ч Вч
+// 10 11 01 11 (01 11 4) 10 00 01 11 10 11 (10 11 10) 01 00 10 11 01 00 10 11 01 00 10 00 (10 00 22) 01 11 10 00 01 11 00 (11 00 29) 00 11 11 00 00 11 00 (36)
