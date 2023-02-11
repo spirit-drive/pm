@@ -10,7 +10,7 @@ export type HexagramSearchProps = {
   setValue: (value: string) => void;
 };
 
-const unnecessary = ['3', '47', '39', '29', '21', '6', '20', '23'];
+const unnecessary = ['3', '47', '39', '29', '21', '6', '20', '23', '12'];
 const necessary = [
   '1',
   '2',
@@ -45,7 +45,7 @@ const initialValue: HexagramSearchFiltersState = {
   },
   exclude: {
     values: unnecessary,
-    count: { gte: 4, lte: 4 },
+    count: { gte: 0, lte: 0 },
   },
   potential: { gte: 1, lte: 6 },
   selfBalancingCount: { gte: 1, lte: 3 },
@@ -56,7 +56,7 @@ export const HexagramSearch = memo<HexagramSearchProps>(({ className, value, set
   return (
     <div className={cn(s.root, className)}>
       <HexagramSearchFilters value={filters} onChange={setFilters} />
-      <ChainPermutation value={value} setValue={setValue} />
+      <ChainPermutation value={value} setValue={setValue} filters={filters} />
     </div>
   );
 });

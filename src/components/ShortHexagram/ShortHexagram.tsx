@@ -14,7 +14,8 @@ export type ShortHexagramsProps = {
 export const ShortHexagram = memo<ShortHexagramsProps>(({ className, hexagram, suit }) => (
   <div className={cn(s.root, className)}>
     <SuitsIcon suit={suit} />
-    <div className={s.name}>{hexagramsInfoMap[hexagram]?.title}</div>
+    <div>{`#${hexagram}`}</div>
+    <div>{hexagramsInfoMap[hexagram]?.title}</div>
   </div>
 ));
 
