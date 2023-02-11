@@ -12,9 +12,6 @@ export type ChainPermutationProps = {
   className?: string;
   value: string;
   setValue: (value: string) => void;
-  onStop: () => void;
-  onStart: () => void;
-  onPause: () => void;
 };
 
 enum ChainPermutationMode {

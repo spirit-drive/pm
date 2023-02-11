@@ -10,11 +10,11 @@ import { SolitaireChainView } from '../../components/SolitaireChainView';
 import { useHistory } from '../../hooks/useHistory';
 import { HistoryControl } from '../../components/HistoryControl/HistoryControl';
 import { BaseChains } from '../../components/BaseChains';
-import s from './Analise.sass';
 import { SolitaireInput } from '../../components/SolitaireInput/SolitaireInput';
 import { ScreenBottom } from '../../components/ScreenBottom';
 import { HexagramsMoldElement } from '../../components/HexagramsMoldElement';
-import { ChainPermutation } from '../../components/ChainPermutation';
+import { HexagramSearch } from '../../components/HexagramSearch';
+import s from './Analise.sass';
 
 export type Props = {
   className?: string;
@@ -109,7 +109,7 @@ export const Analise = memo<Props>(({ className }) => {
       <div className={s.section}>
         <Collapse defaultActiveKey="1" ghost>
           <Collapse.Panel className={s.panel} key="1" header="Поиск гексаграмм в раскладе">
-            <ChainPermutation value={value} setValue={setValue} />
+            <HexagramSearch value={value} setValue={setValue} />
           </Collapse.Panel>
         </Collapse>
       </div>
