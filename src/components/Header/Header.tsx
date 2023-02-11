@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import cn from 'clsx';
-import { NavLink, NavLinkProps, useSearchParams } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Logo } from '../Logo';
 import { Frame } from '../Frame';
 import { ResponseNavigation, ResponseNavigationProps } from '../ResponseNavigation';
@@ -10,23 +10,19 @@ export type HeaderProps = {
   className?: string;
 };
 
-const horClassName: NavLinkProps['className'] = ({ isActive }) => cn(s.horizontalLink, isActive && s.active);
-const verClassName: NavLinkProps['className'] = ({ isActive }) => cn(s.verticalLink, isActive && s.active);
-
 export const Header = memo<HeaderProps>(({ className }) => {
-  const [search] = useSearchParams();
-  const searchString = search.toString();
+  const { search } = useLocation();
   const links: Pick<ResponseNavigationProps, 'left' | 'right'> = {
     left: [
       {
         key: '/dna',
         horizontalElem: (
-          <NavLink className={horClassName} to={[`/dna`, searchString].filter(Boolean).join('?')}>
+          <NavLink className={s.horizontalLink} activeClassName={s.active} to={`/dna${search}`}>
             ДНК Тоналя
           </NavLink>
         ),
         verticalElem: (
-          <NavLink className={verClassName} to={[`/dna`, searchString].filter(Boolean).join('?')}>
+          <NavLink className={s.verticalLink} activeClassName={s.active} to={`/dna${search}`}>
             ДНК Тоналя
           </NavLink>
         ),
@@ -34,12 +30,12 @@ export const Header = memo<HeaderProps>(({ className }) => {
       {
         key: '/',
         horizontalElem: (
-          <NavLink className={horClassName} to={[`/`, searchString].filter(Boolean).join('?')}>
+          <NavLink exact className={s.horizontalLink} activeClassName={s.active} to={`/${search}`}>
             Гексаграммный анализ
           </NavLink>
         ),
         verticalElem: (
-          <NavLink className={verClassName} to={[`/`, searchString].filter(Boolean).join('?')}>
+          <NavLink exact className={s.verticalLink} activeClassName={s.active} to={`/${search}`}>
             Гексаграммный анализ
           </NavLink>
         ),

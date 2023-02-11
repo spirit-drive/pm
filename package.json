@@ -73,6 +73,7 @@
     "@types/react-redux": "^7.1.16",
     "@types/react-virtualized": "^9.21.21",
     "@types/resize-observer-browser": "^0.1.7",
+    "@types/react-router-dom": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.21.0",
     "@typescript-eslint/parser": "^4.21.0",
     "autoprefixer": "^10.4.5",
@@ -151,7 +152,7 @@
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
     "react-redux": "^7.2.0",
-    "react-router-dom": "^6.8.1",
+    "react-router-dom": "^5.2.0",
     "react-virtualized": "^9.22.3",
     "unchanged": "^2.2.1",
     "unfetch": "^4.1.0"
