@@ -5,7 +5,7 @@ import { suitToHexagram, valueToHexagram } from './helpers';
 import { CyrillicSuits, HexagramsMold, Nominal } from './types';
 
 export class SolitaireBasis {
-  protected _chain: string[];
+  public _chain: string[];
 
   protected constructor(input: string) {
     const chain = this.prepare(input);
