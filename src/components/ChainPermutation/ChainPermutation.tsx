@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useReducer, useRef, useMemo, useState } from 'react';
 import cn from 'clsx';
 import { Button } from 'antd';
+import { MinusOutlined } from '@ant-design/icons';
 import { getCurrentSolitaire, getNominalsFromChain, permutations } from './helpers';
 import { Solitaire } from '../../core/Solitaire';
 import { factorial } from '../../utils/math';
@@ -32,7 +33,7 @@ export type ChainPermutationState = {
 enum ChainPermutationActionType {
   PAUSE,
   START,
-  STOP,
+  RESET,
   ADD,
   SET_FILTERS,
 }
@@ -46,7 +47,7 @@ export type ChainPermutationActionSetFilters = {
 
 export type ChainPermutationAction =
   | { type: ChainPermutationActionType.PAUSE }
-  | { type: ChainPermutationActionType.STOP }
+  | { type: ChainPermutationActionType.RESET }
   | ChainPermutationActionSetFilters
   | ChainPermutationActionRunning
   | ChainPermutationActionAdd;
@@ -105,8 +106,8 @@ const reducer = (state: ChainPermutationState, action: ChainPermutationAction): 
     case ChainPermutationActionType.PAUSE:
       return { ...state, mode: ChainPermutationMode.PAUSE };
 
-    case ChainPermutationActionType.STOP:
-      return { ...state, mode: ChainPermutationMode.PAUSE, nominals: [], items: [] };
+    case ChainPermutationActionType.RESET:
+      return { ...state, mode: ChainPermutationMode.PAUSE, nominals: [], items: [], chain: [] };
 
     case ChainPermutationActionType.SET_FILTERS:
       return { ...state, filters: action.payload };
@@ -115,7 +116,7 @@ const reducer = (state: ChainPermutationState, action: ChainPermutationAction): 
       return {
         ...state,
         mode: ChainPermutationMode.RUNNING,
-        chain: action.payload.split(' '),
+        chain: state.chain.length ? state.chain : action.payload.split(' '),
         nominals: getNominalsFromChain(action.payload),
       };
 
@@ -149,8 +150,8 @@ export const ChainPermutation = memo<ChainPermutationProps>(({ className, filter
     }
   }, [state.nominals.length]);
 
+  const timeoutId = useRef<number>();
   useEffect(() => {
-    let id: number;
     if (state.mode === ChainPermutationMode.RUNNING) {
       generator.current = generator.current || permutations(state.nominals);
       const func = (): void => {
@@ -158,27 +159,43 @@ export const ChainPermutation = memo<ChainPermutationProps>(({ className, filter
         if (!done) {
           setIteration((l) => l + 1);
           dispatch({ type: ChainPermutationActionType.ADD, payload: v });
-          id = setTimeout(func);
+          timeoutId.current = setTimeout(func);
         }
       };
       func();
     }
-    return (): void => clearTimeout(id);
+    return (): void => clearTimeout(timeoutId.current);
   }, [state.mode, state.nominals]);
 
   const count = useMemo(() => (value ? factorial(getNominalsFromChain(value).length) : 1), [value]);
+  const permutationChain = useMemo(
+    () => !!state.chain.length && new Solitaire(state.chain.join(' ')).chainAdvanced,
+    [state.chain]
+  );
+
+  const onPlay = (): void => {
+    if (state.mode === ChainPermutationMode.RUNNING) {
+      clearTimeout(timeoutId.current);
+      dispatch({ type: ChainPermutationActionType.PAUSE });
+    } else {
+      dispatch({ type: ChainPermutationActionType.START, payload: value });
+    }
+  };
 
   return (
     <div className={cn(s.root, className)}>
-      <Button onClick={(): void => dispatch({ type: ChainPermutationActionType.START, payload: value })}>
-        Начать перетасовку номиналов
-      </Button>
-      <Button onClick={(): void => dispatch({ type: ChainPermutationActionType.PAUSE })}>
-        Приостановить перетасовку номиналов
-      </Button>
-      <Button onClick={(): void => dispatch({ type: ChainPermutationActionType.STOP })}>
-        Остановить перетасовку номиналов
-      </Button>
+      <div>
+        <div>Тасуем расклад</div>
+        <div>{permutationChain || <MinusOutlined />}</div>
+      </div>
+      <div className={s.buttons}>
+        <Button size="small" onClick={onPlay}>
+          {state.mode === ChainPermutationMode.RUNNING ? 'Пауза' : 'Тасовать'}
+        </Button>
+        <Button size="small" onClick={(): void => dispatch({ type: ChainPermutationActionType.RESET })}>
+          Сбросить
+        </Button>
+      </div>
       <div>{`Найдено ${state.items?.length}. Прогресс ${iteration} / ${count}`}</div>
       <BaseChainsMenu className={s.result} data={state.items} onChoose={setValue} />
     </div>

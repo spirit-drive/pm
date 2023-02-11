@@ -19,6 +19,7 @@ export const HexagramChooser = memo<HexagramChooserProps>(({ className, value = 
         const newValue = active ? value.filter((l) => l !== code) : [...value, code];
         return (
           <HexagramByCodeView
+            key={code}
             className={cn(s.item, active && s.active)}
             code={code}
             onClick={(): void => onChange(newValue)}

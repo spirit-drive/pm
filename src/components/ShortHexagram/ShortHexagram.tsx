@@ -3,6 +3,7 @@ import cn from 'clsx';
 import { Suits } from '../../core/types';
 import { SuitsIcon } from '../SuitsIcon';
 import { hexagramsInfoMap } from '../../utils/hexagrams';
+import { HexagramByCodeDropdown } from '../HexagramByCodeDropdown';
 import s from './ShortHexagram.module.sass';
 
 export type ShortHexagramsProps = {
@@ -12,11 +13,13 @@ export type ShortHexagramsProps = {
 };
 
 export const ShortHexagram = memo<ShortHexagramsProps>(({ className, hexagram, suit }) => (
-  <div className={cn(s.root, className)}>
-    <SuitsIcon suit={suit} />
-    <div>{`#${hexagram}`}</div>
-    <div>{hexagramsInfoMap[hexagram]?.title}</div>
-  </div>
+  <HexagramByCodeDropdown code={hexagram}>
+    <div className={cn(s.root, className)}>
+      <SuitsIcon suit={suit} />
+      <div>{`#${hexagram}`}</div>
+      <div>{hexagramsInfoMap[hexagram]?.title}</div>
+    </div>
+  </HexagramByCodeDropdown>
 ));
 
 ShortHexagram.displayName = 'ShortHexagram';

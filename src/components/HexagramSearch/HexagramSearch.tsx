@@ -10,7 +10,7 @@ export type HexagramSearchProps = {
   setValue: (value: string) => void;
 };
 
-const unnecessary = ['3', '47', '39', '29', '21', '6', '20', '23', '12'];
+const unnecessary = ['3', '47', '39', '29', '21', '6', '20', '23', '12', '41'];
 const necessary = [
   '1',
   '2',

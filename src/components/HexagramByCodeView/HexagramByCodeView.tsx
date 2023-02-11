@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import cn from 'clsx';
-import { Dropdown } from 'antd';
-import { HexagramInfoByCodeView } from '../HexagramInfoView';
+import { HexagramByCodeDropdown } from '../HexagramByCodeDropdown';
 import s from './HexagramByCodeView.sass';
 
 export type HexagramByCodeViewProps = {
@@ -11,9 +10,9 @@ export type HexagramByCodeViewProps = {
 };
 
 export const HexagramByCodeView: FC<HexagramByCodeViewProps> = ({ className, code, onClick }) => (
-  <Dropdown overlay={<HexagramInfoByCodeView className={s.info} code={code.toString()} />}>
+  <HexagramByCodeDropdown code={code}>
     <div className={cn(s.root, className)} role="presentation" onClick={onClick}>
       {code}
     </div>
-  </Dropdown>
+  </HexagramByCodeDropdown>
 );
