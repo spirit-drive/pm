@@ -12,8 +12,9 @@ import { HistoryControl } from '../../components/HistoryControl/HistoryControl';
 import { BaseChains } from '../../components/BaseChains';
 import { SolitaireInput } from '../../components/SolitaireInput/SolitaireInput';
 import { ScreenBottom } from '../../components/ScreenBottom';
-import { HexagramsMoldElement } from '../../components/HexagramsMoldElement';
+import { HexagramsMoldElement, HexagramsMoldElementProps } from '../../components/HexagramsMoldElement';
 import { HexagramSearch } from '../../components/HexagramSearch';
+import { CyrillicSuits } from '../../core/types';
 import s from './Analise.sass';
 
 export type Props = {
@@ -76,6 +77,10 @@ export const Analise = memo<Props>(({ className }) => {
     setValue(solitaireCopy.current.exchange(that, to).join(' '));
   }, []);
 
+  const onChangeHexagram = useCallback<HexagramsMoldElementProps['onChange']>(([that, to]) => {
+    setValue(solitaireCopy.current.exchange(`6${CyrillicSuits[that]}`, `6${CyrillicSuits[to]}`).join(' '));
+  }, []);
+
   const headerElement = (
     <Typography.Text className={s.title}>
       Расклад
@@ -123,8 +128,10 @@ export const Analise = memo<Props>(({ className }) => {
         <div>
           <Typography.Text className={s.title}>Гексаграммы</Typography.Text>
         </div>
+        <div className={s.tip}>Нажмите на гексаграммы, которые хотите поменять местами</div>
         <HexagramsMoldElement
           message={message}
+          onChange={onChangeHexagram}
           hexagramsMold={solitaire?.hexagramsMold}
           hexagrams={solitaire?.hexagrams}
           balance={solitaire?.balance}
