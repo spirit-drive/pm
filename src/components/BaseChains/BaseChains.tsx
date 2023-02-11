@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import cn from 'clsx';
 import { Button, Dropdown, Tooltip } from 'antd';
 import { DropDownProps } from 'antd/lib/dropdown/dropdown';
-import { Icon } from '../Icon';
+import { BookOutlined } from '@ant-design/icons';
 import data from './data.json';
 import { BaseChainsMenu, BaseChainsMenuProps } from './BaseChainsMenu';
 import { ChainData } from './types';
@@ -26,7 +26,7 @@ export const BaseChains = memo<BaseChainsProps>(({ className, onChoose }) => (
     <div className={cn(s.root, className)} role="presentation" onClick={(e): void => e.stopPropagation()}>
       <Dropdown trigger={trigger} overlay={<BaseChainsMenu data={enhancedData} onChoose={onChoose} />}>
         <Button size="small">
-          <Icon type="openedBook" />
+          <BookOutlined />
         </Button>
       </Dropdown>
     </div>
