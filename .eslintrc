@@ -38,6 +38,7 @@
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
     "react/prop-types": 0,
+    "no-continue": 0,
     "no-plusplus": 0,
     "import/prefer-default-export": 0,
     "react/no-array-index-key": 0,

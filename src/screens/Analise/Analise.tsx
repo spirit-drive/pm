@@ -14,6 +14,7 @@ import s from './Analise.sass';
 import { SolitaireInput } from '../../components/SolitaireInput/SolitaireInput';
 import { ScreenBottom } from '../../components/ScreenBottom';
 import { HexagramsMoldElement } from '../../components/HexagramsMoldElement';
+import { ChainPermutation } from '../../components/ChainPermutation';
 
 export type Props = {
   className?: string;
@@ -102,6 +103,13 @@ export const Analise = memo<Props>(({ className }) => {
               if (message || !solitaire?.chain) return <MinusOutlined />;
               return <SolitaireChainView setValue={setValue} onChange={onChangeSolitaire} solitaire={solitaire} />;
             })()}
+          </Collapse.Panel>
+        </Collapse>
+      </div>
+      <div className={s.section}>
+        <Collapse defaultActiveKey="1" ghost>
+          <Collapse.Panel className={s.panel} key="1" header="Поиск гексаграмм в раскладе">
+            <ChainPermutation value={value} />
           </Collapse.Panel>
         </Collapse>
       </div>
