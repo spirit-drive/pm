@@ -1,9 +1,10 @@
 /* eslint-disable class-methods-use-this */
 import { SolitaireBasis } from './SolitaireBasis';
-import { Balance, BalanceValue, Hexagrams, HexagramsMold, SelfBalance } from './types';
+import { Balance, BalanceValue, Hexagrams, HexagramsMold, SelfBalance, Suits } from './types';
 import { EXCHANGE_HELPED_SYMBOL, hexagramsEngine, initHexagramMold } from './helpers';
 import { InvalidDataForExchange } from './Errors';
 import { canBeBalanced, getCombination, getPossibleLines, LineData, linesDataToHexagrams } from './balancing';
+import { HexagramsMap } from '../utils/hexagrams';
 
 export class Solitaire extends SolitaireBasis {
   hexagramsMold: HexagramsMold;
@@ -42,6 +43,54 @@ export class Solitaire extends SolitaireBasis {
       result.push(value);
     }
     return result;
+  }
+
+  get hexagramsToString(): string {
+    const { hexagrams } = this;
+    return [
+      HexagramsMap[hexagrams.hearts.join('')],
+      HexagramsMap[hexagrams.spades.join('')],
+      HexagramsMap[hexagrams.clubs.join('')],
+      HexagramsMap[hexagrams.diamonds.join('')],
+    ].join(';');
+  }
+
+  get hexagramStrings(): Record<Suits, string> {
+    const { hexagrams } = this;
+    return {
+      [Suits.spades]: HexagramsMap[hexagrams.spades.join('')],
+      [Suits.hearts]: HexagramsMap[hexagrams.hearts.join('')],
+      [Suits.clubs]: HexagramsMap[hexagrams.clubs.join('')],
+      [Suits.diamonds]: HexagramsMap[hexagrams.diamonds.join('')],
+    };
+  }
+
+  get balancePotential(): number {
+    return this.balance.reduce((sum, item) => Math.abs(item) + sum, 0);
+  }
+
+  get chainAdvanced(): string {
+    const { chain, transits } = this;
+    return chain
+      .map((item) => {
+        const found = transits.find((t) => t.value === item);
+        if (!found) return item;
+        return `${found.value}!${found.efl === 1 ? '' : found.efl}`;
+      })
+      .join(' ');
+  }
+
+  get selfBalancingToString(): string {
+    return this.selfBalancing
+      ?.map((item) =>
+        [
+          HexagramsMap[item.hearts.join('')],
+          HexagramsMap[item.spades.join('')],
+          HexagramsMap[item.clubs.join('')],
+          HexagramsMap[item.diamonds.join('')],
+        ].join(';')
+      )
+      .join(' ');
   }
 
   static exchangeUnit(that: string, to: string, chain: string[]): string[] {

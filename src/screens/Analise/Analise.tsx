@@ -109,7 +109,7 @@ export const Analise = memo<Props>(({ className }) => {
       <div className={s.section}>
         <Collapse defaultActiveKey="1" ghost>
           <Collapse.Panel className={s.panel} key="1" header="Поиск гексаграмм в раскладе">
-            <ChainPermutation value={value} />
+            <ChainPermutation value={value} setValue={setValue} />
           </Collapse.Panel>
         </Collapse>
       </div>

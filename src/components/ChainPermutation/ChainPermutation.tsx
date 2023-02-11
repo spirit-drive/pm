@@ -2,13 +2,16 @@ import React, { memo, useEffect, useReducer, useRef, useMemo } from 'react';
 import cn from 'clsx';
 import { Button } from 'antd';
 import { getCurrentSolitaire, getNominalsFromChain, permutations } from './helpers';
-import s from './ChainPermutation.sass';
 import { Solitaire } from '../../core/Solitaire';
 import { factorial } from '../../utils/math';
+import { ChainData } from '../BaseChains/types';
+import { BaseChainsMenu } from '../BaseChains/BaseChainsMenu';
+import s from './ChainPermutation.sass';
 
 export type ChainPermutationProps = {
   className?: string;
   value: string;
+  setValue: (value: string) => void;
   onStop: () => void;
   onStart: () => void;
   onPause: () => void;
@@ -20,7 +23,7 @@ enum ChainPermutationMode {
 }
 
 export type ChainPermutationState = {
-  items: Solitaire[];
+  items: ChainData[];
   chain: string[];
   mode: ChainPermutationMode;
   nominals: string[];
@@ -45,11 +48,19 @@ export type ChainPermutationAction =
 const reducer = (state: ChainPermutationState, action: ChainPermutationAction): ChainPermutationState => {
   switch (action.type) {
     case ChainPermutationActionType.ADD: {
+      if (state.mode === ChainPermutationMode.PAUSE) return state;
+      const solitaire = new Solitaire(
+        getCurrentSolitaire(Solitaire.parseString(state.chain.join(' ')).split(' '), action.payload)
+      );
       return {
         ...state,
         items: [
           ...(state.items || []),
-          new Solitaire(getCurrentSolitaire(Solitaire.parseString(state.chain.join(' ')).split(' '), action.payload)),
+          {
+            selfBalancing: solitaire.selfBalancingToString,
+            hexagrams: solitaire.hexagramsToString,
+            chain: solitaire.chainAdvanced,
+          },
         ],
       };
     }
@@ -76,7 +87,7 @@ const reducer = (state: ChainPermutationState, action: ChainPermutationAction): 
   }
 };
 
-export const ChainPermutation = memo<ChainPermutationProps>(({ className, value }) => {
+export const ChainPermutation = memo<ChainPermutationProps>(({ className, setValue, value }) => {
   const [state, dispatch] = useReducer(reducer, {
     items: [],
     mode: ChainPermutationMode.PAUSE,
@@ -107,7 +118,7 @@ export const ChainPermutation = memo<ChainPermutationProps>(({ className, value 
     return (): void => clearTimeout(id);
   }, [state.mode, state.nominals]);
 
-  const count = useMemo(() => factorial(state.nominals.length), [state.nominals.length]);
+  const count = useMemo(() => (value ? factorial(getNominalsFromChain(value).length) : 1), [value]);
 
   return (
     <div className={cn(s.root, className)}>
@@ -121,6 +132,7 @@ export const ChainPermutation = memo<ChainPermutationProps>(({ className, value 
         Остановить перетасовку номиналов
       </Button>
       {`${state.items?.length} / ${count}`}
+      <BaseChainsMenu className={s.result} data={state.items} onChoose={setValue} />
     </div>
   );
 });

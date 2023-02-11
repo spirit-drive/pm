@@ -1,5 +1,6 @@
 export type ChainData = {
-  tag: string;
+  tag?: string;
   selfBalancing: string;
   hexagrams: string;
+  chain: string;
 };
