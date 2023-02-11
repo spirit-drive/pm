@@ -99,7 +99,7 @@ export const Analise = memo<Props>(({ className }) => {
 
   return (
     <div className={cn(s.root, className)}>
-      <Typography.Title className={s.mainTitle}>Гексаграммный анализ</Typography.Title>
+      <Typography.Title className={s.mainTitle}>Цепочка</Typography.Title>
       <SolitaireInput message={message} manage={manage} value={value} onChange={onChange} />
       <div className={s.section}>
         <Collapse defaultActiveKey="1" ghost>
@@ -113,7 +113,7 @@ export const Analise = memo<Props>(({ className }) => {
       </div>
       {solitaire?._chain && (
         <div className={s.section}>
-          <Collapse defaultActiveKey="1" ghost>
+          <Collapse ghost>
             <Collapse.Panel
               className={s.panel}
               key="1"

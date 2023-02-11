@@ -89,6 +89,7 @@ module.exports = (env, options) => {
       new CleanWebpackPlugin(),
       new HtmlPlugin({
         template: 'index.html',
+        favicon: 'favicon.png',
         minify: {
           removeComments: true,
           collapseWhitespace: true,

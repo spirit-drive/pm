@@ -15,6 +15,19 @@ export const Header = memo<HeaderProps>(({ className }) => {
   const links: Pick<ResponseNavigationProps, 'left' | 'right'> = {
     left: [
       {
+        key: '/',
+        horizontalElem: (
+          <NavLink exact className={s.horizontalLink} activeClassName={s.active} to={`/${search}`}>
+            Цепочка
+          </NavLink>
+        ),
+        verticalElem: (
+          <NavLink exact className={s.verticalLink} activeClassName={s.active} to={`/${search}`}>
+            Цепочка
+          </NavLink>
+        ),
+      },
+      {
         key: '/dna',
         horizontalElem: (
           <NavLink className={s.horizontalLink} activeClassName={s.active} to={`/dna${search}`}>
@@ -24,19 +37,6 @@ export const Header = memo<HeaderProps>(({ className }) => {
         verticalElem: (
           <NavLink className={s.verticalLink} activeClassName={s.active} to={`/dna${search}`}>
             ДНК Тоналя
-          </NavLink>
-        ),
-      },
-      {
-        key: '/',
-        horizontalElem: (
-          <NavLink exact className={s.horizontalLink} activeClassName={s.active} to={`/${search}`}>
-            Гексаграммный анализ
-          </NavLink>
-        ),
-        verticalElem: (
-          <NavLink exact className={s.verticalLink} activeClassName={s.active} to={`/${search}`}>
-            Гексаграммный анализ
           </NavLink>
         ),
       },
