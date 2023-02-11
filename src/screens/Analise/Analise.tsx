@@ -108,7 +108,11 @@ export const Analise = memo<Props>(({ className }) => {
       </div>
       <div className={s.section}>
         <Collapse defaultActiveKey="1" ghost>
-          <Collapse.Panel className={s.panel} key="1" header="Поиск гексаграмм в раскладе">
+          <Collapse.Panel
+            className={s.panel}
+            key="1"
+            header={<Typography.Title className={s.title}>Поиск гексаграмм в раскладе</Typography.Title>}
+          >
             <HexagramSearch value={value} setValue={setValue} />
           </Collapse.Panel>
         </Collapse>
