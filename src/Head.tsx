@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Helmet } from 'react-helmet';
 
 export const defaultSetting = {
-  titleTemplate: '%s - ПM + Гексаграммы',
-  defaultTitle: 'ПM + Гексаграммы',
+  titleTemplate: '%s - ПM Лаборатория',
+  defaultTitle: 'ПM Лаборатория',
 };
 
 export const Head: React.FC = () => (

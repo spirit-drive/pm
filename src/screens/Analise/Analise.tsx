@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import cn from 'clsx';
 import { Typography, Tooltip, Collapse } from 'antd';
-import { MinusOutlined } from '@ant-design/icons';
+import { BookOutlined, MinusOutlined } from '@ant-design/icons';
 import { Solitaire } from '../../core/Solitaire';
 import { HexagramsView } from '../../components/HexagramsView';
 import { random } from '../../utils/random';
@@ -100,6 +100,24 @@ export const Analise = memo<Props>(({ className }) => {
   return (
     <div className={cn(s.root, className)}>
       <Typography.Title className={s.mainTitle}>Цепочка</Typography.Title>
+      <div className={s.section}>
+        <Collapse defaultActiveKey="1" ghost>
+          <Collapse.Panel
+            className={s.panel}
+            key="1"
+            header={<Typography.Title className={s.title}>Как с этим работать?</Typography.Title>}
+          >
+            <div className={s.tip}>
+              На этом экране вы можете вручную ввести цепочку, с которой хотите работать. Если у вас нет цепочки,
+              воспользуйтесь кнопкой рецепты
+              <BookOutlined />и выберите в ней любой расклад. В секции &quot;Расклад&quot; можно менять местами карты и
+              находить нужные efl. В секции &quot;Поиск гексаграмм в раскладе&quot; можно найти идеальную для себя
+              цепочку, с необходимыми гексаграммами, самобалансировкой, энергопотенциалом балансировки. Подробнее как
+              работать смотрите в каждой секции.
+            </div>
+          </Collapse.Panel>
+        </Collapse>
+      </div>
       <SolitaireInput message={message} manage={manage} value={value} onChange={onChange} />
       <div className={s.section}>
         <Collapse defaultActiveKey="1" ghost>
@@ -119,6 +137,14 @@ export const Analise = memo<Props>(({ className }) => {
               key="1"
               header={<Typography.Title className={s.title}>Поиск гексаграмм в раскладе</Typography.Title>}
             >
+              <div className={s.tip}>
+                Мы берем расклад, который вы установили, и начинаем менять местами номиналы, например все Тузы меняем на
+                все 6 и смотрим что получается, расположение и размер обвалов (efl) будет сохранен. Всего существует
+                362880 вариантов перестановок номиналов, против 371993326789901217467999448150835200000000 вариантов
+                раскладов, поэтому в автоматическом режиме нет гарантии, что получится найти идеальный расклад и нужно
+                будет на основе своей интуиции поменять карты местами в секции &quot;Расклад&quot;, что создаст новые
+                362880 вариантов перестановок
+              </div>
               <HexagramSearch value={value} setValue={setValue} />
             </Collapse.Panel>
           </Collapse>

@@ -40,6 +40,19 @@ export const Header = memo<HeaderProps>(({ className }) => {
           </NavLink>
         ),
       },
+      {
+        key: '/what-is-this',
+        horizontalElem: (
+          <NavLink className={s.horizontalLink} activeClassName={s.active} to={`/what-is-this${search}`}>
+            Что это такое
+          </NavLink>
+        ),
+        verticalElem: (
+          <NavLink className={s.verticalLink} activeClassName={s.active} to={`/what-is-this${search}`}>
+            Что это такое
+          </NavLink>
+        ),
+      },
     ],
   };
   const { left, right } = links;
