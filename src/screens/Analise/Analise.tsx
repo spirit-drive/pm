@@ -101,7 +101,7 @@ export const Analise = memo<Props>(({ className }) => {
     <div className={cn(s.root, className)}>
       <Typography.Title className={s.mainTitle}>Цепочка</Typography.Title>
       <div className={s.section}>
-        <Collapse defaultActiveKey="1" ghost>
+        <Collapse ghost>
           <Collapse.Panel
             className={s.panel}
             key="1"
