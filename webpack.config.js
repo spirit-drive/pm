@@ -22,8 +22,8 @@ const getPublicPath = (options) => {
   const isDevMode = getIsDevMode(options);
   const host = getHost(options);
   if (isDevMode) return `http://${host}:${port}/`;
-  if (options.forHeroku) return 'https://medici-solitaire.herokuapp.com/';
-  return 'https://medici-solitaire.herokuapp.com//';
+  if (options.forHeroku) return 'http://ovz2.igor-zvyagin.vpljm.vps.myjino.ru/';
+  return 'http://ovz2.igor-zvyagin.vpljm.vps.myjino.ru/';
 };
 
 module.exports = (env, options) => {
@@ -39,8 +39,8 @@ module.exports = (env, options) => {
     output: {
       path: dist,
       publicPath: getPublicPath(options),
-      filename: `js/[name]${isDevMode ? '' : '.[contenthash]'}.js`,
-      chunkFilename: `js/[name]${isDevMode ? '' : '.[contenthash]'}.js`,
+      filename: `[name]${isDevMode ? '' : '.[contenthash]'}.js`,
+      chunkFilename: `[name]${isDevMode ? '' : '.[contenthash]'}.js`,
     },
     devtool: isDevMode && 'source-map',
     devServer: {
@@ -105,8 +105,8 @@ module.exports = (env, options) => {
         inject: true,
       }),
       new MiniCssExtractPlugin({
-        filename: 'css/[name].[contenthash].css',
-        chunkFilename: 'css/[name].[contenthash].css',
+        filename: '[name].[contenthash].css',
+        chunkFilename: '[name].[contenthash].css',
       }),
     ],
     module: {

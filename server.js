@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 80;
 
 // здесь у нас происходит импорт пакетов и определяется порт нашего сервера
 const app = express();
@@ -18,4 +18,7 @@ app.get('/ping', function (req, res) {
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
-app.listen(port);
+
+app.listen(port, () => {
+  console.log('start server on port', port);
+});

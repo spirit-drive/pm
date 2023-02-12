@@ -36,14 +36,9 @@ export const BaseChainsMenu = memo<BaseChainsMenuProps>(({ className, data, onCh
     );
   };
   return (
-    <List
-      className={cn(s.root, className)}
-      width={860}
-      height={420}
-      rowCount={data.length}
-      rowHeight={60}
-      rowRenderer={rowRenderer}
-    />
+    <div className={cn(s.root, className)}>
+      <List width={860} height={420} rowCount={data.length} rowHeight={60} rowRenderer={rowRenderer} />
+    </div>
   );
 });
 
