@@ -17,7 +17,8 @@ export const WhatIsThis: FC = () => (
           точки можно, можно вернуть часть своей силы, можно научиться слышать свой Дух.
         </p>
         <p>
-          Подробнее смотрите <a href="https://www.youtube.com/@geraingvas">здесь</a>
+          Подробнее смотрите <a href="https://www.youtube.com/@geraingvas">здесь</a>, а{' '}
+          <a href="https://discord.gg/3NS9DhVa">здесь</a> найдете чат практиков.
         </p>
       </div>
     </div>
