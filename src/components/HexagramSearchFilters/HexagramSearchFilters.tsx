@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import cn from 'clsx';
-import { Slider } from 'antd';
+import { Slider, Divider } from 'antd';
+import { ClearOutlined } from '@ant-design/icons';
 import { HexagramChooser } from '../HexagramChooser';
 import s from './HexagramSearchFilters.sass';
 
@@ -26,7 +27,15 @@ export type HexagramSearchFiltersState = {
 export const HexagramSearchFilters: FC<HexagramSearchFiltersProps> = ({ className, value = {}, onChange }) => (
   <div className={cn(s.root, className)}>
     <div>
-      <div>Включая гексаграммы</div>
+      <div>
+        Включая гексаграммы
+        <ClearOutlined
+          className={s.reset}
+          onClick={(): void =>
+            onChange({ ...value, include: { ...(value.include || {}), values: [] } } as HexagramSearchFiltersState)
+          }
+        />
+      </div>
       <HexagramChooser
         value={value.include?.values}
         onChange={(v): void =>
@@ -35,6 +44,7 @@ export const HexagramSearchFilters: FC<HexagramSearchFiltersProps> = ({ classNam
       />
       <div>
         <div>Кол-во</div>
+        <div>{[value.include.count.gte, value.include.count.lte].join(' - ')}</div>
         <Slider
           range
           min={0}
@@ -49,8 +59,17 @@ export const HexagramSearchFilters: FC<HexagramSearchFiltersProps> = ({ classNam
         />
       </div>
     </div>
+    <Divider />
     <div>
-      <div>Исключая гексаграммы</div>
+      <div>
+        Исключая гексаграммы
+        <ClearOutlined
+          className={s.reset}
+          onClick={(): void =>
+            onChange({ ...value, exclude: { ...(value.exclude || {}), values: [] } } as HexagramSearchFiltersState)
+          }
+        />
+      </div>
       <HexagramChooser
         value={value?.exclude?.values}
         onChange={(v): void =>
@@ -59,6 +78,7 @@ export const HexagramSearchFilters: FC<HexagramSearchFiltersProps> = ({ classNam
       />
       <div>
         <div>Кол-во</div>
+        <div>{[value.exclude.count.gte, value.exclude.count.lte].join(' - ')}</div>
         <Slider
           range
           min={0}
@@ -73,8 +93,10 @@ export const HexagramSearchFilters: FC<HexagramSearchFiltersProps> = ({ classNam
         />
       </div>
     </div>
+    <Divider />
     <div>
       <div>Энергопотенциал</div>
+      <div>{[value.potential.gte, value.potential.lte].join(' - ')}</div>
       <Slider
         range
         min={0}
@@ -88,8 +110,10 @@ export const HexagramSearchFilters: FC<HexagramSearchFiltersProps> = ({ classNam
         }
       />
     </div>
+    <Divider />
     <div>
       <div>Кол-во возможных самобалансировок</div>
+      <div>{[value.selfBalancingCount.gte, value.selfBalancingCount.lte].join(' - ')}</div>
       <Slider
         range
         min={0}
