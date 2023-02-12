@@ -49,28 +49,28 @@ const unnecessary = ['3', '47', '39', '29', '21', '6', '20', '23'];
 const necessary = [
   '1',
   '2',
-  // '7', // войско
-  // '11',
-  // '13', // родня
-  // '14', // Владение многим
-  // '16', // Вольность
-  // '18', // исправление
-  // '19', // Посещение
-  // '26',
-  // '31',
-  // '32',
-  // '33',
-  // '34',
-  // '35',
-  // '37', // домашние
-  // '40',
-  // '42', // Приумножение
-  // '45', // Воссоединение
-  // '46', // !! Подъем
-  // '49',
-  // '53', // ??
-  // '55', // !! Изобилие
-  // '58', // радость
+  '7', // войско
+  '11',
+  '13', // родня
+  '14', // Владение многим
+  '16', // Вольность
+  '18', // исправление
+  '19', // Посещение
+  '26',
+  '31',
+  '32',
+  '33',
+  '34',
+  '35',
+  '37', // домашние
+  '40',
+  '42', // Приумножение
+  '45', // Воссоединение
+  '46', // !! Подъем
+  '49',
+  '53', // ??
+  '55', // !! Изобилие
+  '58', // радость
 ];
 
 // 'Вч 9п Тч 7к 9б Дп 7б 7п 6к Кп 6ч 8к 8б 10п Тп 6п Тк 8ч Кч 9к Дч 8п Кб Вп 9ч Тб 10б Вк 10к Вб 10ч Кк 6б Дк 7ч Дб'
@@ -79,7 +79,7 @@ const necessary = [
 // 'Вч Тп Тч Дб 8б 10к Кб 6п Кп Кк 6ч 10п 7б 9б 8к 9п Тб 7к 6б Вп 7ч 6к 8п Тк 7п Вб Дп 9к 10б 8ч 9ч Дч Дк 10ч Вк Кч'
 
 const ovd = Solitaire.parseString(
-  'Тч 9ч 8б 7ч Дч Дк Вб 7к Тб 10п Кч Кп 8ч 7б 10к 6б 10б 8к Кб 9п 6п Кк 10ч Тк 6ч 6к Вч Вк Дб Вп Тп 8п 9б Дп 9к 7п'
+  '6к 7ч 7б 6б 6ч 7п 7к Тч 6п Кб Тк 8ч Кп 10б 8к Дч 10п 8б Дк 9ч 8п Вб 9к 10ч Вп Дб 10к Кч 9б Дп Кк Вч 9п Тб Вк Тп'
 );
 
 const nom = [...new Set(ovd.split(' ').map((i) => i.slice(0, -1)))];
@@ -123,21 +123,16 @@ export const getPossibleChains = (): Record<string, string> => {
       // if (raw[raw.length - 1][0] !== '7') continue; // eslint-disable-line no-continue
 
       const solitaire = new Solitaire(raw.join(' '));
-      const { hexagrams, chain, balance, selfBalancing, transits, balancePotential } = solitaire;
+      const { balance, selfBalancing, balancePotential } = solitaire;
       const balanceString = balance.join(',');
 
-      if (balancePotential < 3) continue;
+      if (balancePotential < 1) continue;
 
       if (!selfBalancing && balanceString !== '0,0,0,0,0,0') continue; // eslint-disable-line no-continue
 
       if (selfBalancing?.length > 1) continue; // eslint-disable-line no-continue
 
-      const hx = [
-        HexagramsMap[hexagrams.hearts.join('')],
-        HexagramsMap[hexagrams.spades.join('')],
-        HexagramsMap[hexagrams.clubs.join('')],
-        HexagramsMap[hexagrams.diamonds.join('')],
-      ].join(';');
+      const hx = solitaire.hexagramsToString;
       const selfBalancingStrings = selfBalancing?.map((item) =>
         [
           HexagramsMap[item.hearts.join('')],
@@ -161,27 +156,12 @@ export const getPossibleChains = (): Record<string, string> => {
 
       if (count < 4) continue; // eslint-disable-line no-continue
 
-      const key = chain
-        .map((item) => {
-          const found = transits.find((t) => t.value === item);
-          if (!found) return item;
-          return `${found.value}!${found.efl === 1 ? '' : found.efl}`;
-        })
-        .join(' ');
+      const key = solitaire.chainAdvanced;
 
       Object.assign(result, {
         [key]: {
           balance: balanceString,
-          selfBalancing: selfBalancing
-            ?.map((item) =>
-              [
-                HexagramsMap[item.hearts.join('')],
-                HexagramsMap[item.spades.join('')],
-                HexagramsMap[item.clubs.join('')],
-                HexagramsMap[item.diamonds.join('')],
-              ].join(';')
-            )
-            .join(' '),
+          selfBalancing: solitaire.selfBalancingToString,
           hexagrams: hx,
           // selfBalancing: selfBalancing?.map((item) => ({
           //   [Suits.hearts]: HexagramsMap[item.hearts.join('')],
