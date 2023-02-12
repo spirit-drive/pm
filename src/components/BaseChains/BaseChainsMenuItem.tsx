@@ -12,7 +12,7 @@ export type BaseChainsMenuItemProps = ChainData & {
 };
 
 export const BaseChainsMenuItem = memo<BaseChainsMenuItemProps>(
-  ({ className, onChoose, chain, tag, selfBalancing }) => (
+  ({ className, onChoose, chain, tag, selfBalancing, hexagrams }) => (
     <button onClick={(): void => onChoose(chain)} type="button" className={cn(s.root, className)}>
       <div>
         <div className={s.line}>
@@ -25,6 +25,30 @@ export const BaseChainsMenuItem = memo<BaseChainsMenuItemProps>(
               ))}
             </div>
           )}
+          <div className={s.hexagrams}>
+            {((): React.ReactNode => {
+              const [hearts, spades, clubs, diamonds] = hexagrams.split(';');
+              const data = [
+                {
+                  suit: Suits.clubs,
+                  hexagram: clubs,
+                },
+                {
+                  suit: Suits.spades,
+                  hexagram: spades,
+                },
+                {
+                  suit: Suits.hearts,
+                  hexagram: hearts,
+                },
+                {
+                  suit: Suits.diamonds,
+                  hexagram: diamonds,
+                },
+              ];
+              return <ShortHexagrams data={data} />;
+            })()}
+          </div>
           <div className={s.hexagrams}>
             {selfBalancing?.split(' ').map((set) => {
               const [hearts, spades, clubs, diamonds] = set.split(';');

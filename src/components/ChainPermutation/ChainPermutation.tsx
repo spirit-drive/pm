@@ -94,6 +94,25 @@ const reducer = (state: ChainPermutationState, action: ChainPermutationAction): 
             if (countExclude < filters.exclude.count.gte || countExclude > filters.exclude.count.lte) return state;
           }
         }
+      } else {
+        const { hexagramsToString } = solitaire;
+        const hexagrams: string[] = hexagramsToString.split(';');
+        if (hexagrams && filters.include.values.length) {
+          const countInclude = hexagrams.reduce((sum, item) => {
+            if (filters.include.values.includes(item)) return sum + 1;
+            return sum;
+          }, 0);
+          if (countInclude < filters.include.count.gte || countInclude > filters.include.count.lte) {
+            return state;
+          }
+        }
+        if (hexagrams && filters.exclude.values.length) {
+          const countExclude = hexagrams.reduce((sum, item) => {
+            if (filters.exclude.values.includes(item)) return sum + 1;
+            return sum;
+          }, 0);
+          if (countExclude < filters.exclude.count.gte || countExclude > filters.exclude.count.lte) return state;
+        }
       }
       return {
         ...state,
