@@ -1,6 +1,7 @@
 import React, { Dispatch, memo, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import cn from 'clsx';
 import { Radio } from 'antd';
+import { MinusOutlined } from '@ant-design/icons';
 import { Card } from './Card';
 import { Solitaire } from '../../core/Solitaire';
 import s from './SolitaireChainView.sass';
@@ -20,7 +21,7 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
   const { chain, yin, yan, transits } = solitaire || {};
   const [chosen, setChosen] = useState<string>();
   const [possible, setPossible] = useState<{ data: string[]; current: string }>();
-  const [mode, setMode] = useState<'global' | 'unit'>('global');
+  const [mode, setMode] = useState<'global' | 'unit'>('unit');
 
   useEffect(() => {
     setChosen('');
@@ -85,16 +86,16 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
         </div>
         {mode !== 'global' && (
           <div className={s.tip}>
-            <div>Обмен с сохранением самобалансировки</div>
-            {possible?.current ? possibleReplacingStrict?.[possible?.current]?.join(',') : '-'}
+            <div>Обмен с сохранением самобалансировки. Подсвечивается фиолетовым</div>
+            {possible?.current ? possibleReplacingStrict?.[possible?.current]?.join(',') : <MinusOutlined />}
           </div>
         )}
         <Radio.Group value={mode} size="small">
-          <Radio.Button value="global" onClick={(): void => setMode('global')}>
-            Обмен мастей и номиналов
-          </Radio.Button>
           <Radio.Button value="unit" onClick={(): void => setMode('unit')}>
             Обмен карт индивидуально
+          </Radio.Button>
+          <Radio.Button value="global" onClick={(): void => setMode('global')}>
+            Обмен мастей и номиналов
           </Radio.Button>
         </Radio.Group>
       </div>
@@ -111,6 +112,7 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
                 s.item,
                 (chosen === item || possible?.current === item) && s.active,
                 possible?.data?.includes(item) && s.possible,
+                possibleReplacingStrict?.[possible?.current]?.includes(item) && s.strict,
               ])}
               key={item}
             >
