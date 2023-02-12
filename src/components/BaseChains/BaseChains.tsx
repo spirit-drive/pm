@@ -11,7 +11,7 @@ import s from './BaseChains.module.sass';
 const enhancedData: ChainData[] = Object.keys(data).map((chain: keyof typeof data) => ({
   chain,
   tag: data[chain].tag,
-  selfBalancing: data[chain].hexagrams,
+  selfBalancing: data[chain].selfBalancing,
   hexagrams: data[chain].hexagrams,
 }));
 
