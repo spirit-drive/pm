@@ -41,7 +41,7 @@ const necessary = [
 const initialValue: HexagramSearchFiltersState = {
   include: {
     values: necessary,
-    count: { gte: 1, lte: 3 },
+    count: { gte: 3, lte: 4 },
   },
   exclude: {
     values: unnecessary,
