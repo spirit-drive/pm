@@ -2,6 +2,7 @@ import React, { memo, useRef } from 'react';
 import cn from 'clsx';
 import { Button, Form, Input, message as messageAnt } from 'antd';
 import { CopyOutlined, DeleteOutlined } from '@ant-design/icons';
+import { copyToClipboard } from '../../utils/copyToClipboard';
 import s from './SolitaireInput.sass';
 
 export type SolitaireInputProps = {
@@ -12,29 +13,6 @@ export type SolitaireInputProps = {
   onChange: (value: string) => void;
 };
 
-const copyToClipboard = (textToCopy: string): Promise<void> => {
-  // navigator clipboard api needs a secure context (https)
-  if (navigator.clipboard && window.isSecureContext) {
-    // navigator clipboard api method'
-    return navigator.clipboard.writeText(textToCopy);
-  }
-  // text area method
-  const textArea = document.createElement('textarea');
-  textArea.value = textToCopy;
-  // make the textarea out of viewport
-  textArea.style.position = 'fixed';
-  textArea.style.left = '-999999px';
-  textArea.style.top = '-999999px';
-  document.body.appendChild(textArea);
-  textArea.focus();
-  textArea.select();
-  return new Promise((res, rej) => {
-    // here the magic happens
-    // eslint-disable-next-line no-unused-expressions
-    document.execCommand('copy') ? res() : rej();
-    textArea.remove();
-  });
-};
 export const SolitaireInput = memo<SolitaireInputProps>(({ className, onChange, message, manage, value }) => {
   const input = useRef<Input>();
 
