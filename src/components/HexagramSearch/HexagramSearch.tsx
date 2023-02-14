@@ -47,6 +47,7 @@ const initialValue: HexagramSearchFiltersState = {
     values: unnecessary,
     count: { gte: 0, lte: 0 },
   },
+  stableCards: [],
   potential: { gte: 1, lte: 6 },
   selfBalancingCount: { gte: 1, lte: 3 },
 };
@@ -55,7 +56,7 @@ export const HexagramSearch = memo<HexagramSearchProps>(({ className, value, set
   const [filters, setFilters] = useState<HexagramSearchFiltersState>(initialValue);
   return (
     <div className={cn(s.root, className)}>
-      <HexagramSearchFilters value={filters} onChange={setFilters} />
+      <HexagramSearchFilters chain={value} value={filters} onChange={setFilters} />
       <ChainPermutation value={value} setValue={setValue} filters={filters} />
     </div>
   );

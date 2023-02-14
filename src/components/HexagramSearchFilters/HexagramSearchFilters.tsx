@@ -4,9 +4,11 @@ import { Slider, Divider } from 'antd';
 import { ClearOutlined } from '@ant-design/icons';
 import { HexagramChooser } from '../HexagramChooser';
 import s from './HexagramSearchFilters.sass';
+import { ChainItemChooser } from '../ChainItemChooser';
 
 export type HexagramSearchFiltersProps = {
   className?: string;
+  chain: string;
   value: HexagramSearchFiltersState;
   onChange: (value: HexagramSearchFiltersState) => void;
 };
@@ -20,12 +22,22 @@ export type HexagramSearchFiltersState = {
     values: string[];
     count: { gte: number; lte: number };
   };
+  stableCards: string[];
   potential: { gte: number; lte: number };
   selfBalancingCount: { gte: number; lte: number };
 };
 
-export const HexagramSearchFilters: FC<HexagramSearchFiltersProps> = ({ className, value = {}, onChange }) => (
+export const HexagramSearchFilters: FC<HexagramSearchFiltersProps> = ({ className, chain, value = {}, onChange }) => (
   <div className={cn(s.root, className)}>
+    <div>
+      <div>Не перемещать выбранные карты</div>
+      <ChainItemChooser
+        chain={chain.split(' ')}
+        value={value.stableCards}
+        onChange={(v): void => onChange({ ...value, stableCards: v } as HexagramSearchFiltersState)}
+      />
+    </div>
+    <Divider />
     <div>
       <div>
         Включая гексаграммы
