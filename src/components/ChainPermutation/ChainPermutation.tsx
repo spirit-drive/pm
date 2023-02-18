@@ -69,7 +69,7 @@ const getNominalsAndStableCards = ({
   filters,
   value,
 }: ChainPermutationActionRunning['payload']): Pick<ChainPermutationState, 'stableCards' | 'nominals'> => {
-  const stableNominals = getNominalsFromChain(filters.stableCards.join(' '));
+  const stableNominals = filters.stableCards?.length ? getNominalsFromChain(filters.stableCards.join(' ')) : [];
   const valueNominals = getNominalsFromChain(value);
   const stableCards: StableCard[] = stableNominals
     .reduce((acc, item) => {
