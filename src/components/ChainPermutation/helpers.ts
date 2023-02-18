@@ -21,7 +21,7 @@ export function* permutations<T>(arr: T[], m: T[] = []): Generator<T[]> {
 const map = ['z', 'x', 'c', 'v', 'b', 'n', 'm', 'l', 'k'];
 
 export const getCurrentSolitaire = (now: string[], permutation: string[]): string => {
-  const nom = [...new Set(now.map((i) => i.slice(0, -1)))];
+  const nom = getNominalsFromChain(now.join(' '));
   let raw: string = now.join(' ');
   nom.forEach((item, i) => {
     raw = raw.replaceAll(item, map[i]);

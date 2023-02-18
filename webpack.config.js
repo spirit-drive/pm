@@ -89,7 +89,7 @@ module.exports = (env, options) => {
       new CleanWebpackPlugin(),
       new HtmlPlugin({
         template: 'index.html',
-        favicon: 'favicon.png',
+        favicon: 'fav.png',
         inject: true,
       }),
       new MiniCssExtractPlugin({
