@@ -174,7 +174,7 @@ const reducer = (state: ChainPermutationState, action: ChainPermutationAction): 
       return { ...state, mode: ChainPermutationMode.PAUSE };
 
     case ChainPermutationActionType.RESET:
-      return { ...state, mode: ChainPermutationMode.PAUSE, items: [] };
+      return { ...state, mode: ChainPermutationMode.PAUSE, items: [], chain: [] };
 
     case ChainPermutationActionType.SET_FILTERS:
       return { ...state, filters: action.payload };
