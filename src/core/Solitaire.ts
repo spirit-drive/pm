@@ -73,9 +73,9 @@ export class Solitaire extends SolitaireBasis {
     const { chain, transits } = this;
     return chain
       .map((item) => {
-        const found = transits.find((t) => t.value === item);
+        const found = transits.find((t) => SolitaireBasis.xToTen(t.value) === item);
         if (!found) return item;
-        return `${found.value}!${found.efl === 1 ? '' : found.efl}`;
+        return `${SolitaireBasis.xToTen(found.value)}!${found.efl === 1 ? '' : found.efl}`;
       })
       .join(' ');
   }
