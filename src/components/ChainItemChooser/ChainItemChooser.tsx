@@ -9,10 +9,12 @@ export type ChainItemChooserProps = {
   onChange: (value: string[]) => void;
 };
 
+const prepareItem = (item: string): string => item.replace(/!\d*$/, '');
+
 export const ChainItemChooser: FC<ChainItemChooserProps> = ({ className, chain, value = [], onChange }) => (
   <div className={cn(s.root, className)}>
     {chain.map((item) => {
-      const active = value.includes(item);
+      const active = value.map(prepareItem).includes(prepareItem(item));
 
       return (
         <div
