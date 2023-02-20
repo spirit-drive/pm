@@ -13,10 +13,13 @@ export class SolitaireBasis {
     this._chain = chain;
   }
 
+  static removeEfl(string: string): string {
+    return string?.replace(/!\d*/gi, '') || ''; // Убрать все efl
+  }
+
   static parseString(string: string): string {
     return string
-      ? string
-          .replace(/!\d*/gi, '') // Убрать все efl
+      ? SolitaireBasis.removeEfl(string)
           .replace(/T/gi, 'Т') // Русская
           .replace(/t/gi, 'Т') // Английская
           .replace(/K/gi, 'К') // Русская

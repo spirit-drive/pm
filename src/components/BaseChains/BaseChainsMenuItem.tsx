@@ -1,9 +1,10 @@
 import React, { memo } from 'react';
 import cn from 'clsx';
 import { ChainData } from './types';
-import s from './BaseChainsMenuItem.module.sass';
 import { ShortHexagrams } from '../ShortHexagrams';
 import { Suits } from '../../core/types';
+import { SolitaireBasis } from '../../core/SolitaireBasis';
+import s from './BaseChainsMenuItem.module.sass';
 
 export type BaseChainsMenuItemProps = ChainData & {
   className?: string;
@@ -13,7 +14,11 @@ export type BaseChainsMenuItemProps = ChainData & {
 
 export const BaseChainsMenuItem = memo<BaseChainsMenuItemProps>(
   ({ className, onChoose, chain, tag, selfBalancing, hexagrams }) => (
-    <button onClick={(): void => onChoose(chain)} type="button" className={cn(s.root, className)}>
+    <button
+      onClick={(): void => onChoose(SolitaireBasis.removeEfl(chain))}
+      type="button"
+      className={cn(s.root, className)}
+    >
       <div>
         <div className={s.line}>
           {tag && (

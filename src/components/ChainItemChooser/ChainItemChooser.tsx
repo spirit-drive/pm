@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import cn from 'clsx';
+import { SolitaireBasis } from '../../core/SolitaireBasis';
 import s from './ChainItemChooser.sass';
 
 export type ChainItemChooserProps = {
@@ -9,23 +10,24 @@ export type ChainItemChooserProps = {
   onChange: (value: string[]) => void;
 };
 
-const prepareItem = (item: string): string => item.replace(/!\d*$/, '');
+export const ChainItemChooser: FC<ChainItemChooserProps> = ({ className, chain, value = [], onChange }) => {
+  if (!chain) return null;
+  return (
+    <div className={cn(s.root, className)}>
+      {chain.map((item) => {
+        const active = value.map(SolitaireBasis.removeEfl).includes(SolitaireBasis.removeEfl(item));
 
-export const ChainItemChooser: FC<ChainItemChooserProps> = ({ className, chain, value = [], onChange }) => (
-  <div className={cn(s.root, className)}>
-    {chain.map((item) => {
-      const active = value.map(prepareItem).includes(prepareItem(item));
-
-      return (
-        <div
-          role="presentation"
-          onClick={(): void => onChange(active ? value.filter((i) => i !== item) : [...value, item])}
-          className={cn(s.item, active && s.active)}
-          key={item}
-        >
-          {item}
-        </div>
-      );
-    })}
-  </div>
-);
+        return (
+          <div
+            role="presentation"
+            onClick={(): void => onChange(active ? value.filter((i) => i !== item) : [...value, item])}
+            className={cn(s.item, active && s.active)}
+            key={item}
+          >
+            {item}
+          </div>
+        );
+      })}
+    </div>
+  );
+};

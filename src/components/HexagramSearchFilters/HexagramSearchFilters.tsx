@@ -29,7 +29,7 @@ export type HexagramSearchFiltersState = {
 };
 
 export const HexagramSearchFilters: FC<HexagramSearchFiltersProps> = ({ className, chain, value = {}, onChange }) => {
-  const chainAdv = useMemo(() => new Solitaire(chain).chainAdvanced.split(' '), [chain]);
+  const chainAdv = useMemo(() => chain && new Solitaire(chain).chainAdvanced.split(' '), [chain]);
   return (
     <div className={cn(s.root, className)}>
       <div>

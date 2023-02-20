@@ -1,17 +1,15 @@
 import { useLocation } from 'react-router-dom';
 import qs from 'query-string';
-import { Dispatch, SetStateAction, useEffect, useMemo, useRef } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { useNavigate } from '../../hooks/useNavigate';
 
 export const useSaveToUrl = (value: string, setValue: Dispatch<SetStateAction<string>>): void => {
   const location = useLocation();
   const navigate = useNavigate();
-  const search = useMemo(() => location.search, [location.search]);
+  const { search } = location;
 
   const searchCopy = useRef(search);
-  useEffect(() => {
-    searchCopy.current = search;
-  }, [search]);
+  searchCopy.current = search;
 
   useEffect(() => {
     try {
@@ -24,7 +22,7 @@ export const useSaveToUrl = (value: string, setValue: Dispatch<SetStateAction<st
 
   useEffect(() => {
     if (value) {
-      navigate({ addToSearch: { value: value.replace(/\s/g, '') } });
+      navigate({ addToSearch: { value: value.replace(/!\d*\s/, '').replace(/\s/g, '') } });
     } else {
       navigate({ removeKeysFromSearch: ['value'] });
     }
