@@ -1,9 +1,9 @@
-import React, { Dispatch, memo, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
 import cn from 'clsx';
 import { Radio } from 'antd';
 import { MinusOutlined } from '@ant-design/icons';
 import { Card } from './Card';
-import { Solitaire } from '../../core/Solitaire';
+import { PossibleReplacing, Solitaire } from '../../core/Solitaire';
 import s from './SolitaireChainView.sass';
 
 export type Props = {
@@ -14,13 +14,10 @@ export type Props = {
   onChange: (that: string, to: string) => void;
 };
 
-export const stringify = (replacing: Record<string, string[]>): string[] =>
-  Object.keys(replacing).reduce((acc, item) => [...acc, `${item}: ${replacing[item].join(',')}`], []);
-
 export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, solitaire }) => {
   const { chain, yin, yan, transits } = solitaire || {};
   const [chosen, setChosen] = useState<string>();
-  const [possible, setPossible] = useState<{ data: string[]; current: string }>();
+  const [possible, setPossible] = useState<{ data: PossibleReplacing[]; current: string }>();
   const [mode, setMode] = useState<'global' | 'unit'>('unit');
 
   useEffect(() => {
@@ -28,52 +25,33 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
     setPossible(null);
   }, [mode]);
 
-  const chosenCopy = useRef(chosen);
-  chosenCopy.current = chosen;
-
-  const replace = useCallback(
-    (current: string): void => {
-      setPossible((v) => {
-        if (v?.current === current) return null;
-        if (v?.current) {
-          if (v.data.includes(current)) {
-            setValue(Solitaire.replace(v?.current, current, solitaire.chain).join(' '));
-            return null;
-          }
-          return v;
+  const replace = (current: string): void => {
+    setPossible((v) => {
+      if (v?.current === current) return null;
+      if (v?.current) {
+        if (v.data.find((i) => i.card === current)) {
+          setValue(Solitaire.replace(v?.current, current, solitaire.chain).join(' '));
+          return null;
         }
-        return { current, data: solitaire.getPossibleReplacing(current) };
-      });
-    },
-    [setValue, solitaire]
-  );
-
-  const exchange = useCallback(
-    (value: string) => {
-      if (chosenCopy.current) {
-        onChange(chosenCopy.current, value);
-        setChosen('');
-      } else {
-        setChosen(value);
+        return v;
       }
-    },
-    [onChange]
-  );
+      return { current, data: solitaire.getPossibleReplacing(current) };
+    });
+  };
 
-  const modeCopy = useRef(mode);
-  modeCopy.current = mode;
-  const onClick = useCallback(
-    (value: string) => (): void => {
-      if (modeCopy.current === 'global') {
-        exchange(value);
-        return;
-      }
-      replace(value);
-    },
-    [exchange, replace]
-  );
+  const exchange = (value: string): void => {
+    if (chosen) {
+      onChange(chosen, value);
+      setChosen('');
+    } else {
+      setChosen(value);
+    }
+  };
 
-  const possibleReplacingStrict = useMemo(() => Solitaire.getPossibleReplacingStrict(chain.join(' ')), [chain]);
+  const onClick = (value: string) => (): void => {
+    if (mode === 'global') exchange(value);
+    else replace(value);
+  };
 
   if (!chain?.length) return null;
   return (
@@ -87,7 +65,14 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
         {mode !== 'global' && (
           <div className={s.tip}>
             <div>Обмен с сохранением самобалансировки. Подсвечивается фиолетовым</div>
-            {possible?.current ? possibleReplacingStrict?.[possible?.current]?.join(',') : <MinusOutlined />}
+            {possible?.current ? (
+              possible?.data
+                ?.filter((i) => i.strict)
+                .map((i) => i.card)
+                .join(', ') || <MinusOutlined />
+            ) : (
+              <MinusOutlined />
+            )}
           </div>
         )}
         <Radio.Group value={mode} size="small">
@@ -104,6 +89,7 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
           const correctedItem = Solitaire.tenToX(item);
           const transit = transits.find((t) => t.value === correctedItem);
           const $className = cn(s.infoItem, yan.includes(correctedItem) && s.yan, yin.includes(correctedItem) && s.yin);
+          const pos = possible?.data?.find((l) => l.card === item);
           return (
             <div
               role="presentation"
@@ -111,8 +97,7 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
               className={cn([
                 s.item,
                 (chosen === item || possible?.current === item) && s.active,
-                possible?.data?.includes(item) && s.possible,
-                possibleReplacingStrict?.[possible?.current]?.includes(item) && s.strict,
+                pos && (pos.strict ? s.strict : s.possible),
               ])}
               key={item}
             >

@@ -146,29 +146,98 @@ describe('Solitaire', () => {
 
     it('Возможные перестановки', () => {
       expect(solitaire.getPossibleReplacing('7б')).toEqual([
-        'Вб',
-        '7ч',
-        '7п',
-        'Вч',
-        '10п',
-        '8ч',
-        '7к',
-        'Кп',
-        '8б',
-        'Тч',
-        'Кк',
-        'Дп',
-        'Тб',
-        'Кч',
-        'Дк',
-        '6ч',
-        '9к',
-        'Тп',
-        'Дч',
-        'Тк',
-        '9ч',
-        '8к',
-        '10ч',
+        {
+          card: 'Вб',
+          strict: true,
+        },
+        {
+          card: '7ч',
+          strict: true,
+        },
+        {
+          card: '7п',
+          strict: true,
+        },
+        {
+          card: 'Вч',
+          strict: true,
+        },
+        {
+          card: '10п',
+          strict: true,
+        },
+        {
+          card: '8ч',
+          strict: true,
+        },
+        {
+          card: '7к',
+          strict: true,
+        },
+        {
+          card: 'Кп',
+          strict: true,
+        },
+        {
+          card: '8б',
+          strict: true,
+        },
+        {
+          card: 'Тч',
+          strict: true,
+        },
+        {
+          card: 'Кк',
+          strict: true,
+        },
+        {
+          card: 'Дп',
+          strict: true,
+        },
+        {
+          card: 'Тб',
+          strict: true,
+        },
+        {
+          card: 'Кч',
+          strict: true,
+        },
+        {
+          card: 'Дк',
+          strict: true,
+        },
+        {
+          card: '6ч',
+          strict: true,
+        },
+        {
+          card: '9к',
+          strict: true,
+        },
+        {
+          card: 'Тп',
+          strict: true,
+        },
+        {
+          card: 'Дч',
+          strict: true,
+        },
+        {
+          card: 'Тк',
+          strict: true,
+        },
+        {
+          card: '9ч',
+          strict: true,
+        },
+        {
+          card: '8к',
+          strict: true,
+        },
+        {
+          card: '10ч',
+          strict: true,
+        },
       ]);
     });
   });
