@@ -9,6 +9,13 @@ export enum Suits {
   hearts = 'hearts',
 }
 
+export enum SuitsIcon {
+  hearts = '♥',
+  diamonds = '♦',
+  clubs = '♣',
+  spades = '♠',
+}
+
 export enum CyrillicSuits {
   spades = 'п',
   diamonds = 'б',

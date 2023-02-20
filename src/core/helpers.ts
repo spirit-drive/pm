@@ -15,7 +15,9 @@ import {
   CyrillicSuits,
   CyrillicNominal,
   LineBalance,
+  SuitsIcon,
 } from './types';
+import { hexagramsInfoMap } from '../utils/hexagrams';
 
 export const EXCHANGE_HELPED_SYMBOL = '.';
 
@@ -203,4 +205,19 @@ export const suitToHexagram: Record<CyrillicSuits, Suits> = {
   [CyrillicSuits.diamonds]: Suits.diamonds,
   [CyrillicSuits.clubs]: Suits.clubs,
   [CyrillicSuits.hearts]: Suits.hearts,
+};
+
+export const getHexagramInfo = (hexagramStrings: Record<Suits, string>, suits: Suits): string =>
+  `${SuitsIcon[suits]}️ #${hexagramStrings[suits]} ${hexagramsInfoMap[hexagramStrings[suits]].title}`;
+
+export const getTotalHexagramInfo = (
+  hexagramStrings: Record<Suits, string>,
+  selfBalancingStrings: Record<Suits, string>[],
+  suits: Suits
+): string => {
+  const main = getHexagramInfo(hexagramStrings, suits);
+  if (!selfBalancingStrings?.length) return main;
+  const other = selfBalancingStrings?.map((item) => getHexagramInfo(item, suits));
+  if (main === other[0]) return other.join(' ');
+  return [main, other.join(' ')].join(' ');
 };

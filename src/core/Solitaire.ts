@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import { SolitaireBasis } from './SolitaireBasis';
 import { Balance, BalanceValue, Hexagrams, HexagramsMold, SelfBalance, Suits } from './types';
-import { EXCHANGE_HELPED_SYMBOL, hexagramsEngine, initHexagramMold } from './helpers';
+import { EXCHANGE_HELPED_SYMBOL, getTotalHexagramInfo, hexagramsEngine, initHexagramMold } from './helpers';
 import { InvalidDataForExchange } from './Errors';
 import { canBeBalanced, getCombination, getPossibleLines, LineData, linesDataToHexagrams } from './balancing';
 import { HexagramsMap } from '../utils/hexagrams';
@@ -85,19 +85,6 @@ export class Solitaire extends SolitaireBasis {
       .join(' ');
   }
 
-  get selfBalancingToString(): string {
-    return this.selfBalancing
-      ?.map((item) =>
-        [
-          HexagramsMap[item.hearts.join('')],
-          HexagramsMap[item.spades.join('')],
-          HexagramsMap[item.clubs.join('')],
-          HexagramsMap[item.diamonds.join('')],
-        ].join(';')
-      )
-      .join(' ');
-  }
-
   static exchangeUnit(that: string, to: string, chain: string[]): string[] {
     const $that = SolitaireBasis.tenToX(that);
     const $to = SolitaireBasis.tenToX(to);
@@ -122,6 +109,19 @@ export class Solitaire extends SolitaireBasis {
     return Solitaire.exchangeUnit(thatS, toS, chain);
   }
 
+  get info(): string {
+    const { hexagramStrings, selfBalancingStrings } = this;
+    return [
+      this.chainAdvanced,
+      [
+        getTotalHexagramInfo(hexagramStrings, selfBalancingStrings, Suits.hearts),
+        getTotalHexagramInfo(hexagramStrings, selfBalancingStrings, Suits.diamonds),
+        getTotalHexagramInfo(hexagramStrings, selfBalancingStrings, Suits.clubs),
+        getTotalHexagramInfo(hexagramStrings, selfBalancingStrings, Suits.spades),
+      ].join('\n'),
+    ].join('\n\n');
+  }
+
   static selfBalancingEngine(balance: Balance, hexagramsMold: HexagramsMold): SelfBalance {
     /**
      * Линии 2, 4, 5 должны быть сбалансированы
@@ -139,6 +139,28 @@ export class Solitaire extends SolitaireBasis {
 
   get selfBalancing(): SelfBalance {
     return Solitaire.selfBalancingEngine(this.balance, this.hexagramsMold);
+  }
+
+  get selfBalancingToString(): string {
+    return this.selfBalancing
+      ?.map((item) =>
+        [
+          HexagramsMap[item.hearts.join('')],
+          HexagramsMap[item.spades.join('')],
+          HexagramsMap[item.clubs.join('')],
+          HexagramsMap[item.diamonds.join('')],
+        ].join(';')
+      )
+      .join(' ');
+  }
+
+  get selfBalancingStrings(): Record<Suits, string>[] {
+    return this.selfBalancing?.map((item) => ({
+      [Suits.spades]: HexagramsMap[item.spades.join('')],
+      [Suits.hearts]: HexagramsMap[item.hearts.join('')],
+      [Suits.clubs]: HexagramsMap[item.clubs.join('')],
+      [Suits.diamonds]: HexagramsMap[item.diamonds.join('')],
+    }));
   }
 
   private addToYin(string: string): void {

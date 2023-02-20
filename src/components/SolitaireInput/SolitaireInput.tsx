@@ -4,6 +4,7 @@ import { Button, Form, Input, message as messageAnt } from 'antd';
 import { CopyOutlined, DeleteOutlined } from '@ant-design/icons';
 import { copyToClipboard } from '../../utils/copyToClipboard';
 import s from './SolitaireInput.sass';
+import { Solitaire } from '../../core/Solitaire';
 
 export type SolitaireInputProps = {
   className?: string;
@@ -18,7 +19,15 @@ export const SolitaireInput = memo<SolitaireInputProps>(({ className, onChange, 
 
   const onCopy = (): void => {
     if (value) {
-      copyToClipboard(value)
+      let result: string;
+      try {
+        const sol = new Solitaire(value);
+        result = sol.info;
+      } catch (e) {
+        result = value;
+      }
+
+      copyToClipboard(result)
         .then(() => {
           messageAnt.success('Скопировано в буфер обмена');
         })
