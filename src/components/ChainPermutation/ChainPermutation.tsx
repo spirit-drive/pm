@@ -2,7 +2,7 @@ import React, { memo, useEffect, useReducer, useRef, useMemo, useState } from 'r
 import cn from 'clsx';
 import { Button } from 'antd';
 import { MinusOutlined } from '@ant-design/icons';
-import { getCurrentSolitaire, getNominalsFromChain, permutations } from './helpers';
+import { getCurrentSolitaire, getNominalsFromChain, isInsideRandle, isUnsuitableHex, permutations } from './helpers';
 import { Solitaire } from '../../core/Solitaire';
 import { factorial } from '../../utils/math';
 import { ChainData } from '../BaseChains/types';
@@ -104,15 +104,11 @@ const reducer = (state: ChainPermutationState, action: ChainPermutationAction): 
         getCurrentSolitaire(Solitaire.parseString(state.chain.join(' ')).split(' '), correctedChain)
       );
       const { balancePotential } = solitaire;
-      if (balancePotential < filters.potential.gte || balancePotential > filters.potential.lte) return state;
+      if (!isInsideRandle(balancePotential, filters.potential)) return state;
 
       const { selfBalancing } = solitaire;
-      if (
-        (selfBalancing?.length || 0) < filters.selfBalancingCount.gte ||
-        (selfBalancing?.length || 0) > filters.selfBalancingCount.lte
-      ) {
-        return state;
-      }
+      const selfBalancingCount = selfBalancing?.length || 0;
+      if (!isInsideRandle(selfBalancingCount, filters.selfBalancingCount)) return state;
 
       const { selfBalancingToString } = solitaire;
       if (selfBalancingToString) {
@@ -120,42 +116,12 @@ const reducer = (state: ChainPermutationState, action: ChainPermutationAction): 
         for (let i = 0; i < selfBalancings.length; i++) {
           const selfBalancingItem = selfBalancings[i];
           const hexagrams: string[] = selfBalancingItem.split(';');
-          if (hexagrams && filters.include.values.length) {
-            const countInclude = hexagrams.reduce((sum, item) => {
-              if (filters.include.values.includes(item)) return sum + 1;
-              return sum;
-            }, 0);
-            if (countInclude < filters.include.count.gte || countInclude > filters.include.count.lte) {
-              return state;
-            }
-          }
-          if (hexagrams && filters.exclude.values.length) {
-            const countExclude = hexagrams.reduce((sum, item) => {
-              if (filters.exclude.values.includes(item)) return sum + 1;
-              return sum;
-            }, 0);
-            if (countExclude < filters.exclude.count.gte || countExclude > filters.exclude.count.lte) return state;
-          }
+          if (isUnsuitableHex(hexagrams, filters)) return state;
         }
       } else {
         const { hexagramsToString } = solitaire;
         const hexagrams: string[] = hexagramsToString.split(';');
-        if (hexagrams && filters.include.values.length) {
-          const countInclude = hexagrams.reduce((sum, item) => {
-            if (filters.include.values.includes(item)) return sum + 1;
-            return sum;
-          }, 0);
-          if (countInclude < filters.include.count.gte || countInclude > filters.include.count.lte) {
-            return state;
-          }
-        }
-        if (hexagrams && filters.exclude.values.length) {
-          const countExclude = hexagrams.reduce((sum, item) => {
-            if (filters.exclude.values.includes(item)) return sum + 1;
-            return sum;
-          }, 0);
-          if (countExclude < filters.exclude.count.gte || countExclude > filters.exclude.count.lte) return state;
-        }
+        if (isUnsuitableHex(hexagrams, filters)) return state;
       }
       return {
         ...state,

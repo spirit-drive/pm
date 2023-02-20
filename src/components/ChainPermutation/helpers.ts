@@ -1,4 +1,5 @@
 import { SolitaireBasis } from '../../core/SolitaireBasis';
+import { HexagramSearchFiltersState } from '../HexagramSearchFilters';
 
 export const getNominalsFromChain = (value: string): string[] => [
   ...SolitaireBasis.parseString(value)
@@ -30,4 +31,23 @@ export const getCurrentSolitaire = (now: string[], permutation: string[]): strin
     raw = raw.replaceAll(map[i], item);
   });
   return raw;
+};
+
+export const isInsideRandle = (number: number, { gte, lte }: { gte: number; lte: number }): boolean =>
+  number >= gte && number <= lte;
+
+export const getSuitableHexCount = (hexagrams: string[], suitable: string[]): number =>
+  hexagrams.reduce((sum, item) => (suitable.includes(item) ? sum + 1 : sum), 0);
+
+export const isUnsuitableHex = (hexagrams: string[], filters: HexagramSearchFiltersState): boolean => {
+  if (!hexagrams) return false;
+  if (filters.include.values.length) {
+    const count = getSuitableHexCount(hexagrams, filters.include.values);
+    if (!isInsideRandle(count, filters.include.count)) return true;
+  }
+  if (filters.exclude.values.length) {
+    const count = getSuitableHexCount(hexagrams, filters.exclude.values);
+    if (!isInsideRandle(count, filters.exclude.count)) return true;
+  }
+  return false;
 };
