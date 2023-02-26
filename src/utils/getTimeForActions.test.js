@@ -343,10 +343,10 @@ describe('getTimeForActions', () => {
             hour: 0,
             day: 0,
           },
-          {
-            gte: { minute: 0, hour: 0 },
-            lte: { minute: 0, hour: 9 },
-          }
+          [
+            { minute: 0, hour: 0 },
+            { minute: 0, hour: 9 },
+          ]
         )
       ).toEqual([
         {
@@ -407,6 +407,79 @@ describe('getTimeForActions', () => {
       ]);
     });
 
+    it('5 minutes with long sleep', () => {
+      expect(
+        getTimeForActions({ minute: 0, hour: 21, day: 0 })(
+          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          {
+            minute: 15,
+            hour: 1,
+            day: 0,
+          },
+          [
+            { minute: 0, hour: 23 },
+            { minute: 0, hour: 7 },
+          ]
+        )
+      ).toEqual([
+        {
+          day: 0,
+          hour: 21,
+          minute: 0,
+        },
+        {
+          day: 0,
+          hour: 22,
+          minute: 15,
+        },
+        {
+          day: 0,
+          hour: 23,
+          minute: 30,
+        },
+        {
+          day: 1,
+          hour: 8,
+          minute: 45,
+        },
+        {
+          day: 1,
+          hour: 10,
+          minute: 0,
+        },
+        {
+          day: 1,
+          hour: 11,
+          minute: 15,
+        },
+        {
+          day: 1,
+          hour: 12,
+          minute: 30,
+        },
+        {
+          day: 1,
+          hour: 13,
+          minute: 45,
+        },
+        {
+          day: 1,
+          hour: 15,
+          minute: 0,
+        },
+        {
+          day: 1,
+          hour: 16,
+          minute: 15,
+        },
+        {
+          day: 1,
+          hour: 17,
+          minute: 30,
+        },
+      ]);
+    });
+
     it('5 minutes after 1 day', () => {
       expect(
         getTimeForActions({ minute: 1, hour: 1, day: 1 })(
@@ -416,10 +489,10 @@ describe('getTimeForActions', () => {
             hour: 0,
             day: 0,
           },
-          {
-            gte: { minute: 5, hour: 1 },
-            lte: { minute: 0, hour: 9 },
-          }
+          [
+            { minute: 5, hour: 1 },
+            { minute: 0, hour: 9 },
+          ]
         )
       ).toEqual([
         {
@@ -489,10 +562,10 @@ describe('getTimeForActions', () => {
             hour: 0,
             day: 0,
           },
-          {
-            gte: { minute: 0, hour: 0 },
-            lte: { minute: 0, hour: 9 },
-          }
+          [
+            { minute: 0, hour: 0 },
+            { minute: 0, hour: 9 },
+          ]
         )
       ).toEqual([
         {
@@ -562,10 +635,10 @@ describe('getTimeForActions', () => {
             hour: 0,
             day: 0,
           },
-          {
-            gte: { minute: 0, hour: 0 },
-            lte: { minute: 0, hour: 7 },
-          }
+          [
+            { minute: 0, hour: 0 },
+            { minute: 0, hour: 7 },
+          ]
         )
       ).toEqual([
         {
@@ -635,10 +708,10 @@ describe('getTimeForActions', () => {
             hour: 0,
             day: 0,
           },
-          {
-            gte: { minute: 5, hour: 0 },
-            lte: { minute: 0, hour: 7 },
-          }
+          [
+            { minute: 5, hour: 0 },
+            { minute: 0, hour: 7 },
+          ]
         )
       ).toEqual([
         {

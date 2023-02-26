@@ -47,6 +47,18 @@ export enum CyrillicNominal {
   ace = 'Т',
 }
 
+export const cyrillicNominalTimeSize: Record<string, number> = {
+  [`6`]: 1,
+  [`7`]: 1,
+  [`8`]: 1,
+  [`9`]: 1,
+  [`X`]: 2,
+  [`В`]: 1,
+  [`Д`]: 1,
+  [`К`]: 2,
+  [`Т`]: 2,
+};
+
 export type HexagramCorrectedLine = Record<Nominal, HexagramItemValue>;
 export type CorrectedLine = { suit: Suits; value: HexagramCorrectedLine };
 export type CorrectedLines = {

@@ -4,14 +4,22 @@ export type DateTime = {
   minute: number;
 };
 
-export type DateTimeRange = {
-  gte: Omit<DateTime, 'day'>;
-  lte: Omit<DateTime, 'day'>;
-};
+export type Time = Omit<DateTime, 'day'>;
+
+export type DateTimeRange = [Time, Time];
 
 export const getMinutesFromString = (time: string): number => {
   const [hours, minutes] = time.split(':').map((i) => i.replace(/^0/, ''));
   return parseInt(hours, 10) * 60 + parseInt(minutes, 10);
+};
+
+export const getDateTimeFromString = (time: string): DateTime => {
+  const [hours, minutes] = time.split(':').map((i) => i.replace(/^0/, ''));
+  return {
+    day: 0,
+    hour: parseInt(hours, 10),
+    minute: parseInt(minutes, 10),
+  };
 };
 
 export const getTwoDigit = (digit: number): string => {
@@ -24,6 +32,9 @@ export const getStringFromMinutes = (minutes: number): string => {
   const _minutes = minutes % 60;
   return `${getTwoDigit(hours)}:${getTwoDigit(_minutes)}`;
 };
+
+export const getStringFromDateTime = (time: DateTime): string =>
+  `${getTwoDigit(time.hour)}:${getTwoDigit(time.minute)}`;
 
 export const getDays = (minutes: number): number => Math.floor(minutes / (24 * 60));
 
@@ -43,12 +54,13 @@ export const createGetDateTimeBySleepTime =
   (sleepTime?: DateTimeRange) =>
   (value: number): number => {
     if (!sleepTime) return value;
-    const gte = dateTimeToNumber(sleepTime.gte);
-    const lte = dateTimeToNumber(sleepTime.lte);
+    const gte = dateTimeToNumber(sleepTime[0]);
+    const lte = dateTimeToNumber(sleepTime[1]);
+    const _gte = gte > lte ? gte - 24 * 60 : gte;
     const days = getDays(value);
     const { hour, minute } = numberToDateTime(value);
     const number = dateTimeToNumber({ hour, minute });
-    if (gte <= number && number < lte) return lte + number - gte + daysToMinutes(days);
+    if (_gte <= number && number < lte) return lte + number - _gte + daysToMinutes(days);
     return value;
   };
 

@@ -7,6 +7,15 @@ export const getNominalsFromChain = (value: string): string[] => [
     .reduce((acc, item) => acc.add(item[0]), new Set<string>()),
 ];
 
+export const getAllNominalsFromChain = (value: string): string[] => [
+  ...SolitaireBasis.parseString(value)
+    .split(' ')
+    .reduce((acc, item) => {
+      acc.push(item[0]);
+      return acc;
+    }, []),
+];
+
 export function* permutations<T>(arr: T[], m: T[] = []): Generator<T[]> {
   if (arr.length === 0) {
     yield m;

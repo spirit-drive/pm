@@ -5,6 +5,11 @@ import { MinusOutlined } from '@ant-design/icons';
 import { Card } from './Card';
 import { PossibleReplacing, Solitaire } from '../../core/Solitaire';
 import s from './SolitaireChainView.sass';
+import { TimeEditor, TimeEditorState } from '../TimeEditor';
+import { DateTime, getTimeForActions, getDateTimeFromString } from '../../utils/getTimeForActions';
+import { getAllNominalsFromChain } from '../ChainPermutation/helpers';
+import { cyrillicNominalTimeSize } from '../../core/types';
+import { CardTimeView } from '../CardTimeView';
 
 export type Props = {
   className?: string;
@@ -19,6 +24,7 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
   const [chosen, setChosen] = useState<string>();
   const [possible, setPossible] = useState<{ data: PossibleReplacing[]; current: string }>();
   const [mode, setMode] = useState<'global' | 'unit'>('unit');
+  const [times, setTimes] = useState<DateTime[]>([]);
 
   useEffect(() => {
     setChosen('');
@@ -53,9 +59,21 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
     else replace(value);
   };
 
+  const onChangeTime = (time: TimeEditorState): void => {
+    if (!chain || !time) return;
+    const sizes = getAllNominalsFromChain(chain.join(' ')).map((i) => cyrillicNominalTimeSize[i]);
+    setTimes(
+      getTimeForActions(getDateTimeFromString(time.start))(sizes, getDateTimeFromString(time.interval), [
+        getDateTimeFromString(time.sleep[0]),
+        getDateTimeFromString(time.sleep[1]),
+      ])
+    );
+  };
+
   if (!chain?.length) return null;
   return (
     <div className={cn(s.root, className)}>
+      <TimeEditor onChange={onChangeTime} />
       <div className={s.radio}>
         <div className={s.tip}>
           {mode === 'global'
@@ -85,7 +103,7 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
         </Radio.Group>
       </div>
       <div className={s.wrapper}>
-        {chain?.map((item) => {
+        {chain?.map((item, i) => {
           const correctedItem = Solitaire.tenToX(item);
           const transit = transits.find((t) => t.value === correctedItem);
           const $className = cn(s.infoItem, yan.includes(correctedItem) && s.yan, yin.includes(correctedItem) && s.yin);
@@ -106,6 +124,7 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
                 <div className={$className} />
                 {transit && <div className={cn(s.infoItem, s.transit)}>{transit.efl}</div>}
               </div>
+              {!!times.length && <CardTimeView current={times[i]} />}
             </div>
           );
         })}
