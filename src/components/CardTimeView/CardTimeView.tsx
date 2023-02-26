@@ -7,14 +7,15 @@ import s from './CardTimeView.sass';
 export type CardTimeViewProps = {
   className?: string;
   current: DateTime;
+  showDay: boolean;
   children?: never;
 };
 
 export const CardTimeView = memo<CardTimeViewProps>(
-  ({ className, current }) => (
+  ({ className, current, showDay }) => (
     <div className={cn(s.root, className)}>
       <div>{getStringFromDateTime(current)}</div>
-      <div>{current.day + 1}</div>
+      {showDay && <div>{current.day + 1}</div>}
     </div>
   ),
   deepEqual

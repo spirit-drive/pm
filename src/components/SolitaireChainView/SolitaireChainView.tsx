@@ -24,6 +24,7 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
   const [chosen, setChosen] = useState<string>();
   const [possible, setPossible] = useState<{ data: PossibleReplacing[]; current: string }>();
   const [mode, setMode] = useState<'global' | 'unit'>('unit');
+  const [time, setTime] = useState<TimeEditorState>();
   const [times, setTimes] = useState<DateTime[]>([]);
 
   useEffect(() => {
@@ -59,7 +60,9 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
     else replace(value);
   };
 
-  const onChangeTime = (time: TimeEditorState): void => {
+  const showDay = times?.[0]?.day !== times?.[times?.length - 1]?.day;
+
+  useEffect(() => {
     if (!chain || !time) return;
     const sizes = getAllNominalsFromChain(chain.join(' ')).map((i) => cyrillicNominalTimeSize[i]);
     setTimes(
@@ -68,12 +71,12 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
         getDateTimeFromString(time.sleep[1]),
       ])
     );
-  };
+  }, [chain, time]);
 
   if (!chain?.length) return null;
   return (
     <div className={cn(s.root, className)}>
-      <TimeEditor onChange={onChangeTime} />
+      <TimeEditor onChange={setTime} />
       <div className={s.radio}>
         <div className={s.tip}>
           {mode === 'global'
@@ -124,7 +127,7 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
                 <div className={$className} />
                 {transit && <div className={cn(s.infoItem, s.transit)}>{transit.efl}</div>}
               </div>
-              {!!times.length && <CardTimeView current={times[i]} />}
+              {!!times.length && <CardTimeView current={times[i]} showDay={showDay} />}
             </div>
           );
         })}
