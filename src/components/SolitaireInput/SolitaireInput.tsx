@@ -59,7 +59,6 @@ export const SolitaireInput = memo<SolitaireInputProps>(({ className, onChange, 
             <DeleteOutlined />
           </Button>
           <Input
-            id="input"
             autoFocus
             ref={input}
             onPressEnter={onClick}

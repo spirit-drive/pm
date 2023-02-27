@@ -41,14 +41,16 @@ app.listen(port, () => {
 //
 //   const start = Date.now();
 //
-//   const browser = await puppeteer.launch();
+//   const browser = await puppeteer.launch({
+//     args: ['--no-sandbox', '--disable-setuid-sandbox'],
+//   });
 //   const page = await browser.newPage();
 //   try {
 //     // networkidle0 waits for the network to be idle (no requests for 500ms).
 //     // The page's JS has likely produced markup by this point, but wait longer
 //     // if your site lazy loads, etc.
-//     await page.goto(url, {waitUntil: 'networkidle0'});
-//     await page.waitForSelector('#input'); // ensure #posts exists in the DOM.
+//     await page.goto(url, {waitUntil: 'networkidle2'});
+//     await page.waitForSelector('#layout'); // ensure #posts exists in the DOM.
 //   } catch (err) {
 //     console.error(err);
 //     throw new Error('page.goto/waitForSelector timed out.');
@@ -80,17 +82,14 @@ app.listen(port, () => {
 //
 // //обслуживание html
 // app.get('/origin/*', function (req, res) {
-//   console.log('origin');
 //   res.sendFile(path.join(__dirname, 'dist', 'app.html'));
 // });
 //
 // //обслуживание html
 // app.get('*', async (req, res, next) => {
-//   console.log(req.originalUrl)
 //   try {
-//     console.log('success');
-//     // const local_url = `http://localhost:8080/origin${req.originalUrl}`;
-//     const local_url = `ovz2.igor-zvyagin.vpljm.vps.myjino.ru/origin${req.originalUrl}`;
+//     // const local_url = `http://localhost:${port}/origin${req.originalUrl}`;
+//     const local_url = `http://ovz2.igor-zvyagin.vpljm.vps.myjino.ru/origin${req.originalUrl}`;
 //     const {html, ttRenderMs} = await ssr(local_url);
 //     // Add Server-Timing! See https://w3c.github.io/server-timing/.
 //     res.set('Server-Timing', `Prerender;dur=${ttRenderMs};desc="Headless render time (ms)"`);

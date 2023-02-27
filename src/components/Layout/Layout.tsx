@@ -9,7 +9,7 @@ export type LayoutProps = {
 };
 
 export const Layout: FC<LayoutProps> = ({ className, children }) => (
-  <div className={cn(s.root, className)}>
+  <div className={cn(s.root, className)} id="layout">
     <Header />
     {children}
   </div>
