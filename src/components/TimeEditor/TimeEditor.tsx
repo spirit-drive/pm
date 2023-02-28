@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import cn from 'clsx';
-import { Button, TimePicker, DatePicker } from 'antd';
+import { TimePicker, DatePicker } from 'antd';
 import moment, { Moment } from 'moment';
 import { getDateTimeFromString } from '../../utils/getTimeForActions';
 import s from './TimeEditor.sass';
@@ -44,6 +44,7 @@ export const TimeEditor = memo<TimeEditorProps>(({ className, onChange }) => {
 
   useEffect(() => {
     localStorage.setItem(KEY, JSON.stringify(value));
+    onChange(value);
   }, [onChange, value]);
 
   return (
@@ -81,7 +82,6 @@ export const TimeEditor = memo<TimeEditorProps>(({ className, onChange }) => {
           value={[getValue(value.sleep[0]), getValue(value.sleep[1])]}
         />
       </div>
-      <Button onClick={(): void => onChange(value)}>Расставить время</Button>
     </div>
   );
 });

@@ -1,15 +1,23 @@
 import React, { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
 import cn from 'clsx';
-import { Radio } from 'antd';
-import { MinusOutlined } from '@ant-design/icons';
+import * as ics from 'ics';
+import { Checkbox, message, Radio, Button, Divider } from 'antd';
+import { DownloadOutlined, MinusOutlined } from '@ant-design/icons';
+import { EventAttributes } from 'ics';
 import { Card } from './Card';
 import { PossibleReplacing, Solitaire } from '../../core/Solitaire';
 import s from './SolitaireChainView.sass';
 import { TimeEditor, TimeEditorState } from '../TimeEditor';
-import { DateTime, getTimeForActions, getDateTimeFromString } from '../../utils/getTimeForActions';
+import {
+  DateTime,
+  getTimeForActions,
+  getDateTimeFromString,
+  getDateArrayByStartAndShift,
+} from '../../utils/getTimeForActions';
 import { getAllNominalsFromChain } from '../ChainPermutation/helpers';
 import { cyrillicNominalTimeSize } from '../../core/types';
 import { CardTimeView } from '../CardTimeView';
+import { saveFile } from '../../utils/saveFile';
 
 export type Props = {
   className?: string;
@@ -20,11 +28,12 @@ export type Props = {
 };
 
 export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, solitaire }) => {
-  const { chain, yin, yan, transits } = solitaire || {};
+  const { chain, yin, yan, transits, chainAdvanced } = solitaire || {};
   const [chosen, setChosen] = useState<string>();
   const [possible, setPossible] = useState<{ data: PossibleReplacing[]; current: string }>();
   const [mode, setMode] = useState<'global' | 'unit'>('unit');
   const [time, setTime] = useState<TimeEditorState>();
+  const [visibleTimes, setVisibleTimes] = useState<boolean>(true);
   const [times, setTimes] = useState<DateTime[]>([]);
 
   useEffect(() => {
@@ -73,10 +82,45 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
     );
   }, [chain, time]);
 
+  const getCal = (): void => {
+    if (!times?.length) return;
+    const arr: EventAttributes[] = chainAdvanced.split(' ').map((title, i) => ({
+      title,
+      description: 'desc',
+      alarms: [
+        {
+          summary: title,
+          action: 'audio',
+          description: 'desc 1',
+          trigger: { hours: 0, minutes: 0, before: true },
+          repeat: 1,
+        },
+      ],
+      start: getDateArrayByStartAndShift(time.startDate, times[i]),
+      end: getDateArrayByStartAndShift(time.startDate, times[i + 1]),
+    }));
+    const { value, error } = ics.createEvents(arr);
+    if (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      message.error(`Ошибка построения календаря. Напишите мне в телеграмм @spirit_drive`);
+    } else {
+      saveFile('ЦС', value);
+    }
+  };
+
   if (!chain?.length) return null;
   return (
     <div className={cn(s.root, className)}>
-      <TimeEditor onChange={setTime} />
+      <TimeEditor className={s.editor} onChange={setTime} />
+      <Checkbox checked={visibleTimes} onChange={(e): void => setVisibleTimes(e.target.checked)}>
+        Показать тайминг
+      </Checkbox>
+      <Button onClick={getCal} disabled={!times?.length}>
+        <DownloadOutlined />
+        Скачать файл для календаря
+      </Button>
+      <Divider />
       <div className={s.radio}>
         <div className={s.tip}>
           {mode === 'global'
@@ -116,11 +160,11 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
               <div
                 role="presentation"
                 onClick={onClick(item)}
-                className={cn([
+                className={cn(
                   s.item,
                   (chosen === item || possible?.current === item) && s.active,
-                  pos && (pos.strict ? s.strict : s.possible),
-                ])}
+                  pos && (pos.strict ? s.strict : s.possible)
+                )}
               >
                 <div className={s.number}>{i + 1}</div>
                 <Card value={item} />
@@ -129,7 +173,7 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
                   {transit && <div className={cn(s.infoItem, s.transit)}>{transit.efl}</div>}
                 </div>
               </div>
-              {!!times.length && (
+              {visibleTimes && !!times.length && (
                 <CardTimeView
                   startDate={time.startDate}
                   className={s.time}

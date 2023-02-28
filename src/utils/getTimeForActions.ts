@@ -1,3 +1,6 @@
+import moment, { Moment } from 'moment';
+import { DateArray } from 'ics';
+
 export type DateTime = {
   day: number;
   hour: number;
@@ -8,6 +11,14 @@ export type DateType = {
   day: number;
   month: number;
   year: number;
+};
+
+export const getMomentByStartDate = (date: string): Moment => moment(date.split('.').reverse().join('-'));
+
+export const getDateArrayByStartAndShift = (start: string, shift: DateTime): DateArray => {
+  const raw = getMomentByStartDate(start);
+  raw.add(shift.day, 'day').add(shift.hour, 'hour').add(shift.minute, 'minute');
+  return [raw.year(), raw.month(), raw.date(), raw.hour(), raw.minute()];
 };
 
 export type Time = Omit<DateTime, 'day'>;
