@@ -73,8 +73,15 @@ export class SolitaireBasis {
     return result.map(SolitaireBasis.normalise);
   }
 
+  _savedChain: string[] = [];
+
   get chain(): string[] {
-    return this._chain.map(SolitaireBasis.xToTen);
+    const raw = this._chain.map(SolitaireBasis.xToTen);
+    if (this._savedChain && JSON.stringify(this._savedChain) === JSON.stringify(raw)) {
+      return this._savedChain;
+    }
+    this._savedChain = raw;
+    return raw;
   }
 
   set chain(chain: string[]) {

@@ -1,11 +1,12 @@
 import React, { memo, useState, useEffect } from 'react';
 import cn from 'clsx';
-import { Button, TimePicker } from 'antd';
+import { Button, TimePicker, DatePicker } from 'antd';
 import moment, { Moment } from 'moment';
-import { getDateTimeFromString } from '../../utils/getTimeForActions';
+import { getDateFromString, getDateTimeFromString } from '../../utils/getTimeForActions';
 import s from './TimeEditor.sass';
 
 export type TimeEditorState = {
+  startDate: string;
   start: string;
   interval: string;
   sleep: [string, string];
@@ -22,6 +23,13 @@ export const getValue = (string: string): Moment => {
   const raw = moment();
   const { hour, minute } = getDateTimeFromString(string);
   return raw.hours(hour).minutes(minute);
+};
+
+export const getDateValue = (string: string): Moment => {
+  if (!string) return null;
+  const raw = moment();
+  const { day, year, month } = getDateFromString(string);
+  return raw.days(day).year(year).month(month);
 };
 
 export const TimeEditor = memo<TimeEditorProps>(({ className, onChange }) => {
@@ -42,6 +50,14 @@ export const TimeEditor = memo<TimeEditorProps>(({ className, onChange }) => {
 
   return (
     <div className={cn(s.root, className)}>
+      <div>
+        <div>Дата старта</div>
+        <DatePicker
+          format="DD.MM.YYYY"
+          onChange={(_, startDate): void => setValue((v) => ({ ...v, startDate }))}
+          value={getDateValue(value.startDate)}
+        />
+      </div>
       <div>
         <div>Время старта</div>
         <TimePicker

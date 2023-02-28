@@ -4,6 +4,12 @@ export type DateTime = {
   minute: number;
 };
 
+export type DateType = {
+  day: number;
+  month: number;
+  year: number;
+};
+
 export type Time = Omit<DateTime, 'day'>;
 
 export type DateTimeRange = [Time, Time];
@@ -19,6 +25,15 @@ export const getDateTimeFromString = (time: string): DateTime => {
     day: 0,
     hour: parseInt(hours, 10),
     minute: parseInt(minutes, 10),
+  };
+};
+
+export const getDateFromString = (date: string): DateType => {
+  const [day, month, year] = date.split('.').map((i) => i.replace(/^0/, ''));
+  return {
+    day: parseInt(day, 10),
+    month: parseInt(month, 10),
+    year: parseInt(year, 10),
   };
 };
 
