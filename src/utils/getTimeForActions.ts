@@ -13,12 +13,16 @@ export type DateType = {
   year: number;
 };
 
-export const getMomentByStartDate = (date: string): Moment => moment(date.split('.').reverse().join('-'));
+export const getNowByMoment = (): string => moment().hour(0).minute(0).second(0).format(`DD.MM.YYYY`);
+export const getMomentByDate = (date: string): Moment => {
+  if (!date) return moment().hour(0).minute(0).second(0);
+  return moment(date?.split('.').reverse().join('-'));
+};
 
 const daysOfWeek = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
 
 export const getDateAndWeekday = (date: string, addDays = 0): { date: string; weekday: string } => {
-  const time = getMomentByStartDate(date);
+  const time = getMomentByDate(date);
   return {
     date: time.add(addDays, 'day').format('DD.MM'),
     weekday: daysOfWeek[time.day()],
@@ -26,9 +30,9 @@ export const getDateAndWeekday = (date: string, addDays = 0): { date: string; we
 };
 
 export const getDateArrayByStartAndShift = (start: string, shift: DateTime): DateArray => {
-  const raw = getMomentByStartDate(start);
+  const raw = getMomentByDate(start);
   raw.add(shift.day, 'day').add(shift.hour, 'hour').add(shift.minute, 'minute');
-  return [raw.year(), raw.month(), raw.date(), raw.hour(), raw.minute()];
+  return [raw.year(), raw.month() + 1, raw.date(), raw.hour(), raw.minute()];
 };
 
 export type Time = Omit<DateTime, 'day'>;

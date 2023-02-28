@@ -6,7 +6,7 @@ import { Card } from './Card';
 import { PossibleReplacing, Solitaire } from '../../core/Solitaire';
 import s from './SolitaireChainView.sass';
 import { TimeEditor, TimeEditorState } from '../TimeEditor';
-import { DateTime, getTimeForActions, getDateTimeFromString } from '../../utils/getTimeForActions';
+import { DateTime, getTimeForActions, getDateTimeFromString, getNowByMoment } from '../../utils/getTimeForActions';
 import { getAllNominalsFromChain } from '../ChainPermutation/helpers';
 import { cyrillicNominalTimeSize } from '../../core/types';
 import { CardTimeView } from '../CardTimeView';
@@ -70,10 +70,11 @@ export const SolitaireChainView = memo<Props>(
       if (!chain || !time) return;
       const sizes = getAllNominalsFromChain(chain.join(' ')).map((i) => cyrillicNominalTimeSize[i]);
       setTimes(
-        getTimeForActions(getDateTimeFromString(time.start))(sizes, getDateTimeFromString(time.interval), [
-          getDateTimeFromString(time.sleep[0]),
-          getDateTimeFromString(time.sleep[1]),
-        ])
+        getTimeForActions(getDateTimeFromString(time.start || getNowByMoment()))(
+          sizes,
+          getDateTimeFromString(time.interval),
+          [getDateTimeFromString(time.sleep[0]), getDateTimeFromString(time.sleep[1])]
+        )
       );
     }, [chain, setTimes, time]);
 

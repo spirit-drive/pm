@@ -11,7 +11,7 @@
     "dev": "webpack-dev-server --mode development",
     "lint": "eslint --fix src",
     "build": "webpack --mode production",
-    "postbuild": "react-snap",
+    "snap": "react-snap",
     "test": "jest src",
     "cypress": "./node_modules/.bin/cypress open",
     "schema": "node ./src/Client/schemaQuery.js",
