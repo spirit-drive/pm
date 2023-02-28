@@ -112,22 +112,26 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
           const $className = cn(s.infoItem, yan.includes(correctedItem) && s.yan, yin.includes(correctedItem) && s.yin);
           const pos = possible?.data?.find((l) => l.card === item);
           return (
-            <div
-              role="presentation"
-              onClick={onClick(item)}
-              className={cn([
-                s.item,
-                (chosen === item || possible?.current === item) && s.active,
-                pos && (pos.strict ? s.strict : s.possible),
-              ])}
-              key={item}
-            >
-              <Card value={item} />
-              <div className={s.info}>
-                <div className={$className} />
-                {transit && <div className={cn(s.infoItem, s.transit)}>{transit.efl}</div>}
+            <div key={i} className={s.wrapperItem}>
+              <div
+                role="presentation"
+                onClick={onClick(item)}
+                className={cn([
+                  s.item,
+                  (chosen === item || possible?.current === item) && s.active,
+                  pos && (pos.strict ? s.strict : s.possible),
+                ])}
+              >
+                <div className={s.number}>{i + 1}</div>
+                <Card value={item} />
+                <div className={s.info}>
+                  <div className={$className} />
+                  {transit && <div className={cn(s.infoItem, s.transit)}>{transit.efl}</div>}
+                </div>
               </div>
-              {!!times.length && <CardTimeView current={times[i]} showDay={showDay} />}
+              {!!times.length && (
+                <CardTimeView className={s.time} current={times[i]} next={times[i + 1]} showDay={showDay} />
+              )}
             </div>
           );
         })}
