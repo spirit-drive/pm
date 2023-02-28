@@ -16,6 +16,9 @@ import { HexagramsMoldElement, HexagramsMoldElementProps } from '../../component
 import { HexagramSearch } from '../../components/HexagramSearch';
 import { CyrillicSuits } from '../../core/types';
 import s from './Analise.sass';
+import { ChainDescription } from '../../components/ChainDescription';
+import { TimeEditorState } from '../../components/TimeEditor';
+import { DateTime } from '../../utils/getTimeForActions';
 
 export type Props = {
   className?: string;
@@ -26,6 +29,8 @@ export const Analise = memo<Props>(({ className }) => {
   const [value, setValue] = useState<string>();
   const [message, setMessage] = useState<string>();
   const [solitaire, setSolitaire] = useState<Solitaire>();
+  const [time, setTime] = useState<TimeEditorState>();
+  const [times, setTimes] = useState<DateTime[]>([]);
 
   useSaveToUrl(value, setValue);
   const [{ first, last, index, history }, { back, next }] = useHistory(value, setValue);
@@ -132,11 +137,35 @@ export const Analise = memo<Props>(({ className }) => {
           <Collapse.Panel className={s.panel} key="1" header={headerElement}>
             {((): React.ReactElement => {
               if (message || !solitaire?._chain) return <MinusOutlined />;
-              return <SolitaireChainView setValue={setValue} onChange={onChangeSolitaire} solitaire={solitaire} />;
+              return (
+                <SolitaireChainView
+                  times={times}
+                  time={time}
+                  setTime={setTime}
+                  setTimes={setTimes}
+                  setValue={setValue}
+                  onChange={onChangeSolitaire}
+                  solitaire={solitaire}
+                />
+              );
             })()}
           </Collapse.Panel>
         </Collapse>
       </div>
+      <div className={s.section}>
+        {time && !!times.length && solitaire?.chainAdvanced && (
+          <Collapse ghost>
+            <Collapse.Panel
+              className={s.panel}
+              key="1"
+              header={<Typography.Title className={s.title}>Экспорт в календарь</Typography.Title>}
+            >
+              <ChainDescription chainAdvanced={solitaire.chainAdvanced} startDate={time?.startDate} times={times} />
+            </Collapse.Panel>
+          </Collapse>
+        )}
+      </div>
+
       {solitaire?._chain && (
         <div className={s.section}>
           <Collapse ghost>

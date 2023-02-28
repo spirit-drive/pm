@@ -15,6 +15,16 @@ export type DateType = {
 
 export const getMomentByStartDate = (date: string): Moment => moment(date.split('.').reverse().join('-'));
 
+const daysOfWeek = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+
+export const getDateAndWeekday = (date: string, addDays = 0): { date: string; weekday: string } => {
+  const time = getMomentByStartDate(date);
+  return {
+    date: time.add(addDays, 'day').format('DD.MM'),
+    weekday: daysOfWeek[time.day()],
+  };
+};
+
 export const getDateArrayByStartAndShift = (start: string, shift: DateTime): DateArray => {
   const raw = getMomentByStartDate(start);
   raw.add(shift.day, 'day').add(shift.hour, 'hour').add(shift.minute, 'minute');
