@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+sitemap: http://medici-lab.ru/sitemap.xml

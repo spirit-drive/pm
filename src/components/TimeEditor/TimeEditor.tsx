@@ -62,6 +62,7 @@ export const TimeEditor = memo<TimeEditorProps>(({ className, onChange }) => {
         <div>Время сна</div>
         <TimePicker.RangePicker
           format="HH:mm"
+          order={false}
           onChange={(_, sleep): void => setValue((v) => ({ ...v, sleep }))}
           value={[getValue(value.sleep[0]), getValue(value.sleep[1])]}
         />
