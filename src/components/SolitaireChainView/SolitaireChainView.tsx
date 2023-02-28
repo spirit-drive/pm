@@ -130,7 +130,13 @@ export const SolitaireChainView = memo<Props>(({ className, setValue, onChange, 
                 </div>
               </div>
               {!!times.length && (
-                <CardTimeView className={s.time} current={times[i]} next={times[i + 1]} showDay={showDay} />
+                <CardTimeView
+                  startDate={time.startDate}
+                  className={s.time}
+                  current={times[i]}
+                  next={times[i + 1]}
+                  showDay={showDay}
+                />
               )}
             </div>
           );

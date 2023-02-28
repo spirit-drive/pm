@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect } from 'react';
 import cn from 'clsx';
 import { Button, TimePicker, DatePicker } from 'antd';
 import moment, { Moment } from 'moment';
-import { getDateFromString, getDateTimeFromString } from '../../utils/getTimeForActions';
+import { getDateTimeFromString } from '../../utils/getTimeForActions';
 import s from './TimeEditor.sass';
 
 export type TimeEditorState = {
@@ -27,9 +27,7 @@ export const getValue = (string: string): Moment => {
 
 export const getDateValue = (string: string): Moment => {
   if (!string) return null;
-  const raw = moment();
-  const { day, year, month } = getDateFromString(string);
-  return raw.days(day).year(year).month(month);
+  return moment(string.split('.').reverse().join('-'));
 };
 
 export const TimeEditor = memo<TimeEditorProps>(({ className, onChange }) => {
