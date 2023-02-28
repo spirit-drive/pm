@@ -60,6 +60,7 @@ export const ChainDescription = memo<ChainDescriptionProps>(({ className, times,
       <div className={s.block}>
         <div>Название цепочки событий</div>
         <Input
+          className={s.input}
           placeholder="Назовите цепочку (не обязательно)"
           value={name}
           onChange={(e): void => setName(e.target.value)}
