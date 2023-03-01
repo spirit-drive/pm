@@ -82,9 +82,11 @@ export const SolitaireChainView = memo<Props>(
     return (
       <div className={cn(s.root, className)}>
         <TimeEditor className={s.editor} onChange={setTime} />
-        <Checkbox checked={visibleTimes} onChange={(e): void => setVisibleTimes(e.target.checked)}>
-          Показать тайминг
-        </Checkbox>
+        <div>
+          <Checkbox checked={visibleTimes} onChange={(e): void => setVisibleTimes(e.target.checked)}>
+            Показать тайминг
+          </Checkbox>
+        </div>
         <Divider />
         <div className={s.radio}>
           <div className={s.tip}>

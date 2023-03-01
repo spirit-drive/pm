@@ -37,17 +37,18 @@ export const ChainDescription = memo<ChainDescriptionProps>(
           description: desc[cleanCard],
           alarms: [
             {
-              summary,
               action: 'audio',
-              description: desc[cleanCard],
-              trigger: { before: false },
+              attach: 'Chord',
+              attachType: 'VALUE=URI',
+              trigger: { before: false, seconds: 0 },
             },
           ],
           start: getDateArrayByStartAndShift(startDate, times[i]),
           end: getDateArrayByStartAndShift(startDate, times[i + 1]),
         };
       });
-      const { value, error } = ics.createEvents(arr);
+      const { value: raw, error } = ics.createEvents(arr);
+      const value = raw.replaceAll('TRIGGER:PT', 'TRIGGER:PT0S');
       if (error) {
         // eslint-disable-next-line no-console
         console.error(error);
