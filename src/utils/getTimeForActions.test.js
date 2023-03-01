@@ -351,7 +351,7 @@ describe('getTimeForActions', () => {
       ).toEqual([
         {
           day: 0,
-          hour: 9,
+          hour: 0,
           minute: 0,
         },
         {
@@ -433,8 +433,8 @@ describe('getTimeForActions', () => {
           minute: 15,
         },
         {
-          day: 0,
-          hour: 23,
+          day: 1,
+          hour: 7,
           minute: 30,
         },
         {
@@ -570,7 +570,7 @@ describe('getTimeForActions', () => {
       ).toEqual([
         {
           day: 0,
-          hour: 9,
+          hour: 0,
           minute: 0,
         },
         {
@@ -643,57 +643,57 @@ describe('getTimeForActions', () => {
       ).toEqual([
         {
           day: 0,
-          hour: 7,
+          hour: 0,
           minute: 0,
         },
         {
           day: 1,
-          hour: 7,
+          hour: 0,
           minute: 0,
         },
         {
           day: 2,
-          hour: 7,
+          hour: 0,
           minute: 0,
         },
         {
           day: 3,
-          hour: 7,
+          hour: 0,
           minute: 0,
         },
         {
           day: 4,
-          hour: 7,
+          hour: 0,
           minute: 0,
         },
         {
           day: 5,
-          hour: 7,
+          hour: 0,
           minute: 0,
         },
         {
           day: 6,
-          hour: 7,
+          hour: 0,
           minute: 0,
         },
         {
           day: 7,
-          hour: 7,
+          hour: 0,
           minute: 0,
         },
         {
           day: 8,
-          hour: 7,
+          hour: 0,
           minute: 0,
         },
         {
           day: 9,
-          hour: 7,
+          hour: 0,
           minute: 0,
         },
         {
           day: 10,
-          hour: 7,
+          hour: 0,
           minute: 0,
         },
       ]);
@@ -721,8 +721,8 @@ describe('getTimeForActions', () => {
         },
         {
           day: 0,
-          hour: 7,
-          minute: 0,
+          hour: 0,
+          minute: 5,
         },
         {
           day: 0,
@@ -768,6 +768,207 @@ describe('getTimeForActions', () => {
           day: 0,
           hour: 8,
           minute: 10,
+        },
+      ]);
+    });
+  });
+
+  describe('real cases', () => {
+    it('case 1', () => {
+      expect(
+        getTimeForActions({ day: 0, hour: 7, minute: 0 })(
+          [1, 2, 2, 2, 2, 1, 1, 1, 1, 2, 1, 1, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 2, 2, 1, 1, 1],
+          { day: 0, hour: 0, minute: 21 },
+          [
+            { day: 0, hour: 23, minute: 0 },
+            { day: 0, hour: 7, minute: 0 },
+          ]
+        )
+      ).toEqual([
+        {
+          day: 0,
+          hour: 7,
+          minute: 0,
+        },
+        {
+          day: 0,
+          hour: 7,
+          minute: 21,
+        },
+        {
+          day: 0,
+          hour: 8,
+          minute: 3,
+        },
+        {
+          day: 0,
+          hour: 8,
+          minute: 45,
+        },
+        {
+          day: 0,
+          hour: 9,
+          minute: 27,
+        },
+        {
+          day: 0,
+          hour: 10,
+          minute: 9,
+        },
+        {
+          day: 0,
+          hour: 10,
+          minute: 30,
+        },
+        {
+          day: 0,
+          hour: 10,
+          minute: 51,
+        },
+        {
+          day: 0,
+          hour: 11,
+          minute: 12,
+        },
+        {
+          day: 0,
+          hour: 11,
+          minute: 33,
+        },
+        {
+          day: 0,
+          hour: 12,
+          minute: 15,
+        },
+        {
+          day: 0,
+          hour: 12,
+          minute: 36,
+        },
+        {
+          day: 0,
+          hour: 12,
+          minute: 57,
+        },
+        {
+          day: 0,
+          hour: 13,
+          minute: 39,
+        },
+        {
+          day: 0,
+          hour: 14,
+          minute: 0,
+        },
+        {
+          day: 0,
+          hour: 14,
+          minute: 42,
+        },
+        {
+          day: 0,
+          hour: 15,
+          minute: 3,
+        },
+        {
+          day: 0,
+          hour: 15,
+          minute: 45,
+        },
+        {
+          day: 0,
+          hour: 16,
+          minute: 6,
+        },
+        {
+          day: 0,
+          hour: 16,
+          minute: 27,
+        },
+        {
+          day: 0,
+          hour: 16,
+          minute: 48,
+        },
+        {
+          day: 0,
+          hour: 17,
+          minute: 9,
+        },
+        {
+          day: 0,
+          hour: 17,
+          minute: 30,
+        },
+        {
+          day: 0,
+          hour: 18,
+          minute: 12,
+        },
+        {
+          day: 0,
+          hour: 18,
+          minute: 33,
+        },
+        {
+          day: 0,
+          hour: 18,
+          minute: 54,
+        },
+        {
+          day: 0,
+          hour: 19,
+          minute: 15,
+        },
+        {
+          day: 0,
+          hour: 19,
+          minute: 36,
+        },
+        {
+          day: 0,
+          hour: 20,
+          minute: 18,
+        },
+        {
+          day: 0,
+          hour: 20,
+          minute: 39,
+        },
+        {
+          day: 0,
+          hour: 21,
+          minute: 0,
+        },
+        {
+          day: 0,
+          hour: 21,
+          minute: 21,
+        },
+        {
+          day: 0,
+          hour: 22,
+          minute: 3,
+        },
+        {
+          day: 0,
+          hour: 22,
+          minute: 45,
+        },
+        {
+          day: 1,
+          hour: 7,
+          minute: 6,
+        },
+        {
+          day: 1,
+          hour: 7,
+          minute: 27,
+        },
+        {
+          day: 1,
+          hour: 7,
+          minute: 48,
         },
       ]);
     });

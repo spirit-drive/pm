@@ -13,6 +13,8 @@ export type DateType = {
   year: number;
 };
 
+const DAY = 24 * 60;
+
 export const getNowByMoment = (): string => moment().hour(0).minute(0).second(0).format(`DD.MM.YYYY`);
 export const getMomentByDate = (date: string): Moment => {
   if (!date) return moment().hour(0).minute(0).second(0);
@@ -68,7 +70,7 @@ export const getTwoDigit = (digit: number): string => {
 };
 
 export const getStringFromMinutes = (minutes: number): string => {
-  const hours = Math.floor((minutes % (24 * 60)) / 60);
+  const hours = Math.floor((minutes % DAY) / 60);
   const _minutes = minutes % 60;
   return `${getTwoDigit(hours)}:${getTwoDigit(_minutes)}`;
 };
@@ -76,31 +78,31 @@ export const getStringFromMinutes = (minutes: number): string => {
 export const getStringFromDateTime = (time: DateTime): string =>
   `${getTwoDigit(time.hour)}:${getTwoDigit(time.minute)}`;
 
-export const getDays = (minutes: number): number => Math.floor(minutes / (24 * 60));
+export const getDays = (minutes: number): number => Math.floor(minutes / DAY);
 
 export const numberToDateTime = (minutes: number): DateTime => {
   const day = getDays(minutes);
-  const hour = Math.floor((minutes % (24 * 60)) / 60);
+  const hour = Math.floor((minutes % DAY) / 60);
   const minute = minutes % 60;
   return { day, hour, minute };
 };
 
 export const dateTimeToNumber = (value: Partial<DateTime>): number =>
-  (value.day || 0) * 24 * 60 + (value.hour || 0) * 60 + (value.minute || 0);
+  (value.day || 0) * DAY + (value.hour || 0) * 60 + (value.minute || 0);
 
-export const daysToMinutes = (days: number): number => days * 60 * 24;
+export const daysToMinutes = (days: number): number => days * DAY;
 
 export const createGetDateTimeBySleepTime =
   (sleepTime?: DateTimeRange) =>
   (value: number): number => {
     if (!sleepTime) return value;
     const gte = dateTimeToNumber(sleepTime[0]);
-    const lte = dateTimeToNumber(sleepTime[1]);
-    const _gte = gte > lte ? gte - 24 * 60 : gte;
+    const _lte = dateTimeToNumber(sleepTime[1]);
+    const lte = gte > _lte ? _lte + DAY : _lte;
     const days = getDays(value);
     const { hour, minute } = numberToDateTime(value);
     const number = dateTimeToNumber({ hour, minute });
-    if (_gte <= number && number < lte) return lte + number - _gte + daysToMinutes(days);
+    if (gte < number && number < lte) return lte + number - gte + daysToMinutes(days);
     return value;
   };
 
