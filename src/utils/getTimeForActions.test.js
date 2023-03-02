@@ -480,6 +480,79 @@ describe('getTimeForActions', () => {
       ]);
     });
 
+    it('5 minutes with long sleep and start in the sleep time', () => {
+      expect(
+        getTimeForActions({ minute: 0, hour: 1, day: 0 })(
+          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          {
+            minute: 0,
+            hour: 6,
+            day: 0,
+          },
+          [
+            { minute: 0, hour: 23 },
+            { minute: 0, hour: 7 },
+          ]
+        )
+      ).toEqual([
+        {
+          day: 0,
+          hour: 7,
+          minute: 0,
+        },
+        {
+          day: 0,
+          hour: 13,
+          minute: 0,
+        },
+        {
+          day: 0,
+          hour: 19,
+          minute: 0,
+        },
+        {
+          day: 1,
+          hour: 7,
+          minute: 0,
+        },
+        {
+          day: 1,
+          hour: 13,
+          minute: 0,
+        },
+        {
+          day: 1,
+          hour: 19,
+          minute: 0,
+        },
+        {
+          day: 2,
+          hour: 7,
+          minute: 0,
+        },
+        {
+          day: 2,
+          hour: 13,
+          minute: 0,
+        },
+        {
+          day: 2,
+          hour: 19,
+          minute: 0,
+        },
+        {
+          day: 3,
+          hour: 7,
+          minute: 0,
+        },
+        {
+          day: 3,
+          hour: 13,
+          minute: 0,
+        },
+      ]);
+    });
+
     it('5 minutes after 1 day', () => {
       expect(
         getTimeForActions({ minute: 1, hour: 1, day: 1 })(

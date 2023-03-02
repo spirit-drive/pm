@@ -98,11 +98,13 @@ export const createGetDateTimeBySleepTime =
     if (!sleepTime) return value;
     const gte = dateTimeToNumber(sleepTime[0]);
     const _lte = dateTimeToNumber(sleepTime[1]);
-    const lte = gte > _lte ? _lte + DAY : _lte;
+    const isBetween = gte > _lte;
+    const lte = isBetween ? _lte + DAY : _lte;
     const days = getDays(value);
     const { hour, minute } = numberToDateTime(value);
     const number = dateTimeToNumber({ hour, minute });
     if (gte < number && number < lte) return lte + number - gte + daysToMinutes(days);
+    if (isBetween ? number < _lte : false) return _lte + daysToMinutes(days);
     return value;
   };
 
