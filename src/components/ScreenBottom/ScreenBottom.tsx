@@ -8,12 +8,6 @@ export type ScreenBottomProps = {
 
 export const ScreenBottom = memo<ScreenBottomProps>(({ className }) => (
   <div className={cn(s.root, className)}>
-    <div className={s.block}>
-      <div>Приложение работает на платной основе, потому буду благодарен за поддержку</div>
-      <div>Тинькофф: 5536 9137 9113 9112</div>
-      <div>Яндекс кошелек: 410012281752876</div>
-      <div>Буду рад обратной связи в телеграмм @spirit_drive</div>
-    </div>
     Icons made by{' '}
     <a href="https://smashicons.com/" title="Smashicons">
       Smashicons
