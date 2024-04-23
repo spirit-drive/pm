@@ -2,7 +2,7 @@ import React, { memo, useEffect, useReducer, useRef, useMemo, useState } from 'r
 import cn from 'clsx';
 import { Button } from 'antd';
 import { MinusOutlined } from '@ant-design/icons';
-import { getCurrentSolitaire, getNominalsFromChain, isInsideRandle, isUnsuitableHex, permutations } from './helpers';
+import { getNominalsFromChain } from './helpers';
 import { Solitaire } from '../../core/Solitaire';
 import { factorial } from '../../utils/math';
 import { ChainData } from '../BaseChains/types';
@@ -19,7 +19,7 @@ export type ChainPermutationProps = {
 };
 
 enum ChainPermutationMode {
-  PAUSE,
+  STOP,
   RUNNING,
 }
 
@@ -86,61 +86,33 @@ const getNominalsAndStableCards = ({
   };
 };
 
-const getCorrectedChain = (stableCards: StableCard[], chain: string[]): string[] => {
-  const raw = [...chain];
-  stableCards.forEach((card) => {
-    raw.splice(card.index, 0, card.value);
-  });
-  return raw;
-};
-
 const reducer = (state: ChainPermutationState, action: ChainPermutationAction): ChainPermutationState => {
   switch (action.type) {
     case ChainPermutationActionType.ADD: {
-      if (state.mode === ChainPermutationMode.PAUSE) return state;
-      const { filters } = state;
-      const correctedChain = getCorrectedChain(state.stableCards, action.payload);
-      const solitaire = new Solitaire(
-        getCurrentSolitaire(Solitaire.parseString(state.chain.join(' ')).split(' '), correctedChain)
-      );
-      const { balancePotential } = solitaire;
-      if (!isInsideRandle(balancePotential, filters.potential)) return state;
-
-      const { selfBalancing } = solitaire;
-      const selfBalancingCount = selfBalancing?.length || 0;
-      if (!isInsideRandle(selfBalancingCount, filters.selfBalancingCount)) return state;
-
-      const { selfBalancingToString } = solitaire;
-      if (selfBalancingToString) {
-        const selfBalancings = selfBalancingToString?.split(' ');
-        for (let i = 0; i < selfBalancings.length; i++) {
-          const selfBalancingItem = selfBalancings[i];
-          const hexagrams: string[] = selfBalancingItem.split(';');
-          if (isUnsuitableHex(hexagrams, filters)) return state;
-        }
-      } else {
-        const { hexagramsToString } = solitaire;
-        const hexagrams: string[] = hexagramsToString.split(';');
-        if (isUnsuitableHex(hexagrams, filters)) return state;
-      }
+      if (state.mode === ChainPermutationMode.STOP) return state;
+      const chains = action.payload;
       return {
         ...state,
+        mode: ChainPermutationMode.STOP,
         items: [
           ...(state.items || []),
-          {
-            selfBalancing: solitaire.selfBalancingToString,
-            hexagrams: solitaire.hexagramsToString,
-            chain: solitaire.chainAdvanced,
-          },
+          ...(chains || []).map((chain) => {
+            const solitaire = new Solitaire(chain);
+            return {
+              selfBalancing: solitaire.selfBalancingToString,
+              hexagrams: solitaire.hexagramsToString,
+              chain: solitaire.chainAdvanced,
+            };
+          }),
         ],
       };
     }
 
     case ChainPermutationActionType.PAUSE:
-      return { ...state, mode: ChainPermutationMode.PAUSE };
+      return { ...state, mode: ChainPermutationMode.STOP };
 
     case ChainPermutationActionType.RESET:
-      return { ...state, mode: ChainPermutationMode.PAUSE, items: [], chain: [] };
+      return { ...state, mode: ChainPermutationMode.STOP, items: [], chain: [] };
 
     case ChainPermutationActionType.SET_FILTERS:
       return { ...state, filters: action.payload };
@@ -176,7 +148,7 @@ const initializer = ({
   return {
     stableCards,
     items: [],
-    mode: ChainPermutationMode.PAUSE,
+    mode: ChainPermutationMode.STOP,
     nominals,
     chain: value.split(' '),
     filters,
@@ -191,22 +163,31 @@ export const ChainPermutation = memo<ChainPermutationProps>(({ className, filter
     dispatch({ type: ChainPermutationActionType.SET_FILTERS, payload: filters });
   }, [filters]);
 
-  const generator = useRef<Generator<string[]>>();
   const timeoutId = useRef<number>();
+  const stateCopy = useRef(state);
+  stateCopy.current = state;
+
   useEffect(() => {
+    let worker: Worker;
     if (state.mode === ChainPermutationMode.RUNNING) {
-      generator.current = generator.current || permutations(state.nominals);
-      const func = (): void => {
-        const { value: v, done } = generator.current.next();
-        if (!done) {
-          setIteration((l) => l + 1);
-          dispatch({ type: ChainPermutationActionType.ADD, payload: v });
-          timeoutId.current = setTimeout(func);
+      worker = new Worker(new URL('./worker.ts', import.meta.url));
+      worker.postMessage({ value: state.nominals, state: stateCopy.current });
+      worker.addEventListener('message', (e) => {
+        const { type } = e.data;
+        if (type === 'iteration') {
+          setIteration(e.data.data);
+        } else if (type === 'end') {
+          const { data: chains } = e.data;
+          dispatch({ type: ChainPermutationActionType.ADD, payload: chains });
+          worker.terminate();
         }
-      };
-      func();
+      });
     }
-    return (): void => clearTimeout(timeoutId.current);
+    const _timeoutId = timeoutId.current;
+    return (): void => {
+      worker?.terminate();
+      clearTimeout(_timeoutId);
+    };
   }, [state.mode, state.nominals]);
 
   const count = useMemo(() => factorial(state.nominals?.length || 0), [state.nominals]);
@@ -225,7 +206,6 @@ export const ChainPermutation = memo<ChainPermutationProps>(({ className, filter
   };
 
   const onReset = (): void => {
-    generator.current = null;
     setIteration(0);
     dispatch({ type: ChainPermutationActionType.RESET });
   };
@@ -238,7 +218,7 @@ export const ChainPermutation = memo<ChainPermutationProps>(({ className, filter
       </div>
       <div className={s.buttons}>
         <Button size="small" onClick={onPlay}>
-          {state.mode === ChainPermutationMode.RUNNING ? 'Пауза' : 'Тасовать'}
+          {state.mode === ChainPermutationMode.RUNNING ? 'Стоп' : 'Тасовать'}
         </Button>
         <Button size="small" onClick={onReset}>
           Сбросить
