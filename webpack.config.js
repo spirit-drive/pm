@@ -22,8 +22,8 @@ const getPublicPath = (options) => {
   const isDevMode = getIsDevMode(options);
   const host = getHost(options);
   if (isDevMode) return `http://${host}:${port}/`;
-  if (options.forHeroku) return 'http://ovz2.igor-zvyagin.vpljm.vps.myjino.ru/';
-  return 'http://ovz2.igor-zvyagin.vpljm.vps.myjino.ru/';
+  if (options.forHeroku) return 'http://medici-lab.ru/';
+  return 'http://medici-lab.ru/';
 };
 
 module.exports = (env, options) => {
